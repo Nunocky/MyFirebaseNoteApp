@@ -38,7 +38,7 @@ fun AppRouting() {
 
             LoginScreen(
                 navHostController,
-                onLoginSuccess = {
+                onLoginSuccess = { _ ->
                     navHostController.popBackStack()
                 },
                 onLoginCancelled = {

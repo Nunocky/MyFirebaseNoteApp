@@ -1,6 +1,7 @@
 package org.nunocky.myfirebasetextapp.ui.screens.login
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -17,8 +18,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
+import com.google.firebase.auth.FirebaseUser
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.nunocky.myfirebasetextapp.ui.theme.Typography
@@ -27,7 +27,7 @@ import org.nunocky.myfirebasetextapp.ui.theme.Typography
 @Composable
 fun LoginScreen(
     navHostController: NavHostController,
-    onLoginSuccess: () -> Unit,
+    onLoginSuccess: (user: FirebaseUser) -> Unit,
     onLoginCancelled: () -> Unit,
     googleSignInViewModel: GoogleSignInViewModel
 ) {
@@ -57,21 +57,22 @@ fun LoginScreen(
             )
         },
     ) { innerPadding ->
-        val auth = Firebase.auth
         val buttonEnabled = loginUIState !is GoogleSignInViewModel.SignInUIState.Processing
 
-        Button(
-            modifier = Modifier.padding(innerPadding),
-            onClick = {
-                scope.launch(Dispatchers.IO) {
-                    googleSignInViewModel.signIn()
-                }
-            },
-            enabled = buttonEnabled
-        ) {
+        Column(modifier = Modifier.padding(innerPadding)) {
+            Button(
+                onClick = {
+                    scope.launch(Dispatchers.IO) {
+                        googleSignInViewModel.signIn()
+                    }
+                },
+                enabled = buttonEnabled
+            ) {
+                Text("Sign in with Google")
+            }
+
             when (loginUIState) {
                 is GoogleSignInViewModel.SignInUIState.Initial -> {
-                    Text("Sign in with Google")
                 }
 
                 is GoogleSignInViewModel.SignInUIState.Processing -> {
@@ -79,7 +80,8 @@ fun LoginScreen(
                 }
 
                 is GoogleSignInViewModel.SignInUIState.Success -> {
-                    onLoginSuccess()
+                    Text("Login successful: ${(loginUIState as GoogleSignInViewModel.SignInUIState.Success).user.displayName}")
+                    onLoginSuccess((loginUIState as GoogleSignInViewModel.SignInUIState.Success).user)
                 }
 
                 is GoogleSignInViewModel.SignInUIState.Failed -> {
@@ -88,6 +90,5 @@ fun LoginScreen(
                 }
             }
         }
-
     }
 }
