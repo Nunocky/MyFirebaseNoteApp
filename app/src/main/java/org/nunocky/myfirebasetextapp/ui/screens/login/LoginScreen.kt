@@ -2,8 +2,12 @@ package org.nunocky.myfirebasetextapp.ui.screens.login
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -13,8 +17,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.nunocky.myfirebasetextapp.ui.theme.Typography
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -35,27 +42,36 @@ fun LoginScreen(
     }
 
     Scaffold(
-        topBar = { TopAppBar(title = { Text("Login") }) }
+        topBar = {
+            TopAppBar(
+                title = { Text("Login", style = Typography.titleLarge) },
+                navigationIcon = {
+                    // Add a back button to the top app bar
+                    IconButton(onClick = onLoginCancelled) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = "Back"
+                        )
+                    }
+                }
+            )
+        },
     ) { innerPadding ->
-
+        val auth = Firebase.auth
         val buttonEnabled = loginUIState !is GoogleSignInViewModel.SignInUIState.Processing
 
         Button(
             modifier = Modifier.padding(innerPadding),
             onClick = {
-                // TODO IMPLEMENT THIS
                 scope.launch(Dispatchers.IO) {
                     googleSignInViewModel.signIn()
                 }
             },
             enabled = buttonEnabled
         ) {
-
-            Text("Sign in with Google")
-
             when (loginUIState) {
                 is GoogleSignInViewModel.SignInUIState.Initial -> {
-                    // Initial state, do nothing
+                    Text("Sign in with Google")
                 }
 
                 is GoogleSignInViewModel.SignInUIState.Processing -> {
@@ -71,7 +87,7 @@ fun LoginScreen(
                     // TODO show toast
                 }
             }
-
         }
+
     }
 }
