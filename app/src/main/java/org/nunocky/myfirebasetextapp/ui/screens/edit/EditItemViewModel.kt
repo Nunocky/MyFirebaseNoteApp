@@ -6,7 +6,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.nunocky.myfirebasetextapp.data.ItemDeleteUIState
 import org.nunocky.myfirebasetextapp.data.ItemLoadUIState
 import org.nunocky.myfirebasetextapp.data.ItemSaveUIState
@@ -28,48 +30,49 @@ class EditItemViewModel @Inject constructor(
     val itemDeleteUiState = _itemDeleteUiState.asStateFlow()
 
     fun loadItem(itemId: String) {
-        viewModelScope.launch(Dispatchers.IO) {
-            _itemLoadUiState.value = ItemLoadUIState.Processing
+        viewModelScope.launch {
+            _itemLoadUiState.update { ItemLoadUIState.Processing }
 
-            cloudStorageUseCase.getItem(
-                itemId = itemId,
-                onSuccess = { title, content ->
-                    _itemLoadUiState.value = ItemLoadUIState.Success(Pair(title, content))
-                },
-                onError = { e ->
-                    _itemLoadUiState.value = ItemLoadUIState.Error(e)
+            withContext(Dispatchers.IO) {
+                try {
+                    val (title, content) = cloudStorageUseCase.getItem(itemId = itemId)
+                    _itemLoadUiState.update { ItemLoadUIState.Success(Pair(title, content)) }
+                } catch (e: Exception) {
+                    _itemLoadUiState.update { ItemLoadUIState.Error(e) }
                 }
-            )
+            }
         }
     }
 
     fun updateItem(itemId: String, title: String, content: String) {
-        viewModelScope.launch(Dispatchers.IO) {
-            cloudStorageUseCase.updateItem(
-                itemId = itemId,
-                title = title,
-                content = content,
-                onSuccess = {
-                    _itemSaveUiState.value = ItemSaveUIState.Success(itemId)
-                },
-                onError = { error ->
-                    _itemSaveUiState.value = ItemSaveUIState.Error(error)
-                }
-            )
+        viewModelScope.launch {
+            try {
+                _itemSaveUiState.update { ItemSaveUIState.Processing }
+
+                cloudStorageUseCase.updateItem(
+                    itemId = itemId,
+                    title = title,
+                    content = content,
+                )
+                _itemSaveUiState.update { ItemSaveUIState.Success(itemId) }
+            } catch (e: Exception) {
+                _itemSaveUiState.update { ItemSaveUIState.Error(e) }
+            }
         }
     }
 
     fun deleteItem(itemId: String) {
-        viewModelScope.launch(Dispatchers.IO) {
-            cloudStorageUseCase.deleteItem(
-                itemId = itemId,
-                onSuccess = {
-                    _itemDeleteUiState.value = ItemDeleteUIState.Success(itemId)
-                },
-                onError = { error ->
-                    _itemDeleteUiState.value = ItemDeleteUIState.Error(error)
+        viewModelScope.launch {
+            _itemDeleteUiState.update { ItemDeleteUIState.Success }
+
+            try {
+                withContext(Dispatchers.IO) {
+                    cloudStorageUseCase.deleteItem(itemId)
+                    _itemDeleteUiState.update { ItemDeleteUIState.Success }
                 }
-            )
+            } catch (e: Exception) {
+                _itemDeleteUiState.update { ItemDeleteUIState.Error(e) }
+            }
         }
     }
 }

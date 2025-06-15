@@ -3,39 +3,16 @@ package org.nunocky.myfirebasetextapp.domain
 import com.google.firebase.auth.FirebaseUser
 
 interface CloudStorageUseCase {
-    fun registerUser(user: FirebaseUser)
-    // TODO : onSuccess, onErrorが欲しい
+    suspend fun registerUser(user: FirebaseUser)
 
-    fun getItemList(
-        onSuccess: (List<Pair<String, String>>) -> Unit,
-        onError: (Throwable) -> Unit,
-    )
+    suspend fun getItemList(): List<Pair<String, String>>
 
-    fun createNewItem(
-        title: String,
-        content: String,
-        onSuccess: (String) -> Unit,
-        onError: (Throwable) -> Unit,
-    )
+    suspend fun createNewItem(title: String, content: String): String
 
-    fun getItem(
-        itemId: String,
-        onSuccess: (title: String, content: String) -> Unit,
-        onError: (Throwable) -> Unit,
-    )
+    suspend fun getItem(itemId: String): Pair<String, String>
 
-    fun updateItem(
-        itemId: String,
-        title: String,
-        content: String,
-        onSuccess: (String) -> Unit,
-        onError: (Throwable) -> Unit,
-    )
+    suspend fun updateItem(itemId: String, title: String, content: String)
 
-    fun deleteItem(
-        itemId: String,
-        onSuccess: (String) -> Unit,
-        onError: (Throwable) -> Unit,
-    )
+    suspend fun deleteItem(itemId: String)
 }
 

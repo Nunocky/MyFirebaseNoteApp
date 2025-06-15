@@ -6,6 +6,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.nunocky.myfirebasetextapp.data.GetNoteListUiState
 import org.nunocky.myfirebasetextapp.domain.CloudStorageUseCase
@@ -20,16 +21,14 @@ class HomeViewModel @Inject constructor(
 
     fun getNoteList() {
         viewModelScope.launch(Dispatchers.IO) {
-            _uiState.value = GetNoteListUiState.Processing
+            _uiState.update { GetNoteListUiState.Processing }
 
-            cloudStorageUseCase.getItemList(
-                onSuccess = { itemList ->
-                    _uiState.value = GetNoteListUiState.Success(itemList)
-                },
-                onError = { e ->
-                    _uiState.value = GetNoteListUiState.Error(e)
-                }
-            )
+            try {
+                val itemList = cloudStorageUseCase.getItemList()
+                _uiState.update { GetNoteListUiState.Success(itemList) }
+            } catch (e: Exception) {
+                _uiState.update { GetNoteListUiState.Error(e) }
+            }
         }
     }
 }
