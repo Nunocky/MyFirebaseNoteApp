@@ -9,6 +9,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.navigation.NavHostController
+import org.nunocky.myfirebasetextapp.data.EditType
 import org.nunocky.myfirebasetextapp.data.ItemSaveUIState
 import org.nunocky.myfirebasetextapp.ui.composables.EditorScreen
 
@@ -44,7 +45,7 @@ fun NewItemRoute(
     }
 
     EditorScreen(
-        screenTitle = "Create New Item",
+        editType = EditType.CREATE,
         title = title,
         content = content,
         onSaveRequested = { title, content ->
@@ -55,7 +56,10 @@ fun NewItemRoute(
         },
         onContentChange = { s ->
             content = s
-        }
+        },
+        onBackRequested = {
+            onEditCancelled()
+        },
     )
 }
 

@@ -9,6 +9,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.navigation.NavHostController
+import org.nunocky.myfirebasetextapp.data.EditType
+import org.nunocky.myfirebasetextapp.data.ItemDeleteUIState
 import org.nunocky.myfirebasetextapp.data.ItemLoadUIState
 import org.nunocky.myfirebasetextapp.data.ItemSaveUIState
 import org.nunocky.myfirebasetextapp.ui.composables.EditorScreen
@@ -23,6 +25,7 @@ fun EditItemRoute(
 ) {
     val itemLoadUiState: ItemLoadUIState by viewModel.itemLoadUiState.collectAsState()
     val itemSaveUiState: ItemSaveUIState by viewModel.itemSaveUiState.collectAsState()
+    val itemDeleteUiState: ItemDeleteUIState by viewModel.itemDeleteUiState.collectAsState()
 
     var title by remember { mutableStateOf("") }
     var content by remember { mutableStateOf("") }
@@ -69,8 +72,24 @@ fun EditItemRoute(
         }
     }
 
+    LaunchedEffect(key1 = itemDeleteUiState) {
+        when (itemDeleteUiState) {
+            ItemDeleteUIState.Initial -> {}
+
+            ItemDeleteUIState.Processing -> {}
+
+            is ItemDeleteUIState.Success -> {
+                onEditCancelled()
+            }
+
+            is ItemDeleteUIState.Error -> {
+                // Handle error state if needed
+            }
+        }
+    }
+
     EditorScreen(
-        screenTitle = "Create New Item",
+        editType = EditType.EDIT,
         title = title,
         content = content,
         onSaveRequested = { title, content ->
@@ -85,7 +104,13 @@ fun EditItemRoute(
         },
         onContentChange = { s ->
             content = s
-        }
+        },
+        onBackRequested = {
+            onEditCancelled()
+        },
+        onDeleteItemRequested = {
+            viewModel.deleteItem(itemId)
+        },
     )
 }
 

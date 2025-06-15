@@ -34,7 +34,7 @@ interface CloudStorageUseCase {
 
     fun deleteItem(
         itemId: String,
-        onSuccess: () -> Unit,
+        onSuccess: (String) -> Unit,
         onError: (Throwable) -> Unit,
     )
 }

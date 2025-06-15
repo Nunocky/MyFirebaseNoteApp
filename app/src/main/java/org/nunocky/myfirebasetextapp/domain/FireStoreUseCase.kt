@@ -42,6 +42,8 @@ class FireStoreUseCase @Inject constructor() : CloudStorageUseCase {
     /**
      * ノートの idと titleのリストを返す
      *
+     * TODO 新しいもの順に並べる
+     *
      */
     override fun getItemList(
         onSuccess: (List<Pair<String, String>>) -> Unit,
@@ -203,9 +205,35 @@ class FireStoreUseCase @Inject constructor() : CloudStorageUseCase {
 
     override fun deleteItem(
         itemId: String,
-        onSuccess: () -> Unit,
+        onSuccess: (String) -> Unit,
         onError: (Throwable) -> Unit
     ) {
-        TODO("Not yet implemented")
+        // FireStore インスタンスを取得
+        val db = FirebaseFirestore.getInstance()
+
+        // 現在サインインしているユーザーを取得
+        val user = FirebaseAuth.getInstance().currentUser
+
+        if (user == null) {
+            // ユーザーがサインインしていない場合はエラーを返す
+            onError(Exception("ユーザーがサインインしていません。"))
+            return
+        }
+
+        val userId = user.uid // ユーザーのUIDを取得
+
+        // usersコレクション -> {userId} ドキュメント -> notes サブコレクションの itemId ドキュメントを削除
+        db.collection("users").document(userId).collection("notes")
+            .document(itemId) // itemIdを指定してドキュメントを取得
+            .delete() // delete()を使うと、ドキュメントを削除
+            .addOnSuccessListener {
+//                println("メモを FireStore から削除しました。ドキュメントID: $itemId")
+                onSuccess(itemId)
+            }
+            .addOnFailureListener { e ->
+                // 削除失敗...
+//                println("メモの削除に失敗しました: $e")
+                onError(e)
+            }
     }
 }
