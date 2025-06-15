@@ -1,6 +1,9 @@
 package org.nunocky.myfirebasetextapp.ui.screens.edit
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -29,6 +32,7 @@ fun EditItemRoute(
 
     var title by remember { mutableStateOf("") }
     var content by remember { mutableStateOf("") }
+    var shouldShowDeleteConfirmationDialog by remember { mutableStateOf(false) }
 
     BackHandler {
         onEditCancelled()
@@ -109,8 +113,31 @@ fun EditItemRoute(
             onEditCancelled()
         },
         onDeleteItemRequested = {
-            viewModel.deleteItem(itemId)
+            shouldShowDeleteConfirmationDialog = true
         },
     )
+
+    if (shouldShowDeleteConfirmationDialog) {
+        AlertDialog(
+            onDismissRequest = { shouldShowDeleteConfirmationDialog = false },
+            title = { Text("Confirm Deletion") },
+            text = { Text("Are you sure you want to delete this item?") },
+            confirmButton = {
+                TextButton(onClick = {
+                    shouldShowDeleteConfirmationDialog = false
+                    viewModel.deleteItem(itemId)
+                }) {
+                    Text("Delete")
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = {
+                    shouldShowDeleteConfirmationDialog = false
+                }) {
+                    Text("Cancel")
+                }
+            },
+        )
+    }
 }
 

@@ -9,20 +9,14 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Done
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -42,10 +36,9 @@ fun EditorScreen(
     onTitleChange: (String) -> Unit = { _ -> },
     onContentChange: (String) -> Unit = { _ -> },
     onBackRequested: () -> Unit = {},
-    onDeleteItemRequested: () -> Unit = { }
+    onDeleteItemRequested: () -> Unit = { },
 ) {
     val scrollState = rememberScrollState()
-    var shouldShowDeleteConfirmationDialog by remember { mutableStateOf(false) }
 
     Scaffold(
         topBar = {
@@ -69,7 +62,7 @@ fun EditorScreen(
                 actions = {
                     if (editType == EditType.EDIT) {
                         IconButton(onClick = {
-                            shouldShowDeleteConfirmationDialog = true
+                            onDeleteItemRequested()
                         }) {
                             Icon(imageVector = Icons.Filled.Delete, contentDescription = "削除")
                         }
@@ -107,29 +100,6 @@ fun EditorScreen(
                 singleLine = false,
                 minLines = 5,
                 maxLines = Int.MAX_VALUE
-            )
-        }
-
-        if (shouldShowDeleteConfirmationDialog) {
-            AlertDialog(
-                onDismissRequest = { shouldShowDeleteConfirmationDialog = false },
-                title = { Text("Confirm Deletion") },
-                text = { Text("Are you sure you want to delete this item?") },
-                confirmButton = {
-                    TextButton(onClick = {
-                        shouldShowDeleteConfirmationDialog = false
-                        onDeleteItemRequested()
-                    }) {
-                        Text("Delete")
-                    }
-                },
-                dismissButton = {
-                    TextButton(onClick = {
-                        shouldShowDeleteConfirmationDialog = false
-                    }) {
-                        Text("Cancel")
-                    }
-                },
             )
         }
     }
