@@ -59,9 +59,9 @@ class HomeViewModelTest {
 
                 assertEquals(GetNoteListUiState.Processing, awaitItem())
 
-                val successState = awaitItem()
-                assertTrue(successState is GetNoteListUiState.Success)
-                assertEquals(mockItemList, (successState as GetNoteListUiState.Success).itemList)
+                val uiState = awaitItem()
+                assertTrue(uiState is GetNoteListUiState.Success)
+                assertEquals(mockItemList, (uiState as GetNoteListUiState.Success).itemList)
             }
         }
 
@@ -77,8 +77,8 @@ class HomeViewModelTest {
                 viewModel.getNoteList()
                 assertEquals(GetNoteListUiState.Processing, awaitItem())
 
-                val state = awaitItem()
-                assertTrue(state is GetNoteListUiState.Error)
+                val uiState = awaitItem()
+                assertTrue(uiState is GetNoteListUiState.Error)
             }
         }
 
@@ -94,9 +94,9 @@ class HomeViewModelTest {
 
             assertEquals(GetNoteListUiState.Processing, awaitItem())
 
-            val successState = awaitItem()
-            assertTrue(successState is GetNoteListUiState.Success)
-            assertEquals(mockItemList, (successState as GetNoteListUiState.Success).itemList)
+            val uiState = awaitItem()
+            assertTrue(uiState is GetNoteListUiState.Success)
+            assertEquals(mockItemList, (uiState as GetNoteListUiState.Success).itemList)
         }
     }
 
@@ -112,9 +112,9 @@ class HomeViewModelTest {
 
             assertEquals(GetNoteListUiState.Processing, awaitItem())
 
-            val errorState = awaitItem()
-            assertTrue(errorState is GetNoteListUiState.Error)
-            assertEquals(exception, (errorState as GetNoteListUiState.Error).e)
+            val uiState = awaitItem()
+            assertTrue(uiState is GetNoteListUiState.Error)
+            assertEquals(exception, (uiState as GetNoteListUiState.Error).e)
         }
     }
 }
