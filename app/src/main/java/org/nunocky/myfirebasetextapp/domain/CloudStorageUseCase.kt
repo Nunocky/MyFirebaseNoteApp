@@ -6,7 +6,7 @@ interface CloudStorageUseCase {
     fun registerUser(user: FirebaseUser)
 
     fun getItemList(
-        onSuccess: (List<String>) -> Unit,
+        onSuccess: (List<Pair<String, String>>) -> Unit,
         onError: (Throwable) -> Unit = {}
     )
 

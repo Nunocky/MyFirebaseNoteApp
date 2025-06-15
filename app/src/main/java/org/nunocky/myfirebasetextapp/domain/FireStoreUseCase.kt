@@ -39,11 +39,44 @@ class FireStoreUseCase @Inject constructor() : CloudStorageUseCase {
         }
     }
 
+    /**
+     * ノートの idと titleのリストを返す
+     *
+     */
     override fun getItemList(
-        onSuccess: (List<String>) -> Unit,
+        onSuccess: (List<Pair<String, String>>) -> Unit,
         onError: (Throwable) -> Unit
     ) {
-        TODO("Not yet implemented")
+        // FireStore インスタンスを取得
+        val db = FirebaseFirestore.getInstance()
+
+        // 現在サインインしているユーザーを取得
+        val user = FirebaseAuth.getInstance().currentUser
+        if (user == null) {
+            // ユーザーがサインインしていない場合はエラーを返す
+            onError(Exception("ユーザーがサインインしていません。"))
+            return
+        }
+
+        val userId = user.uid // ユーザーのUIDを取得
+        // usersコレクション -> {userId} ドキュメント -> notes サブコレクションを取得
+        db.collection("users").document(userId).collection("notes")
+            .get() // get()を使うと、ドキュメントの一覧を取得
+            .addOnSuccessListener { querySnapshot ->
+
+                val itemList = querySnapshot.documents.map { document ->
+                    // ドキュメントからデータを取得して、必要な形式に変換
+                    val id = document.id // ドキュメントIDを取得
+                    val title = document.getString("title") ?: "タイトルなし"
+                    Pair(document.id, title)
+                }
+                onSuccess(itemList)
+            }
+            .addOnFailureListener { e ->
+                // 取得失敗...
+                println("メモの取得に失敗しました: $e")
+                onError(e)
+            }
     }
 
     override fun createNewItem(

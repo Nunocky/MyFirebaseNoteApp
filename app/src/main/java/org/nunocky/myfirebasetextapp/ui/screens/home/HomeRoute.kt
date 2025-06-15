@@ -1,43 +1,66 @@
 package org.nunocky.myfirebasetextapp.ui.screens.home
 
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import org.nunocky.myfirebasetextapp.data.GetNoteListUiState
 import org.nunocky.myfirebasetextapp.ui.theme.MyFirebaseTextAppTheme
 import org.nunocky.myfirebasetextapp.ui.theme.Typography
 
 @Composable
 fun HomeRoute(
     navHostController: NavHostController,
+    viewModel: HomeViewModel,
     onLoginNeeded: () -> Unit = {},
     onCreateNewItem: () -> Unit = {}
 ) {
+    val uiState: GetNoteListUiState by viewModel.uiState.collectAsState()
+
+    val itemList = if (uiState is GetNoteListUiState.Success) {
+        (uiState as GetNoteListUiState.Success).itemList
+    } else {
+        emptyList()
+    }
+
     LaunchedEffect(key1 = Unit) {
+        // 未ログインならログイン画面に遷移する
         val auth = Firebase.auth
 
         if (auth.currentUser == null) {
             onLoginNeeded()
             return@LaunchedEffect
         }
+
+        // 画面遷移の際に必ず実行 (forward, backを問わず)
+        // アイテムのリストをロードする
+        viewModel.getNoteList()
     }
 
     HomeScreen(
         user = Firebase.auth.currentUser,
+        itemList = itemList,
         onNewItemButtonClicked = {
             onCreateNewItem()
         }
@@ -48,7 +71,9 @@ fun HomeRoute(
 @Composable
 fun HomeScreen(
     user: FirebaseUser? = null,
-    onNewItemButtonClicked: () -> Unit = {}
+    itemList: List<Pair<String, String>> = emptyList(),
+    onNewItemButtonClicked: () -> Unit = {},
+    onItemClicked: (itemId: String) -> Unit = { _ -> },
 ) {
     if (user != null) {
         Scaffold(
@@ -70,8 +95,21 @@ fun HomeScreen(
                 }
             }
         ) { innerPadding ->
-            Column(modifier = Modifier.padding(innerPadding)) {
-                Text(user.displayName.toString())
+            LazyColumn(modifier = Modifier.padding(innerPadding)) {
+                items(
+                    items = itemList,
+                    key = { item -> item.first } // itemIdをkeyにする
+                ) { item ->
+                    val (itemId, itemText) = item
+                    Text(
+                        text = itemText,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable { onItemClicked(itemId) }
+                            .padding(16.dp)
+                    )
+                    HorizontalDivider()
+                }
             }
         }
     }

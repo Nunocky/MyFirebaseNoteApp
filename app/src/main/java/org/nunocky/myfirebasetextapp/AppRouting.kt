@@ -11,6 +11,7 @@ import kotlinx.serialization.Serializable
 import org.nunocky.myfirebasetextapp.ui.screens.create.NewItemRoute
 import org.nunocky.myfirebasetextapp.ui.screens.create.NewItemViewModel
 import org.nunocky.myfirebasetextapp.ui.screens.home.HomeRoute
+import org.nunocky.myfirebasetextapp.ui.screens.home.HomeViewModel
 import org.nunocky.myfirebasetextapp.ui.screens.login.LoginRoute
 import org.nunocky.myfirebasetextapp.ui.screens.login.LoginViewModel
 
@@ -35,6 +36,7 @@ fun AppRouting() {
         composable<Home> { _ ->
             HomeRoute(
                 navHostController,
+                viewModel = hiltViewModel<HomeViewModel>(),
                 onLoginNeeded = { navHostController.navigate(Login) },
                 onCreateNewItem = { navHostController.navigate(NewItem) }
             )
