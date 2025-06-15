@@ -6,6 +6,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -23,7 +24,8 @@ import org.nunocky.myfirebasetextapp.ui.theme.Typography
 @Composable
 fun HomeRoute(
     navHostController: NavHostController,
-    onLoginNeeded: () -> Unit = {}
+    onLoginNeeded: () -> Unit = {},
+    onCreateNewItem: () -> Unit = {}
 ) {
     LaunchedEffect(key1 = Unit) {
         val auth = Firebase.auth
@@ -37,8 +39,7 @@ fun HomeRoute(
     HomeScreen(
         user = Firebase.auth.currentUser,
         onNewItemButtonClicked = {
-            // Handle new item button click
-            // For example, navigate to a new screen or show a dialog
+            onCreateNewItem()
         }
     )
 }
@@ -62,7 +63,10 @@ fun HomeScreen(
                 FloatingActionButton(onClick = {
                     onNewItemButtonClicked()
                 }) {
-                    Icons.Default.Add
+                    Icon(
+                        imageVector = Icons.Default.Add,
+                        contentDescription = "Add new item"
+                    )
                 }
             }
         ) { innerPadding ->

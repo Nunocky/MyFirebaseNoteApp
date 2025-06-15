@@ -8,6 +8,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import kotlinx.serialization.Serializable
+import org.nunocky.myfirebasetextapp.ui.screens.create.NewItemRoute
+import org.nunocky.myfirebasetextapp.ui.screens.create.NewItemViewModel
 import org.nunocky.myfirebasetextapp.ui.screens.home.HomeRoute
 import org.nunocky.myfirebasetextapp.ui.screens.login.LoginRoute
 import org.nunocky.myfirebasetextapp.ui.screens.login.LoginViewModel
@@ -17,6 +19,9 @@ object Home
 
 @Serializable
 object Login
+
+@Serializable
+object NewItem
 
 @Composable
 fun AppRouting() {
@@ -30,14 +35,14 @@ fun AppRouting() {
         composable<Home> { _ ->
             HomeRoute(
                 navHostController,
-                onLoginNeeded = { navHostController.navigate(Login) }
+                onLoginNeeded = { navHostController.navigate(Login) },
+                onCreateNewItem = { navHostController.navigate(NewItem) }
             )
         }
         composable<Login> { _ ->
-            val viewModel = hiltViewModel<LoginViewModel>()
             LoginRoute(
                 navHostController,
-                viewModel = viewModel,
+                viewModel = hiltViewModel<LoginViewModel>(),
                 onLoginSuccess = { _ ->
                     navHostController.popBackStack()
                 },
@@ -45,6 +50,14 @@ fun AppRouting() {
                     // アプリケーション終了
                     (context as? Activity)?.finish()
                 },
+            )
+        }
+        composable<NewItem> { _ ->
+            NewItemRoute(
+                navHostController = navHostController,
+                viewModel = hiltViewModel<NewItemViewModel>(),
+                onSaveSuccess = { navHostController.popBackStack() },
+                onEditCancelled = { navHostController.popBackStack() },
             )
         }
     }

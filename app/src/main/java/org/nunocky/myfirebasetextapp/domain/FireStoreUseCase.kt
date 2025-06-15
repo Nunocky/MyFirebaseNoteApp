@@ -38,4 +38,79 @@ class FireStoreUseCase @Inject constructor() : CloudStorageUseCase {
                 }
         }
     }
+
+    override fun getItemList(
+        onSuccess: (List<String>) -> Unit,
+        onError: (Throwable) -> Unit
+    ) {
+        TODO("Not yet implemented")
+    }
+
+    override fun createNewItem(
+        title: String,
+        content: String,
+        onSuccess: (String) -> Unit,
+        onError: (Throwable) -> Unit
+    ) {
+        // FireStore インスタンスを取得
+        val db = FirebaseFirestore.getInstance()
+
+        // 現在サインインしているユーザーを取得
+        val user = FirebaseAuth.getInstance().currentUser
+
+        if (user == null) {
+            // ユーザーがサインインしていない場合はエラーを返す
+            onError(Exception("ユーザーがサインインしていません。"))
+            return
+        }
+
+        val userId = user.uid // ユーザーのUIDを取得
+
+        // 保存したいメモのデータを作成
+        val noteData = hashMapOf(
+            "title" to title,
+            "content" to content,
+            "createdAt" to Timestamp.now(),
+            "updatedAt" to Timestamp.now()
+        )
+
+        // usersコレクション -> {userId} ドキュメント -> notes サブコレクションに新しいドキュメントを追加
+        db.collection("users").document(userId).collection("notes")
+            .add(noteData) // add()を使うと、IDを自動生成してドキュメントを追加
+            .addOnSuccessListener { documentReference ->
+                println("メモを FireStore に保存しました。ドキュメントID: ${documentReference.id}")
+                onSuccess(documentReference.id)
+            }
+            .addOnFailureListener { e ->
+                // 保存失敗...
+                println("メモの保存に失敗しました: $e")
+                onError(e)
+            }
+    }
+
+    override fun getItem(
+        itemId: String,
+        onSuccess: (String, String) -> Unit,
+        onError: (Throwable) -> Unit
+    ) {
+        TODO("Not yet implemented")
+    }
+
+    override fun updateItem(
+        itemId: String,
+        title: String,
+        content: String,
+        onSuccess: () -> Unit,
+        onError: (Throwable) -> Unit
+    ) {
+        TODO("Not yet implemented")
+    }
+
+    override fun deleteItem(
+        itemId: String,
+        onSuccess: () -> Unit,
+        onError: (Throwable) -> Unit
+    ) {
+        TODO("Not yet implemented")
+    }
 }
