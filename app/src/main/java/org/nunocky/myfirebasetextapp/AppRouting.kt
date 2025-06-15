@@ -9,8 +9,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import kotlinx.serialization.Serializable
 import org.nunocky.myfirebasetextapp.ui.screens.home.HomeRoute
-import org.nunocky.myfirebasetextapp.ui.screens.login.GoogleSignInViewModel
 import org.nunocky.myfirebasetextapp.ui.screens.login.LoginRoute
+import org.nunocky.myfirebasetextapp.ui.screens.login.LoginViewModel
 
 @Serializable
 object Home
@@ -20,6 +20,7 @@ object Login
 
 @Composable
 fun AppRouting() {
+    val context = LocalContext.current
     val navHostController = rememberNavController()
 
     NavHost(
@@ -33,11 +34,10 @@ fun AppRouting() {
             )
         }
         composable<Login> { _ ->
-            val viewModel = hiltViewModel<GoogleSignInViewModel>()
-            val context = LocalContext.current
-
+            val viewModel = hiltViewModel<LoginViewModel>()
             LoginRoute(
                 navHostController,
+                viewModel = viewModel,
                 onLoginSuccess = { _ ->
                     navHostController.popBackStack()
                 },
@@ -45,7 +45,6 @@ fun AppRouting() {
                     // アプリケーション終了
                     (context as? Activity)?.finish()
                 },
-                googleSignInViewModel = viewModel,
             )
         }
     }

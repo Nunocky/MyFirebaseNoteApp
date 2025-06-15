@@ -4,12 +4,13 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import org.nunocky.myfirebasetextapp.domain.FirebaseGoogleSignInUseCaseImpl
 import org.nunocky.myfirebasetextapp.domain.GoogleSignInUseCase
-import org.nunocky.myfirebasetextapp.domain.GoogleSignInUseCaseImpl
 
 @Module
 @InstallIn(SingletonComponent::class)
-abstract class SignInUsecaseModule {
+abstract class SignInUseCaseModule {
     @Binds
-    abstract fun bindGoogleSignInUseCase(impl: GoogleSignInUseCaseImpl): GoogleSignInUseCase
+    abstract fun bindGoogleSignInUseCase(impl: FirebaseGoogleSignInUseCaseImpl): GoogleSignInUseCase
 }
+
