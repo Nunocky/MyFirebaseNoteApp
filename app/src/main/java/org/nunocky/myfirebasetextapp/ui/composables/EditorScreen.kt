@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material3.AlertDialog
@@ -59,13 +60,15 @@ fun EditorScreen(
                 // バックボタン
                 navigationIcon = {
                     IconButton(onClick = { onBackRequested() }) {
-                        Icon(imageVector = Icons.Filled.Done, contentDescription = "Back")
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = "Back"
+                        )
                     }
                 },
                 actions = {
                     if (editType == EditType.EDIT) {
                         IconButton(onClick = {
-                            // 確認ダイアログを開く
                             shouldShowDeleteConfirmationDialog = true
                         }) {
                             Icon(imageVector = Icons.Filled.Delete, contentDescription = "削除")

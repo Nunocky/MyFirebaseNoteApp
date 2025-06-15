@@ -100,21 +100,33 @@ fun HomeScreen(
             }
         ) { innerPadding ->
             LazyColumn(modifier = Modifier.padding(innerPadding)) {
-                items(
-                    items = itemList,
-                    key = { item -> item.first } // itemIdをkeyにする
-                ) { item ->
-                    val (itemId, itemText) = item
-                    Text(
-                        text = itemText,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .clickable { onItemClicked(itemId) }
-                            .padding(16.dp)
-                    )
-                    HorizontalDivider()
+                if (itemList.isEmpty()) {
+                    item {
+                        Text(
+                            text = "No Items",
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(16.dp)
+                        )
+                    }
+                } else {
+                    items(
+                        items = itemList,
+                        key = { item -> item.first } // itemIdをkeyにする
+                    ) { item ->
+                        val (itemId, itemText) = item
+                        Text(
+                            text = itemText,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clickable { onItemClicked(itemId) }
+                                .padding(16.dp)
+                        )
+                        HorizontalDivider()
+                    }
                 }
             }
+
         }
     }
 }
