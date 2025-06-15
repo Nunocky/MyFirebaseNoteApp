@@ -39,18 +39,19 @@ class EditItemViewModel @Inject constructor(
         }
     }
 
-    fun updateItem(contentId: String, title: String, content: String) {
+    fun updateItem(itemId: String, title: String, content: String) {
         viewModelScope.launch(Dispatchers.IO) {
-//        cloudStorageUseCase.createNewItem(
-//            title = title,
-//            content = content,
-//            onSuccess = { itemId ->
-//                _uiState.value = ItemSaveUIState.Success(itemId)
-//            },
-//            onError = { error ->
-//                _uiState.value = ItemSaveUIState.Error(error)
-//            }
-//        )
+            cloudStorageUseCase.updateItem(
+                itemId = itemId,
+                title = title,
+                content = content,
+                onSuccess = {
+                    _itemSaveUiState.value = ItemSaveUIState.Success(itemId)
+                },
+                onError = { error ->
+                    _itemSaveUiState.value = ItemSaveUIState.Error(error)
+                }
+            )
         }
     }
 }

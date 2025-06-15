@@ -66,7 +66,6 @@ class FireStoreUseCase @Inject constructor() : CloudStorageUseCase {
 
                 val itemList = querySnapshot.documents.map { document ->
                     // ドキュメントからデータを取得して、必要な形式に変換
-                    val id = document.id // ドキュメントIDを取得
                     val title = document.getString("title") ?: "タイトルなし"
                     Pair(document.id, title)
                 }
@@ -165,10 +164,41 @@ class FireStoreUseCase @Inject constructor() : CloudStorageUseCase {
         itemId: String,
         title: String,
         content: String,
-        onSuccess: () -> Unit,
+        onSuccess: (String) -> Unit,
         onError: (Throwable) -> Unit
     ) {
-        TODO("Not yet implemented")
+
+        // itemIdを指定してデータを取得する
+        val db = FirebaseFirestore.getInstance()
+
+        // 現在サインインしているユーザーを取得
+        val user = FirebaseAuth.getInstance().currentUser
+
+        if (user == null) {
+            // ユーザーがサインインしていない場合はエラーを返す
+            onError(Exception("ユーザーがサインインしていません。"))
+            return
+        }
+
+        val userId = user.uid // ユーザーのUIDを取得
+
+        // 更新したいメモのデータを作成
+        val noteData = hashMapOf(
+            "title" to title,
+            "content" to content,
+            "updatedAt" to Timestamp.now() // 更新日時も更新
+        )
+        // usersコレクション -> {userId} ドキュメント -> notes サブコレクションの itemId ドキュメントを更新
+        db.collection("users").document(userId).collection("notes")
+            .document(itemId) // itemIdを指定してドキュメントを取得
+            .set(noteData) // set()を使うと、ドキュメントがなければ作成、あれば上書き
+            .addOnSuccessListener {
+                onSuccess(itemId)
+            }
+            .addOnFailureListener { e ->
+                // 更新失敗...
+                onError(e)
+            }
     }
 
     override fun deleteItem(

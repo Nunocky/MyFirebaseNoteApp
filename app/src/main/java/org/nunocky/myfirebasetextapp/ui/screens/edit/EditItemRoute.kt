@@ -75,7 +75,7 @@ fun EditItemRoute(
         content = content,
         onSaveRequested = { title, content ->
             viewModel.updateItem(
-                contentId = itemId,
+                itemId = itemId,
                 title = title,
                 content = content
             )
