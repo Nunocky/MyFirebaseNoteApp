@@ -2,12 +2,12 @@ package org.nunocky.myfirebasetextapp.ui.screens.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.firebase.auth.FirebaseUser
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import org.nunocky.myfirebasetextapp.BuildConfig
+import org.nunocky.myfirebasetextapp.data.SignInUIState
 import org.nunocky.myfirebasetextapp.domain.GoogleSignInUseCase
 import javax.inject.Inject
 
@@ -20,20 +20,13 @@ import javax.inject.Inject
 class GoogleSignInViewModel @Inject constructor(
     private val googleSignInUseCase: GoogleSignInUseCase
 ) : ViewModel() {
-    sealed class SignInUIState {
-        data object Initial : SignInUIState()
-        data object Processing : SignInUIState()
-        class Success(val user: FirebaseUser) : SignInUIState()
-        class Failed(e: Exception) : SignInUIState()
-    }
 
     private val _signInUIState = MutableStateFlow<SignInUIState>(SignInUIState.Initial)
     val signInUIState = _signInUIState.asStateFlow()
 
-    fun signIn() {
-        viewModelScope.launch {
+    fun signIn(googleClientId: String) {
+        viewModelScope.launch(Dispatchers.IO) {
             _signInUIState.value = SignInUIState.Processing
-            val googleClientId = BuildConfig.WEB_CLIENT_ID
 
             when (val result = googleSignInUseCase.signIn(googleClientId)) {
                 is GoogleSignInUseCase.SignInResult.Success -> {

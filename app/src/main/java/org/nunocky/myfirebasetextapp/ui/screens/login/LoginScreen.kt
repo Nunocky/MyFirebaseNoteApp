@@ -13,14 +13,16 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import com.google.firebase.auth.FirebaseUser
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import org.nunocky.myfirebasetextapp.BuildConfig
+import org.nunocky.myfirebasetextapp.data.SignInUIState
+import org.nunocky.myfirebasetextapp.ui.theme.MyFirebaseTextAppTheme
 import org.nunocky.myfirebasetextapp.ui.theme.Typography
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -31,15 +33,45 @@ fun LoginScreen(
     onLoginCancelled: () -> Unit,
     googleSignInViewModel: GoogleSignInViewModel
 ) {
-
-    val loginUIState: GoogleSignInViewModel.SignInUIState by googleSignInViewModel.signInUIState.collectAsState()
-
-    val scope = rememberCoroutineScope()
-
     // スワイプバックや戻るボタンで onLoginCancelled を実行
     BackHandler {
         onLoginCancelled()
     }
+
+    val loginUIState: SignInUIState by googleSignInViewModel.signInUIState.collectAsState()
+
+    LaunchedEffect(key1 = loginUIState) {
+        when (loginUIState) {
+            is SignInUIState.Success -> {
+                onLoginSuccess((loginUIState as SignInUIState.Success).user)
+            }
+
+            is SignInUIState.Failed -> {
+                // 必要に応じてエラー処理
+            }
+
+            else -> { /* 何もしない */
+            }
+        }
+    }
+
+    LoginScreenInternal(
+        onLoginRequest = {
+            val googleClientId = BuildConfig.WEB_CLIENT_ID
+            googleSignInViewModel.signIn(googleClientId)
+        },
+        onLoginCancelled = onLoginCancelled,
+        loginUIState = loginUIState
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun LoginScreenInternal(
+    onLoginRequest: () -> Unit,
+    onLoginCancelled: () -> Unit,
+    loginUIState: SignInUIState
+) {
 
     Scaffold(
         topBar = {
@@ -57,14 +89,12 @@ fun LoginScreen(
             )
         },
     ) { innerPadding ->
-        val buttonEnabled = loginUIState !is GoogleSignInViewModel.SignInUIState.Processing
+        val buttonEnabled = loginUIState !is SignInUIState.Processing
 
         Column(modifier = Modifier.padding(innerPadding)) {
             Button(
                 onClick = {
-                    scope.launch(Dispatchers.IO) {
-                        googleSignInViewModel.signIn()
-                    }
+                    onLoginRequest()
                 },
                 enabled = buttonEnabled
             ) {
@@ -72,23 +102,33 @@ fun LoginScreen(
             }
 
             when (loginUIState) {
-                is GoogleSignInViewModel.SignInUIState.Initial -> {
+                is SignInUIState.Initial -> {
                 }
 
-                is GoogleSignInViewModel.SignInUIState.Processing -> {
+                is SignInUIState.Processing -> {
                     Text("Processing...")
                 }
 
-                is GoogleSignInViewModel.SignInUIState.Success -> {
-                    Text("Login successful: ${(loginUIState as GoogleSignInViewModel.SignInUIState.Success).user.displayName}")
-                    onLoginSuccess((loginUIState as GoogleSignInViewModel.SignInUIState.Success).user)
+                is SignInUIState.Success -> {
+                    Text("Login successful: ${loginUIState.user.displayName}")
                 }
 
-                is GoogleSignInViewModel.SignInUIState.Failed -> {
-                    Text("Login failed: ${(loginUIState as GoogleSignInViewModel.SignInUIState.Failed)}")
-                    // TODO show toast
+                is SignInUIState.Failed -> {
+                    Text("Login failed: $loginUIState")
                 }
             }
         }
+    }
+}
+
+@Preview
+@Composable
+fun LoginScreenPreview() {
+    MyFirebaseTextAppTheme {
+        LoginScreenInternal(
+            onLoginRequest = {},
+            onLoginCancelled = {},
+            loginUIState = SignInUIState.Initial
+        )
     }
 }
