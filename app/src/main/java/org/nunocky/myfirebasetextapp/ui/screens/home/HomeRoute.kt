@@ -34,7 +34,8 @@ fun HomeRoute(
     navHostController: NavHostController,
     viewModel: HomeViewModel,
     onLoginNeeded: () -> Unit = {},
-    onCreateNewItem: () -> Unit = {}
+    onCreateNewItem: () -> Unit = {},
+    onRequestEditItem: (itemId: String) -> Unit = { _ -> } // 編集画面に遷移するためのコールバック
 ) {
     val uiState: GetNoteListUiState by viewModel.uiState.collectAsState()
 
@@ -63,6 +64,9 @@ fun HomeRoute(
         itemList = itemList,
         onNewItemButtonClicked = {
             onCreateNewItem()
+        },
+        onItemClicked = { itemId ->
+            onRequestEditItem(itemId)
         }
     )
 }

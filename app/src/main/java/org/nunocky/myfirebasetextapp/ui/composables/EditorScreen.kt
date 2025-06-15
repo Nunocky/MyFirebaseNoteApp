@@ -15,10 +15,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -27,21 +23,22 @@ import org.nunocky.myfirebasetextapp.ui.theme.Typography
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EditorScreen(
-    initialTitle: String = "",
-    initialContent: String = "",
+    screenTitle: String = "",
+    title: String = "",
+    content: String = "",
     onSaveRequested: (
         title: String,
         content: String,
-    ) -> Unit = { _, _ -> }
+    ) -> Unit = { _, _ -> },
+    onTitleChange: (String) -> Unit = { _ -> },
+    onContentChange: (String) -> Unit = { _ -> },
 ) {
-    var title by remember { mutableStateOf(initialTitle) }
-    var content by remember { mutableStateOf(initialContent) }
     val scrollState = rememberScrollState()
 
     Scaffold(
         topBar = {
             TopAppBar(title = {
-                Text("Create New Item", style = Typography.titleLarge)
+                Text(screenTitle, style = Typography.titleLarge)
             }, actions = {
                 IconButton(onClick = {
                     onSaveRequested(title, content)
@@ -59,7 +56,7 @@ fun EditorScreen(
         ) {
             OutlinedTextField(
                 value = title,
-                onValueChange = { title = it },
+                onValueChange = { onTitleChange(it) },
                 label = { Text("Title") },
                 modifier = Modifier.Companion
                     .padding(16.dp)
@@ -67,7 +64,7 @@ fun EditorScreen(
             )
             OutlinedTextField(
                 value = content,
-                onValueChange = { content = it },
+                onValueChange = { onContentChange(it) },
                 label = { Text("Content") },
                 modifier = Modifier.Companion
                     .padding(16.dp)

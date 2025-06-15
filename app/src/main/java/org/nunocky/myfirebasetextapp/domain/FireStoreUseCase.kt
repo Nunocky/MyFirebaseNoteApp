@@ -126,7 +126,39 @@ class FireStoreUseCase @Inject constructor() : CloudStorageUseCase {
         onSuccess: (String, String) -> Unit,
         onError: (Throwable) -> Unit
     ) {
-        TODO("Not yet implemented")
+        // itemIdを指定してデータを取得する
+        val db = FirebaseFirestore.getInstance()
+
+        // 現在サインインしているユーザーを取得
+        val user = FirebaseAuth.getInstance().currentUser
+
+        if (user == null) {
+            // ユーザーがサインインしていない場合はエラーを返す
+            onError(Exception("ユーザーがサインインしていません。"))
+            return
+        }
+
+        val userId = user.uid // ユーザーのUIDを取得
+
+        db.collection("users").document(userId).collection("notes")
+            .document(itemId) // itemIdを指定してドキュメントを取得
+            .get() // get()を使うと、ドキュメントのデータを取得
+            .addOnSuccessListener { document ->
+                if (document.exists()) {
+                    // ドキュメントが存在する場合
+                    val title = document.getString("title") ?: "タイトルなし"
+                    val content = document.getString("content") ?: "内容なし"
+                    onSuccess(title, content)
+                } else {
+                    // ドキュメントが存在しない場合
+                    onError(Exception("指定されたメモは存在しません。"))
+                }
+            }
+            .addOnFailureListener { e ->
+                // 取得失敗...
+                println("メモの取得に失敗しました: $e")
+                onError(e)
+            }
     }
 
     override fun updateItem(

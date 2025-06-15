@@ -7,9 +7,12 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
 import kotlinx.serialization.Serializable
 import org.nunocky.myfirebasetextapp.ui.screens.create.NewItemRoute
 import org.nunocky.myfirebasetextapp.ui.screens.create.NewItemViewModel
+import org.nunocky.myfirebasetextapp.ui.screens.edit.EditItemRoute
+import org.nunocky.myfirebasetextapp.ui.screens.edit.EditItemViewModel
 import org.nunocky.myfirebasetextapp.ui.screens.home.HomeRoute
 import org.nunocky.myfirebasetextapp.ui.screens.home.HomeViewModel
 import org.nunocky.myfirebasetextapp.ui.screens.login.LoginRoute
@@ -23,6 +26,11 @@ object Login
 
 @Serializable
 object NewItem
+
+@Serializable
+data class EditItem(
+    var itemId: String
+)
 
 @Composable
 fun AppRouting() {
@@ -38,7 +46,10 @@ fun AppRouting() {
                 navHostController,
                 viewModel = hiltViewModel<HomeViewModel>(),
                 onLoginNeeded = { navHostController.navigate(Login) },
-                onCreateNewItem = { navHostController.navigate(NewItem) }
+                onCreateNewItem = { navHostController.navigate(NewItem) },
+                onRequestEditItem = { itemId ->
+                    navHostController.navigate(EditItem(itemId = itemId))
+                }
             )
         }
         composable<Login> { _ ->
@@ -58,6 +69,16 @@ fun AppRouting() {
             NewItemRoute(
                 navHostController = navHostController,
                 viewModel = hiltViewModel<NewItemViewModel>(),
+                onSaveSuccess = { navHostController.popBackStack() },
+                onEditCancelled = { navHostController.popBackStack() },
+            )
+        }
+        composable<EditItem> { backStackEntry ->
+            val args: EditItem = backStackEntry.toRoute()
+            EditItemRoute(
+                navHostController = navHostController,
+                viewModel = hiltViewModel<EditItemViewModel>(),
+                itemId = args.itemId,
                 onSaveSuccess = { navHostController.popBackStack() },
                 onEditCancelled = { navHostController.popBackStack() },
             )
