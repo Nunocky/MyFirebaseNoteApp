@@ -8,9 +8,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import kotlinx.serialization.Serializable
-import org.nunocky.myfirebasetextapp.ui.screens.home.HomeScreen
+import org.nunocky.myfirebasetextapp.ui.screens.home.HomeRoute
 import org.nunocky.myfirebasetextapp.ui.screens.login.GoogleSignInViewModel
-import org.nunocky.myfirebasetextapp.ui.screens.login.LoginScreen
+import org.nunocky.myfirebasetextapp.ui.screens.login.LoginRoute
 
 @Serializable
 object Home
@@ -27,7 +27,7 @@ fun AppRouting() {
         startDestination = Home
     ) {
         composable<Home> { _ ->
-            HomeScreen(
+            HomeRoute(
                 navHostController,
                 onLoginNeeded = { navHostController.navigate(Login) }
             )
@@ -36,7 +36,7 @@ fun AppRouting() {
             val viewModel = hiltViewModel<GoogleSignInViewModel>()
             val context = LocalContext.current
 
-            LoginScreen(
+            LoginRoute(
                 navHostController,
                 onLoginSuccess = { _ ->
                     navHostController.popBackStack()

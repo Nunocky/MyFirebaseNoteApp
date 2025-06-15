@@ -12,26 +12,44 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import org.nunocky.myfirebasetextapp.ui.theme.MyFirebaseTextAppTheme
 import org.nunocky.myfirebasetextapp.ui.theme.Typography
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(
+fun HomeRoute(
     navHostController: NavHostController,
     onLoginNeeded: () -> Unit = {}
 ) {
-    val auth = Firebase.auth
     LaunchedEffect(key1 = Unit) {
+        val auth = Firebase.auth
+
         if (auth.currentUser == null) {
             onLoginNeeded()
             return@LaunchedEffect
         }
     }
 
-    if (auth.currentUser != null) {
+    HomeScreen(
+        user = Firebase.auth.currentUser,
+        onNewItemButtonClicked = {
+            // Handle new item button click
+            // For example, navigate to a new screen or show a dialog
+        }
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun HomeScreen(
+    user: FirebaseUser? = null,
+    onNewItemButtonClicked: () -> Unit = {}
+) {
+    if (user != null) {
         Scaffold(
             topBar = {
                 TopAppBar(
@@ -41,12 +59,13 @@ fun HomeScreen(
                 )
             },
             floatingActionButton = {
-                FloatingActionButton(onClick = {}) {
+                FloatingActionButton(onClick = {
+                    onNewItemButtonClicked()
+                }) {
                     Icons.Default.Add
                 }
             }
         ) { innerPadding ->
-            val user = Firebase.auth.currentUser!!
             Column(modifier = Modifier.padding(innerPadding)) {
                 Text(user.displayName.toString())
             }
@@ -54,3 +73,10 @@ fun HomeScreen(
     }
 }
 
+@Preview(showBackground = true, widthDp = 1080, heightDp = 1920)
+@Composable
+fun HomeScreenPreview() {
+    MyFirebaseTextAppTheme {
+        HomeScreen()
+    }
+}

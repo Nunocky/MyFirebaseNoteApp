@@ -54,6 +54,7 @@ googleid = { group = "com.google.android.libraries.identity.googleid", name = "g
 play-services-auth = { module = "com.google.android.gms:play-services-auth", version.ref = "playServiceAuth" }
 androidx-credentials = { module = "androidx.credentials:credentials", version.ref = "credentials" }
 androidx-credentials-play-services-auth = { module = "androidx.credentials:credentials-play-services-auth", version.ref = "credentials" }
+firebase-firestore-ktx = { module = "com.google.firebase:firebase-firestore-ktx" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
