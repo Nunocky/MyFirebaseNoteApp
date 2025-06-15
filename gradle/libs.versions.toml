@@ -1,17 +1,14 @@
 [versions]
 agp = "8.10.1"
 kotlin = "2.1.21"
+ksp = "2.1.21-2.0.2"
 coreKtx = "1.16.0"
-junit = "4.13.2"
-junitVersion = "1.2.1"
-espressoCore = "3.6.1"
 lifecycleRuntimeKtx = "2.9.1"
 activityCompose = "1.10.1"
 composeBom = "2025.06.00"
 
 serialization = "2.1.10"
 kotlinxSerialization = "1.8.0"
-ksp = "2.1.21-2.0.2"
 hiltAndroid = "2.56.2"
 hiltCompiler = "1.2.0"
 hiltNavigationCompose = "1.2.0"
@@ -23,6 +20,14 @@ firebaseAuthKtx = "23.2.1"
 googleid = "1.1.1"
 playServiceAuth = "21.3.0"
 credentials = "1.5.0"
+
+junit = "4.13.2"
+junitVersion = "1.2.1"
+espressoCore = "3.6.1"
+kotlinxCoroutinesTest = "1.8.1"
+mockitoCore = "5.4.0"
+mockitoKotlin = "5.0.0"
+turbine = "1.0.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -55,6 +60,11 @@ play-services-auth = { module = "com.google.android.gms:play-services-auth", ver
 androidx-credentials = { module = "androidx.credentials:credentials", version.ref = "credentials" }
 androidx-credentials-play-services-auth = { module = "androidx.credentials:credentials-play-services-auth", version.ref = "credentials" }
 firebase-firestore-ktx = { module = "com.google.firebase:firebase-firestore-ktx" }
+
+kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinxCoroutinesTest" }
+turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
+mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockitoCore" }
+mockito-kotlin = { module = "org.mockito.kotlin:mockito-kotlin", version.ref = "mockitoKotlin" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
