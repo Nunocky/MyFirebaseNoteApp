@@ -10,6 +10,7 @@ composeBom = "2025.06.00"
 serialization = "2.1.10"
 kotlinxSerialization = "1.8.0"
 hiltAndroid = "2.56.2"
+#hiltAndroidTesting = "2.56.2"
 hiltCompiler = "1.2.0"
 hiltNavigationCompose = "1.2.0"
 navigationCompose = "2.9.0"
@@ -22,12 +23,14 @@ playServiceAuth = "21.3.0"
 credentials = "1.5.0"
 
 junit = "4.13.2"
-junitVersion = "1.2.1"
-espressoCore = "3.6.1"
+junitVersion = "1.1.5" # uiTestJunit4Androidの制約のため
+#espressoCore = "3.6.1"
+espressoCore = "3.5.0"
 kotlinxCoroutinesTest = "1.8.1"
 mockitoCore = "5.4.0"
 mockitoKotlin = "5.0.0"
 turbine = "1.0.0"
+uiTestJunit4Android = "1.8.2"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -47,7 +50,8 @@ androidx-material3 = { group = "androidx.compose.material3", name = "material3" 
 
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerialization" }
 dagger-hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltAndroid" }
-dagger-hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hiltAndroid" }
+dagger-hilt-android-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hiltAndroid" }
+dagger-hilt-android-testing = { group = "com.google.dagger", name = "hilt-android-testing", version.ref = "hiltAndroid" }
 androidx-hilt-compiler = { module = "androidx.hilt:hilt-compiler", version.ref = "hiltCompiler" }
 androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
@@ -65,6 +69,7 @@ kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-t
 turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
 mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockitoCore" }
 mockito-kotlin = { module = "org.mockito.kotlin:mockito-kotlin", version.ref = "mockitoKotlin" }
+androidx-ui-test-junit4-android = { group = "androidx.compose.ui", name = "ui-test-junit4-android", version.ref = "uiTestJunit4Android" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

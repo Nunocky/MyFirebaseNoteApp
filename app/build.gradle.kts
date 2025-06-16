@@ -25,7 +25,8 @@ android {
             project.properties["WEB_CLIENT_ID"] as String
         )
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+//        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "org.nunocky.myfirebasetextapp.CustomTestRunner"
     }
 
     buildTypes {
@@ -53,6 +54,7 @@ android {
 dependencies {
     implementation(libs.dagger.hilt.android)
     implementation(libs.googleid)
+    implementation(libs.androidx.ui.test.junit4.android)
     ksp(libs.dagger.hilt.android.compiler)
     ksp(libs.androidx.hilt.compiler)
     implementation(libs.androidx.hilt.navigation.compose)
@@ -82,6 +84,8 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
+    androidTestImplementation(libs.dagger.hilt.android.testing)
+    kspAndroidTest(libs.dagger.hilt.android.compiler)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
     testImplementation(libs.mockito.core)
