@@ -3,11 +3,8 @@ package org.nunocky.myfirebasetextapp.data
 import com.google.firebase.auth.FirebaseUser
 import junit.framework.TestCase
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.junit.runners.JUnit4
 import org.mockito.Mockito
 
-@RunWith(JUnit4::class)
 class SignInUIStateTest {
     @Test
     fun testSuccess() {

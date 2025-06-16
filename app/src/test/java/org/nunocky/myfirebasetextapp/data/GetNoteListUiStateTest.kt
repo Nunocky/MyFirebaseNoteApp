@@ -3,10 +3,6 @@ package org.nunocky.myfirebasetextapp.data
 import junit.framework.TestCase.assertEquals
 import org.junit.Test
 
-import org.junit.runner.RunWith
-import org.junit.runners.JUnit4
-
-@RunWith(JUnit4::class)
 class GetNoteListUiStateTest {
     @Test
     fun testSuccess() {

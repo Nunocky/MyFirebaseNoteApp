@@ -27,7 +27,7 @@
 ### Navigation テスト
 
 - `AppRouting` - 画面遷移のテスト
-- Deep linkの動作確認
+- ~~Deep linkの動作確認~~
 
 ### Compose UI テスト
 
