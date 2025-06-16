@@ -9,12 +9,14 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.nunocky.myfirebasetextapp.data.GetNoteListUiState
+import org.nunocky.myfirebasetextapp.domain.Authentication
 import org.nunocky.myfirebasetextapp.domain.CloudStorageUseCase
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val cloudStorageUseCase: CloudStorageUseCase
+    private val cloudStorageUseCase: CloudStorageUseCase,
+    val authentication: Authentication,
 ) : ViewModel() {
     private val _uiState = MutableStateFlow<GetNoteListUiState>(GetNoteListUiState.Initial)
     val uiState = _uiState.asStateFlow()

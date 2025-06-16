@@ -1,7 +1,6 @@
 package org.nunocky.myfirebasetextapp.ui.screens.login
 
 import app.cash.turbine.test
-import com.google.firebase.auth.FirebaseUser
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -17,10 +16,11 @@ import org.mockito.MockitoAnnotations
 import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
+import org.nunocky.myfirebasetextapp.data.SignInResult
 import org.nunocky.myfirebasetextapp.data.SignInUIState
+import org.nunocky.myfirebasetextapp.data.User
 import org.nunocky.myfirebasetextapp.domain.CloudStorageUseCase
 import org.nunocky.myfirebasetextapp.domain.GoogleSignInUseCase
-import org.nunocky.myfirebasetextapp.domain.GoogleSignInUseCase.SignInResult
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class LoginViewModelTest {
@@ -54,7 +54,7 @@ class LoginViewModelTest {
 
     @Test
     fun `sign in with Google should emit Processing state before sign in`() = runTest {
-        val user = mock<FirebaseUser>()
+        val user = mock<User>()
 
         whenever(googleSignInUseCase.signIn(any())).thenReturn(
             SignInResult.Success(user)

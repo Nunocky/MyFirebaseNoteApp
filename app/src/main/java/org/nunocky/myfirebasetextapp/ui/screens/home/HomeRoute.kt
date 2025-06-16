@@ -22,10 +22,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 import org.nunocky.myfirebasetextapp.data.GetNoteListUiState
+import org.nunocky.myfirebasetextapp.data.User
 import org.nunocky.myfirebasetextapp.ui.theme.MyFirebaseTextAppTheme
 import org.nunocky.myfirebasetextapp.ui.theme.Typography
 
@@ -47,9 +45,7 @@ fun HomeRoute(
 
     LaunchedEffect(key1 = Unit) {
         // 未ログインならログイン画面に遷移する
-        val auth = Firebase.auth
-
-        if (auth.currentUser == null) {
+        if (viewModel.authentication.currentUser() == null) {
             onLoginNeeded()
             return@LaunchedEffect
         }
@@ -60,7 +56,7 @@ fun HomeRoute(
     }
 
     HomeScreen(
-        user = Firebase.auth.currentUser,
+        user = viewModel.authentication.currentUser(),
         itemList = itemList,
         onNewItemButtonClicked = {
             onCreateNewItem()
@@ -74,7 +70,7 @@ fun HomeRoute(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
-    user: FirebaseUser? = null,
+    user: User? = null,
     itemList: List<Pair<String, String>> = emptyList(),
     onNewItemButtonClicked: () -> Unit = {},
     onItemClicked: (itemId: String) -> Unit = { _ -> },
