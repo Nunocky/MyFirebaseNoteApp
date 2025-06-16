@@ -2,7 +2,9 @@ package org.nunocky.myfirebasetextapp
 
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -18,13 +20,20 @@ import org.nunocky.myfirebasetextapp.domain.Authentication
 
 class FakeAuthentication : Authentication {
     private var user: User? = null
-    
+
     fun setCurrentUser(user: User?) {
         this.user = user
     }
-    
+
     override fun currentUser(): User? = user
 }
+
+private val testUser = User(
+    uid = "testUserId",
+    displayName = "Test User",
+    email = "test@example.com",
+    photoUrl = "https://example.com/photo.jpg"
+)
 
 @HiltAndroidTest
 @UninstallModules(AuthenticationModule::class)
@@ -46,14 +55,8 @@ class AppRoutingTest {
 
     @Test
     fun `ログイン状態だと起動直後はHome画面`() {
-        (fakeAuth as FakeAuthentication).setCurrentUser(
-            User(
-                uid = "testUserId",
-                displayName = "Test User",
-                email = "test@example.com",
-                photoUrl = "https://example.com/photo.jpg"
-            )
-        )
+        (fakeAuth as FakeAuthentication).setCurrentUser(testUser)
+
         composeTestRule.setContent {
             AppRouting()
         }
@@ -74,18 +77,20 @@ class AppRoutingTest {
         composeTestRule.onNodeWithText("Login").assertIsDisplayed()
     }
 
-//    @Test
-//    fun `Navigation from Home to Login`() {
-//        // From the Home screen, trigger the onLoginNeeded callback and verify that the Login screen is displayed.
-//        // TODO implement test
-//    }
-//
-//    @Test
-//    fun `Navigation from Home to NewItem`() {
-//        // From the Home screen, trigger the onCreateNewItem callback and verify that the NewItem screen is displayed.
-//        // TODO implement test
-//    }
-//
+    @Test
+    fun `Navigation_from_Home_to_NewItem`() {
+        // ログイン状態である
+        (fakeAuth as FakeAuthentication).setCurrentUser(testUser)
+
+        composeTestRule.setContent {
+            AppRouting()
+        }
+
+        // FABをクリックしてNewItem画面に遷移することを確認する
+        composeTestRule.onNodeWithTag("FAB").performClick()
+        composeTestRule.onNodeWithText("Create New Item").assertIsDisplayed()
+    }
+
 //    @Test
 //    fun `Navigation from Home to EditItem`() {
 //        // From the Home screen, trigger the onRequestEditItem callback with a valid itemId and verify that the EditItem screen is displayed with the correct itemId.
