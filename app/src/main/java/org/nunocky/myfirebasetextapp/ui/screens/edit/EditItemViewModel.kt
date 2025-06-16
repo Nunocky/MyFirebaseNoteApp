@@ -46,32 +46,33 @@ class EditItemViewModel @Inject constructor(
 
     fun updateItem(itemId: String, title: String, content: String) {
         viewModelScope.launch {
-            try {
-                _itemSaveUiState.update { ItemSaveUIState.Processing }
-
-                cloudStorageUseCase.updateItem(
-                    itemId = itemId,
-                    title = title,
-                    content = content,
-                )
-                _itemSaveUiState.update { ItemSaveUIState.Success(itemId) }
-            } catch (e: Exception) {
-                _itemSaveUiState.update { ItemSaveUIState.Error(e) }
+            _itemSaveUiState.update { ItemSaveUIState.Processing }
+            withContext(Dispatchers.IO) {
+                try {
+                    cloudStorageUseCase.updateItem(
+                        itemId = itemId,
+                        title = title,
+                        content = content,
+                    )
+                    _itemSaveUiState.update { ItemSaveUIState.Success(itemId) }
+                } catch (e: Exception) {
+                    _itemSaveUiState.update { ItemSaveUIState.Error(e) }
+                }
             }
         }
     }
 
     fun deleteItem(itemId: String) {
         viewModelScope.launch {
-            _itemDeleteUiState.update { ItemDeleteUIState.Success }
+            _itemDeleteUiState.update { ItemDeleteUIState.Processing }
 
-            try {
-                withContext(Dispatchers.IO) {
+            withContext(Dispatchers.IO) {
+                try {
                     cloudStorageUseCase.deleteItem(itemId)
                     _itemDeleteUiState.update { ItemDeleteUIState.Success }
+                } catch (e: Exception) {
+                    _itemDeleteUiState.update { ItemDeleteUIState.Error(e) }
                 }
-            } catch (e: Exception) {
-                _itemDeleteUiState.update { ItemDeleteUIState.Error(e) }
             }
         }
     }
