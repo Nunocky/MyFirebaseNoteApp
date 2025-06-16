@@ -4,14 +4,30 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import dagger.hilt.android.testing.UninstallModules
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.nunocky.myfirebasetextapp.data.User
+import org.nunocky.myfirebasetextapp.di.AuthenticationModule
+import org.nunocky.myfirebasetextapp.domain.Authentication
+
+class FakeAuthentication : Authentication {
+    private var user: User? = null
+    
+    fun setCurrentUser(user: User?) {
+        this.user = user
+    }
+    
+    override fun currentUser(): User? = user
+}
 
 @HiltAndroidTest
+@UninstallModules(AuthenticationModule::class)
 @RunWith(AndroidJUnit4::class)
 class AppRoutingTest {
     @get:Rule(order = 0)
@@ -20,17 +36,40 @@ class AppRoutingTest {
     @get:Rule(order = 1)
     val composeTestRule = createAndroidComposeRule<HiltTestActivity>()
 
+    @BindValue
+    val fakeAuth: Authentication = FakeAuthentication()
+
     @Before
     fun setUp() {
-        // Hiltの依存性注入を初期化
         hiltRule.inject()
     }
 
     @Test
-    fun testInitialScreenVerification() {
+    fun `ログイン状態だと起動直後はHome画面`() {
+        (fakeAuth as FakeAuthentication).setCurrentUser(
+            User(
+                uid = "testUserId",
+                displayName = "Test User",
+                email = "test@example.com",
+                photoUrl = "https://example.com/photo.jpg"
+            )
+        )
         composeTestRule.setContent {
             AppRouting()
         }
+
+        // "Notes"というタイトルが表示されていることを確認
+        composeTestRule.onNodeWithText("Notes").assertIsDisplayed()
+    }
+
+    @Test
+    fun `未ログイン状態だと起動直後はLogin画面`() {
+        (fakeAuth as FakeAuthentication).setCurrentUser(null)
+
+        composeTestRule.setContent {
+            AppRouting()
+        }
+
         // "Login"というタイトルが表示されていることを確認
         composeTestRule.onNodeWithText("Login").assertIsDisplayed()
     }

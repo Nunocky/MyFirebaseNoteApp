@@ -24,13 +24,14 @@ credentials = "1.5.0"
 
 junit = "4.13.2"
 junitVersion = "1.1.5" # uiTestJunit4Androidの制約のため
+uiTestJunit4Android = "1.8.2"
 #espressoCore = "3.6.1"
 espressoCore = "3.5.0"
 kotlinxCoroutinesTest = "1.8.1"
 mockitoCore = "5.4.0"
 mockitoKotlin = "5.0.0"
+mockitoAndroid = "5.2.0"
 turbine = "1.0.0"
-uiTestJunit4Android = "1.8.2"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -69,6 +70,7 @@ kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-t
 turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
 mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockitoCore" }
 mockito-kotlin = { module = "org.mockito.kotlin:mockito-kotlin", version.ref = "mockitoKotlin" }
+mockito-android = { module = "org.mockito:mockito-android", version.ref = "mockitoAndroid" }
 androidx-ui-test-junit4-android = { group = "androidx.compose.ui", name = "ui-test-junit4-android", version.ref = "uiTestJunit4Android" }
 
 [plugins]
