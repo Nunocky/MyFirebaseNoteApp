@@ -9,7 +9,7 @@
 - [x] `HomeViewModel` - ノート一覧の取得、削除処理のテスト
 - [x] `NewItemViewModel` - ノート作成のテスト
 - [x] `EditItemViewModel` - ノート編集のテスト
-- `LoginViewModel` - ログイン状態管理のテスト
+- [x] `LoginViewModel` - ログイン状態管理のテスト
 
 ### Use Caseテスト
 

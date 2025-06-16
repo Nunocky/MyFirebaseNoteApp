@@ -7,7 +7,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.nunocky.myfirebasetextapp.data.SignInUIState
 import org.nunocky.myfirebasetextapp.domain.CloudStorageUseCase
 import org.nunocky.myfirebasetextapp.domain.GoogleSignInUseCase
@@ -28,16 +30,19 @@ class LoginViewModel @Inject constructor(
     val signInUIState = _signInUIState.asStateFlow()
 
     fun signInWithGoogle(googleClientId: String) {
-        viewModelScope.launch(Dispatchers.IO) {
-            _signInUIState.value = SignInUIState.Processing
+        viewModelScope.launch {
+            _signInUIState.update { SignInUIState.Processing }
 
-            when (val result = googleSignInUseCase.signIn(googleClientId)) {
-                is GoogleSignInUseCase.SignInResult.Success -> {
-                    _signInUIState.value = SignInUIState.Success(result.user)
-                }
+            withContext(Dispatchers.IO) {
+                val result = googleSignInUseCase.signIn(googleClientId)
+                when (result) {
+                    is GoogleSignInUseCase.SignInResult.Success -> {
+                        _signInUIState.update { SignInUIState.Success(result.user) }
+                    }
 
-                is GoogleSignInUseCase.SignInResult.Failed -> {
-                    _signInUIState.value = SignInUIState.Failed(result.exception)
+                    is GoogleSignInUseCase.SignInResult.Failed -> {
+                        _signInUIState.update { SignInUIState.Failed(result.exception) }
+                    }
                 }
             }
         }
