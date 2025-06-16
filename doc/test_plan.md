@@ -14,12 +14,13 @@
 ### Use Caseテスト
 
 - `FireStoreUseCase` - Firestore操作のmockテスト
-- `GoogleSignInUseCase` - サインイン処理のmockテスト
-- `CloudStorageUseCase` - ストレージ操作のmockテスト
+- [x] `GoogleSignInUseCase` - サインイン処理のmockテスト (interfaceなので必要なし)
+- [x] `CloudStorageUseCase` - ストレージ操作のmockテスト (interfaceなので必要なし)
 
 ### データクラステスト
 
-- `GetNoteListUiState`、`ItemSaveUIState`などの状態変更テスト
+- [x] `GetNoteListUiState`
+- [x] `ItemSaveUIState`などの状態変更テスト
 
 ## 2. Integration Tests (Android実行)
 

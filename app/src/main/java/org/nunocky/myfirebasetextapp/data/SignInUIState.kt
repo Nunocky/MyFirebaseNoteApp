@@ -7,5 +7,5 @@ sealed class SignInUIState {
     data object Processing : SignInUIState()
     class Success(val user: FirebaseUser) : SignInUIState()
     data object Cancelled : SignInUIState()
-    class Failed(e: Exception) : SignInUIState()
+    class Failed(val e: Exception) : SignInUIState()
 }
