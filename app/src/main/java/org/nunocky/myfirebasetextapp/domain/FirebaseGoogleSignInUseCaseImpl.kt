@@ -9,6 +9,7 @@ import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import kotlinx.coroutines.tasks.await
+import org.nunocky.myfirebasetextapp.data.SignInResult
 import javax.inject.Inject
 
 /**
@@ -32,7 +33,7 @@ class FirebaseGoogleSignInUseCaseImpl @Inject constructor(
             .build()
     }
 
-    override suspend fun signIn(googleClientId: String): GoogleSignInUseCase.SignInResult {
+    override suspend fun signIn(googleClientId: String): SignInResult {
         return try {
             val auth: FirebaseAuth = FirebaseAuth.getInstance()
             val credentialManager = CredentialManager.create(application)
@@ -55,15 +56,15 @@ class FirebaseGoogleSignInUseCaseImpl @Inject constructor(
                 val firebaseUser = authResult.user
 
                 if (firebaseUser != null) {
-                    GoogleSignInUseCase.SignInResult.Success(firebaseUser)
+                    SignInResult.Success(firebaseUser)
                 } else {
-                    GoogleSignInUseCase.SignInResult.Failed(Exception("Firebase user is null"))
+                    SignInResult.Failed(Exception("Firebase user is null"))
                 }
             } else {
-                GoogleSignInUseCase.SignInResult.Failed(Exception("account not found"))
+                SignInResult.Failed(Exception("account not found"))
             }
         } catch (e: Exception) {
-            GoogleSignInUseCase.SignInResult.Failed(e)
+            SignInResult.Failed(e)
         }
     }
 }

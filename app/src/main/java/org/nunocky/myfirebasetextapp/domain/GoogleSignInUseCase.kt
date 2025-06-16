@@ -1,12 +1,7 @@
 package org.nunocky.myfirebasetextapp.domain
 
-import com.google.firebase.auth.FirebaseUser
+import org.nunocky.myfirebasetextapp.data.SignInResult
 
 interface GoogleSignInUseCase {
-    sealed class SignInResult {
-        class Success(val user: FirebaseUser) : SignInResult()
-        class Failed(val exception: Exception) : SignInResult()
-    }
-
     suspend fun signIn(googleClientId: String): SignInResult
 }
