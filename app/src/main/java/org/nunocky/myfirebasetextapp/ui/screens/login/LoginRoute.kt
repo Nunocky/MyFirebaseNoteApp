@@ -19,9 +19,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
-import com.google.firebase.auth.FirebaseUser
 import org.nunocky.myfirebasetextapp.BuildConfig
 import org.nunocky.myfirebasetextapp.data.SignInUIState
+import org.nunocky.myfirebasetextapp.data.User
 import org.nunocky.myfirebasetextapp.ui.theme.MyFirebaseTextAppTheme
 import org.nunocky.myfirebasetextapp.ui.theme.Typography
 
@@ -31,7 +31,7 @@ import org.nunocky.myfirebasetextapp.ui.theme.Typography
 fun LoginRoute(
     navHostController: NavHostController,
     viewModel: LoginViewModel,
-    onLoginSuccess: (user: FirebaseUser) -> Unit,
+    onLoginSuccess: (user: User) -> Unit,
     onLoginCancelled: () -> Unit,
 ) {
     val loginUIState: SignInUIState by viewModel.signInUIState.collectAsState()

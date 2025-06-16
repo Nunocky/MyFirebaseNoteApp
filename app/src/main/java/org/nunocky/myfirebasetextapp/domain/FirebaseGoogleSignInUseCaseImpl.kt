@@ -10,6 +10,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import kotlinx.coroutines.tasks.await
 import org.nunocky.myfirebasetextapp.data.SignInResult
+import org.nunocky.myfirebasetextapp.data.User
 import javax.inject.Inject
 
 /**
@@ -33,7 +34,7 @@ class FirebaseGoogleSignInUseCaseImpl @Inject constructor(
             .build()
     }
 
-    override suspend fun signIn(googleClientId: String): SignInResult {
+    override suspend fun signIn(googleClientId: String): SignInResult<User> {
         return try {
             val auth: FirebaseAuth = FirebaseAuth.getInstance()
             val credentialManager = CredentialManager.create(application)
@@ -56,7 +57,15 @@ class FirebaseGoogleSignInUseCaseImpl @Inject constructor(
                 val firebaseUser = authResult.user
 
                 if (firebaseUser != null) {
-                    SignInResult.Success(firebaseUser)
+//                    SignInResult.Success(firebaseUser)
+                    SignInResult.Success(
+                        User(
+                            uid = firebaseUser.uid,
+                            displayName = firebaseUser.displayName,
+                            email = firebaseUser.email,
+                            photoUrl = firebaseUser.photoUrl?.toString()
+                        )
+                    )
                 } else {
                     SignInResult.Failed(Exception("Firebase user is null"))
                 }

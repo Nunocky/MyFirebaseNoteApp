@@ -2,7 +2,6 @@ package org.nunocky.myfirebasetextapp.ui.screens.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.firebase.auth.FirebaseUser
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -10,7 +9,9 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.nunocky.myfirebasetextapp.data.SignInResult
 import org.nunocky.myfirebasetextapp.data.SignInUIState
+import org.nunocky.myfirebasetextapp.data.User
 import org.nunocky.myfirebasetextapp.domain.CloudStorageUseCase
 import org.nunocky.myfirebasetextapp.domain.GoogleSignInUseCase
 import javax.inject.Inject
@@ -36,11 +37,11 @@ class LoginViewModel @Inject constructor(
             withContext(Dispatchers.IO) {
                 val result = googleSignInUseCase.signIn(googleClientId)
                 when (result) {
-                    is GoogleSignInUseCase.SignInResult.Success -> {
+                    is SignInResult.Success -> {
                         _signInUIState.update { SignInUIState.Success(result.user) }
                     }
 
-                    is GoogleSignInUseCase.SignInResult.Failed -> {
+                    is SignInResult.Failed -> {
                         _signInUIState.update { SignInUIState.Failed(result.exception) }
                     }
                 }
@@ -48,7 +49,7 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    fun registerUser(user: FirebaseUser) {
+    fun registerUser(user: User) {
         viewModelScope.launch(Dispatchers.IO) {
             cloudStorageUseCase.registerUser(user)
         }

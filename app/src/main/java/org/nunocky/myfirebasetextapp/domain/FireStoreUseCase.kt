@@ -2,17 +2,17 @@ package org.nunocky.myfirebasetextapp.domain
 
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import kotlinx.coroutines.tasks.await
+import org.nunocky.myfirebasetextapp.data.User
 import javax.inject.Inject
 
 class FireStoreUseCase @Inject constructor() : CloudStorageUseCase {
     private val db = FirebaseFirestore.getInstance()
     private val auth = FirebaseAuth.getInstance()
 
-    override suspend fun registerUser(user: FirebaseUser) {
+    override suspend fun registerUser(user: User) {
         val userId = user.uid
         val displayName = user.displayName ?: "名無しさん" // 表示名を取得、またはデフォルト値
         val email = user.email ?: "メールアドレスなし" // メールアドレスを取得、またはデフォルト値

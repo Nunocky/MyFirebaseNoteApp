@@ -1,9 +1,9 @@
 package org.nunocky.myfirebasetextapp.domain
 
-import com.google.firebase.auth.FirebaseUser
+import org.nunocky.myfirebasetextapp.data.User
 
 interface CloudStorageUseCase {
-    suspend fun registerUser(user: FirebaseUser)
+    suspend fun registerUser(user: User)
 
     suspend fun getItemList(): List<Pair<String, String>>
 
