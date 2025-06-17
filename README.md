@@ -1,4 +1,4 @@
-# My Firebase Text App
+# My Firebase Note App
 
 Firebaseの勉強
 
