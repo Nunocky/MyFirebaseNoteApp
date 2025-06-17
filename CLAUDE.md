@@ -55,7 +55,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ### Project Structure
 ```
-app/src/main/java/org/nunocky/myfirebasetextapp/
+app/src/main/java/org/nunocky/myfirebasenoteapp/
 ├── MainActivity.kt                 # Entry point with @AndroidEntryPoint
 ├── MyApplication.kt               # Application class with @HiltAndroidApp
 ├── AppRouting.kt                  # Navigation setup with type-safe routes

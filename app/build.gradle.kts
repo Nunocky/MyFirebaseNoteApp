@@ -9,11 +9,11 @@ plugins {
 }
 
 android {
-    namespace = "org.nunocky.myfirebasetextapp"
+    namespace = "org.nunocky.myfirebasenoteapp"
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "org.nunocky.myfirebasetextapp"
+        applicationId = "org.nunocky.myfirebasenoteapp"
         minSdk = 28
         targetSdk = 36
         versionCode = 1
@@ -26,7 +26,7 @@ android {
         )
 
 //        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        testInstrumentationRunner = "org.nunocky.myfirebasetextapp.CustomTestRunner"
+        testInstrumentationRunner = "org.nunocky.myfirebasenoteapp.CustomTestRunner"
     }
 
     buildTypes {

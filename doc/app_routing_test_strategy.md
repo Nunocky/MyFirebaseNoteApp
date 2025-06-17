@@ -6,7 +6,7 @@ AppRouting.ktは、Jetpack Navigation ComposeとKotlin Serializationを使用し
 
 ## 対象コンポーネント
 
-- `AppRouting.kt`（app/src/main/java/org/nunocky/myfirebasetextapp/AppRouting.kt）
+- `AppRouting.kt`（app/src/main/java/org/nunocky/myfirebasenoteapp/AppRouting.kt）
 - ルート定義：`Home`, `Login`, `NewItem`, `EditItem`
 - ナビゲーション制御ロジック
 
@@ -85,13 +85,13 @@ fun `EditItem route should serialize correctly with itemId`() {
 
 ### テストファイル構成
 ```
-app/src/test/java/org/nunocky/myfirebasetextapp/
+app/src/test/java/org/nunocky/myfirebasenoteapp/
 ├── AppRoutingUnitTest.kt          # Unit Tests
 └── navigation/
     ├── AppRoutingIntegrationTest.kt # Integration Tests
     └── NavigationTestUtils.kt       # テストユーティリティ
 
-app/src/androidTest/java/org/nunocky/myfirebasetextapp/
+app/src/androidTest/java/org/nunocky/myfirebasenoteapp/
 └── navigation/
     └── AppRoutingUITest.kt         # UI Tests
 ```

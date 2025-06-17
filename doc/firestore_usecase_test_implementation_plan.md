@@ -7,9 +7,9 @@
 ## 1. 分析結果サマリー
 
 ### プロジェクト構造
-- **テスト対象**: `app/src/main/java/org/nunocky/myfirebasetextapp/domain/FireStoreUseCase.kt`
+- **テスト対象**: `app/src/main/java/org/nunocky/myfirebasenoteapp/domain/FireStoreUseCase.kt`
 - **インターフェース**: `CloudStorageUseCase`
-- **テスト配置**: `app/src/test/java/org/nunocky/myfirebasetextapp/domain/FireStoreUseCaseTest.kt`
+- **テスト配置**: `app/src/test/java/org/nunocky/myfirebasenoteapp/domain/FireStoreUseCaseTest.kt`
 
 ### 既存テスト戦略
 - **フレームワーク**: JUnit 4
@@ -258,7 +258,7 @@ fun `createNewItem - 正常系 - 新しいノートを作成してIDを返す`()
 
 ## 7. 参考資料
 
-- [既存のViewModelテスト実装](../app/src/test/java/org/nunocky/myfirebasetextapp/ui/screens/)
+- [既存のViewModelテスト実装](../app/src/test/java/org/nunocky/myfirebasenoteapp/ui/screens/)
 - [Kotlinx Coroutines Testing Guide](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-test/)
 - [Mockito Documentation](https://javadoc.io/doc/org.mockito/mockito-core/latest/org/mockito/Mockito.html)
 - [Firebase Testing Documentation](https://firebase.google.com/docs/rules/unit-tests)
