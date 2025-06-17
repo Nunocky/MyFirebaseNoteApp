@@ -3,12 +3,8 @@ package org.nunocky.myfirebasenoteapp.ui.screens.login
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -20,10 +16,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import org.nunocky.myfirebasenoteapp.BuildConfig
+import org.nunocky.myfirebasenoteapp.data.UIState
 import org.nunocky.myfirebasenoteapp.data.User
 import org.nunocky.myfirebasenoteapp.ui.theme.Typography
 import org.nunocky.myfirebasenoteapp.ui.theme.myfirebasenoteappTheme
-import org.nunocky.myfirebasenoteapp.data.UIState
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -82,15 +78,6 @@ fun LoginScreen(
         topBar = {
             TopAppBar(
                 title = { Text("Login", style = Typography.titleLarge) },
-                navigationIcon = {
-                    // Add a back button to the top app bar
-                    IconButton(onClick = onLoginCancelled) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back"
-                        )
-                    }
-                }
             )
         },
     ) { innerPadding ->
