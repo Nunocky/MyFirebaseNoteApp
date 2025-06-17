@@ -7,3 +7,5 @@ sealed class ItemDeleteUIState {
     data class Success(val itemId: String) : ItemDeleteUIState()
     data class Error(val e: Throwable) : ItemDeleteUIState()
 }
+
+//sealed class ItemDeleteUIState : UIState<String>()
