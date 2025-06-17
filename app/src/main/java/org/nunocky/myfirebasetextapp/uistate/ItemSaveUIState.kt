@@ -1,5 +1,4 @@
-package org.nunocky.myfirebasetextapp.data
-
+package org.nunocky.myfirebasetextapp.uistate
 
 sealed class ItemSaveUIState {
     object Initial : ItemSaveUIState()

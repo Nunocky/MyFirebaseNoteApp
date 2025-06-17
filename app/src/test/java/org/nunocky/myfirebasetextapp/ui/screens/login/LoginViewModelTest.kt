@@ -17,7 +17,7 @@ import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 import org.nunocky.myfirebasetextapp.data.SignInResult
-import org.nunocky.myfirebasetextapp.data.SignInUIState
+import org.nunocky.myfirebasetextapp.uistate.SignInUIState
 import org.nunocky.myfirebasetextapp.data.User
 import org.nunocky.myfirebasetextapp.domain.CloudStorageUseCase
 import org.nunocky.myfirebasetextapp.domain.GoogleSignInUseCase

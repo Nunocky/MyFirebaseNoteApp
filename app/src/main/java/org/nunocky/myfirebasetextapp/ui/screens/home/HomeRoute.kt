@@ -23,7 +23,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import org.nunocky.myfirebasetextapp.data.GetNoteListUiState
+import org.nunocky.myfirebasetextapp.uistate.GetNoteListUiState
 import org.nunocky.myfirebasetextapp.data.User
 import org.nunocky.myfirebasetextapp.ui.theme.MyFirebaseTextAppTheme
 import org.nunocky.myfirebasetextapp.ui.theme.Typography

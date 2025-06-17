@@ -1,5 +1,4 @@
-package org.nunocky.myfirebasetextapp.data
-
+package org.nunocky.myfirebasetextapp.uistate
 
 sealed class ItemDeleteUIState {
     object Initial : ItemDeleteUIState()
@@ -7,5 +6,3 @@ sealed class ItemDeleteUIState {
     object Success : ItemDeleteUIState()
     data class Error(val e: Throwable) : ItemDeleteUIState()
 }
-
-//sealed class ItemDeleteUIState : UIState<String>()

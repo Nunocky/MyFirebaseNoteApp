@@ -2,6 +2,7 @@ package org.nunocky.myfirebasetextapp.data
 
 import junit.framework.TestCase
 import org.junit.Test
+import org.nunocky.myfirebasetextapp.uistate.ItemDeleteUIState
 
 class ItemDeleteUIStateTest {
     @Test

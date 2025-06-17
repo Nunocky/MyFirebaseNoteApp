@@ -10,9 +10,9 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.nunocky.myfirebasetextapp.data.SignInResult
-import org.nunocky.myfirebasetextapp.data.SignInUIState
-import org.nunocky.myfirebasetextapp.data.SignInUIState.Failed
-import org.nunocky.myfirebasetextapp.data.SignInUIState.Success
+import org.nunocky.myfirebasetextapp.uistate.SignInUIState
+import org.nunocky.myfirebasetextapp.uistate.SignInUIState.Failed
+import org.nunocky.myfirebasetextapp.uistate.SignInUIState.Success
 import org.nunocky.myfirebasetextapp.data.User
 import org.nunocky.myfirebasetextapp.domain.CloudStorageUseCase
 import org.nunocky.myfirebasetextapp.domain.GoogleSignInUseCase

@@ -10,7 +10,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.navigation.NavHostController
 import org.nunocky.myfirebasetextapp.data.EditType
-import org.nunocky.myfirebasetextapp.data.ItemSaveUIState
+import org.nunocky.myfirebasetextapp.uistate.ItemSaveUIState
 import org.nunocky.myfirebasetextapp.ui.composables.EditorScreen
 
 @Composable

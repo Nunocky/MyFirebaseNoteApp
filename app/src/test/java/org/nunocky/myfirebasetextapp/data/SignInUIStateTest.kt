@@ -3,6 +3,7 @@ package org.nunocky.myfirebasetextapp.data
 import junit.framework.TestCase
 import org.junit.Test
 import org.mockito.Mockito
+import org.nunocky.myfirebasetextapp.uistate.SignInUIState
 
 class SignInUIStateTest {
     @Test

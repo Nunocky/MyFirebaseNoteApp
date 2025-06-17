@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import org.nunocky.myfirebasetextapp.data.ItemSaveUIState
+import org.nunocky.myfirebasetextapp.uistate.ItemSaveUIState
 import org.nunocky.myfirebasetextapp.domain.CloudStorageUseCase
 import javax.inject.Inject
 

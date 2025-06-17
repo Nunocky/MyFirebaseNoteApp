@@ -9,9 +9,9 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.nunocky.myfirebasetextapp.data.ItemDeleteUIState
-import org.nunocky.myfirebasetextapp.data.ItemLoadUIState
-import org.nunocky.myfirebasetextapp.data.ItemSaveUIState
+import org.nunocky.myfirebasetextapp.uistate.ItemDeleteUIState
+import org.nunocky.myfirebasetextapp.uistate.ItemLoadUIState
+import org.nunocky.myfirebasetextapp.uistate.ItemSaveUIState
 import org.nunocky.myfirebasetextapp.domain.CloudStorageUseCase
 import javax.inject.Inject
 

@@ -1,4 +1,6 @@
-package org.nunocky.myfirebasetextapp.data
+package org.nunocky.myfirebasetextapp.uistate
+
+import org.nunocky.myfirebasetextapp.data.User
 
 sealed class SignInUIState {
     data object Initial : SignInUIState()

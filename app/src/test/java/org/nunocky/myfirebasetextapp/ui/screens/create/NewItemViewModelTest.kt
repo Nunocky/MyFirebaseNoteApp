@@ -17,7 +17,7 @@ import org.mockito.Mock
 import org.mockito.MockitoAnnotations
 import org.mockito.kotlin.any
 import org.mockito.kotlin.whenever
-import org.nunocky.myfirebasetextapp.data.ItemSaveUIState
+import org.nunocky.myfirebasetextapp.uistate.ItemSaveUIState
 import org.nunocky.myfirebasetextapp.domain.CloudStorageUseCase
 
 @OptIn(ExperimentalCoroutinesApi::class)

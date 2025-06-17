@@ -1,4 +1,4 @@
-package org.nunocky.myfirebasetextapp.data
+package org.nunocky.myfirebasetextapp.uistate
 
 sealed class GetNoteListUiState {
     object Initial : GetNoteListUiState()

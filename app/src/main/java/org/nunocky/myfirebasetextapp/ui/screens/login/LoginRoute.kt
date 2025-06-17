@@ -20,7 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import org.nunocky.myfirebasetextapp.BuildConfig
-import org.nunocky.myfirebasetextapp.data.SignInUIState
+import org.nunocky.myfirebasetextapp.uistate.SignInUIState
 import org.nunocky.myfirebasetextapp.data.User
 import org.nunocky.myfirebasetextapp.ui.theme.MyFirebaseTextAppTheme
 import org.nunocky.myfirebasetextapp.ui.theme.Typography

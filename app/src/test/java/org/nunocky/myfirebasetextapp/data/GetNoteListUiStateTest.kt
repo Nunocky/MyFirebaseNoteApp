@@ -2,6 +2,7 @@ package org.nunocky.myfirebasetextapp.data
 
 import junit.framework.TestCase.assertEquals
 import org.junit.Test
+import org.nunocky.myfirebasetextapp.uistate.GetNoteListUiState
 
 class GetNoteListUiStateTest {
     @Test
