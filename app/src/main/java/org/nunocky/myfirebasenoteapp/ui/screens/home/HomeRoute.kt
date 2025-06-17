@@ -23,10 +23,10 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import org.nunocky.myfirebasenoteapp.data.UIState
 import org.nunocky.myfirebasenoteapp.data.User
 import org.nunocky.myfirebasenoteapp.ui.theme.Typography
 import org.nunocky.myfirebasenoteapp.ui.theme.myfirebasenoteappTheme
-import org.nunocky.myfirebasenoteapp.data.UIState
 
 @Composable
 fun HomeRoute(
@@ -38,11 +38,9 @@ fun HomeRoute(
 ) {
     val uiState: UIState by viewModel.uiState.collectAsState()
 
-    val itemList = if (uiState is UIState.Success<*>) {
-        (uiState as UIState.Success<List<Pair<String, String>>>).data
-    } else {
-        emptyList()
-    }
+    @Suppress("UNCHECKED_CAST")
+    val itemList =
+        (uiState as? UIState.Success<*>)?.data as? List<Pair<String, String>> ?: emptyList()
 
     LaunchedEffect(key1 = Unit) {
         // 未ログインならログイン画面に遷移する

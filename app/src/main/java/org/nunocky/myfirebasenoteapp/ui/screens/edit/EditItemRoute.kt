@@ -32,6 +32,10 @@ fun EditItemRoute(
     var content by remember { mutableStateOf("") }
     var shouldShowDeleteConfirmationDialog by remember { mutableStateOf(false) }
 
+    @Suppress("UNCHECKED_CAST")
+    val item =
+        (itemLoadUiState as? UIState.Success<*>)?.data as? Pair<String, String> ?: Pair("", "")
+
     BackHandler {
         onEditCancelled()
     }
@@ -65,10 +69,8 @@ fun EditItemRoute(
             UIState.Processing -> {}
 
             is UIState.Success<*> -> {
-                val data = (itemLoadUiState as UIState.Success<*>).data as Pair<String, String>?
-                    ?: throw RuntimeException("Unexpected data type")
-                title = data.first
-                content = data.second
+                title = item.first
+                content = item.second
             }
 
             is UIState.Error -> {
