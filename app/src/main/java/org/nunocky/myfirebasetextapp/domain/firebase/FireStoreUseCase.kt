@@ -1,4 +1,4 @@
-package org.nunocky.myfirebasetextapp.domain
+package org.nunocky.myfirebasetextapp.domain.firebase
 
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
@@ -6,6 +6,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import kotlinx.coroutines.tasks.await
 import org.nunocky.myfirebasetextapp.data.User
+import org.nunocky.myfirebasetextapp.domain.CloudStorageUseCase
 import javax.inject.Inject
 
 class FireStoreUseCase @Inject constructor() : CloudStorageUseCase {

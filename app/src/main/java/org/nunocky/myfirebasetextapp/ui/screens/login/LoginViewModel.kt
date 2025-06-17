@@ -10,19 +10,18 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.nunocky.myfirebasetextapp.data.SignInResult
-import org.nunocky.myfirebasetextapp.uistate.SignInUIState
-import org.nunocky.myfirebasetextapp.uistate.SignInUIState.Failed
-import org.nunocky.myfirebasetextapp.uistate.SignInUIState.Success
 import org.nunocky.myfirebasetextapp.data.User
 import org.nunocky.myfirebasetextapp.domain.CloudStorageUseCase
 import org.nunocky.myfirebasetextapp.domain.GoogleSignInUseCase
+import org.nunocky.myfirebasetextapp.uistate.SignInUIState
+import org.nunocky.myfirebasetextapp.uistate.SignInUIState.Failed
+import org.nunocky.myfirebasetextapp.uistate.SignInUIState.Success
 import javax.inject.Inject
 
 /**
  * Google Sign In
  * very thanks to https://qiita.com/kisayama/items/5dc7618b76f6d86a6d55
  */
-
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val googleSignInUseCase: GoogleSignInUseCase,
@@ -53,7 +52,6 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    // TODO move this to cloud storage use case
     fun registerUser(user: User) {
         viewModelScope.launch(Dispatchers.IO) {
             cloudStorageUseCase.registerUser(user)

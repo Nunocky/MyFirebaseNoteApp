@@ -4,7 +4,7 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import org.nunocky.myfirebasetextapp.domain.FirebaseGoogleSignInUseCaseImpl
+import org.nunocky.myfirebasetextapp.domain.firebase.FirebaseGoogleSignInUseCaseImpl
 import org.nunocky.myfirebasetextapp.domain.GoogleSignInUseCase
 
 @Module

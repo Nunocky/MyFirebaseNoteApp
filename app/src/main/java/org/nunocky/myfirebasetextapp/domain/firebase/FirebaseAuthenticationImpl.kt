@@ -1,8 +1,9 @@
-package org.nunocky.myfirebasetextapp.domain
+package org.nunocky.myfirebasetextapp.domain.firebase
 
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import org.nunocky.myfirebasetextapp.data.User
+import org.nunocky.myfirebasetextapp.domain.Authentication
 import javax.inject.Inject
 
 class FirebaseAuthenticationImpl @Inject constructor() : Authentication {

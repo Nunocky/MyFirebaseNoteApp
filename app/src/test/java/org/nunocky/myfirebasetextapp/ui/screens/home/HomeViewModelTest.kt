@@ -16,14 +16,18 @@ import org.junit.Test
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
 import org.mockito.kotlin.whenever
-import org.nunocky.myfirebasetextapp.uistate.GetNoteListUiState
+import org.nunocky.myfirebasetextapp.domain.Authentication
 import org.nunocky.myfirebasetextapp.domain.CloudStorageUseCase
+import org.nunocky.myfirebasetextapp.uistate.GetNoteListUiState
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class HomeViewModelTest {
 
     @Mock
     private lateinit var cloudStorageUseCase: CloudStorageUseCase
+
+    @Mock
+    private lateinit var authentication: Authentication
 
     private lateinit var viewModel: HomeViewModel
     private val testDispatcher = StandardTestDispatcher()
@@ -32,7 +36,7 @@ class HomeViewModelTest {
     fun setUp() {
         MockitoAnnotations.openMocks(this)
         Dispatchers.setMain(testDispatcher)
-        viewModel = HomeViewModel(cloudStorageUseCase)
+        viewModel = HomeViewModel(cloudStorageUseCase, authentication)
     }
 
     @After

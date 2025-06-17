@@ -1,4 +1,4 @@
-package org.nunocky.myfirebasetextapp.domain
+package org.nunocky.myfirebasetextapp.domain.firebase
 
 import android.app.Application
 import androidx.credentials.CredentialManager
@@ -11,6 +11,7 @@ import com.google.firebase.auth.GoogleAuthProvider
 import kotlinx.coroutines.tasks.await
 import org.nunocky.myfirebasetextapp.data.SignInResult
 import org.nunocky.myfirebasetextapp.data.User
+import org.nunocky.myfirebasetextapp.domain.GoogleSignInUseCase
 import javax.inject.Inject
 
 /**
@@ -57,7 +58,6 @@ class FirebaseGoogleSignInUseCaseImpl @Inject constructor(
                 val firebaseUser = authResult.user
 
                 if (firebaseUser != null) {
-//                    SignInResult.Success(firebaseUser)
                     SignInResult.Success(
                         User(
                             uid = firebaseUser.uid,

@@ -1,7 +1,8 @@
-package org.nunocky.myfirebasetextapp.domain
+package org.nunocky.myfirebasetextapp.domain.firebase
 
 import com.google.firebase.auth.FirebaseAuth
 import org.nunocky.myfirebasetextapp.data.SignInResult
+import org.nunocky.myfirebasetextapp.domain.EmailSignInUseCase
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 

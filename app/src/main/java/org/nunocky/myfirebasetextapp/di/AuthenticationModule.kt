@@ -5,7 +5,7 @@ import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import org.nunocky.myfirebasetextapp.domain.Authentication
-import org.nunocky.myfirebasetextapp.domain.FirebaseAuthenticationImpl
+import org.nunocky.myfirebasetextapp.domain.firebase.FirebaseAuthenticationImpl
 
 @Module
 @InstallIn(SingletonComponent::class)
