@@ -13,9 +13,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.navigation.NavHostController
 import org.nunocky.myfirebasenoteapp.data.EditType
-import org.nunocky.myfirebasenoteapp.uistate.ItemDeleteUIState
-import org.nunocky.myfirebasenoteapp.uistate.ItemLoadUIState
-import org.nunocky.myfirebasenoteapp.uistate.ItemSaveUIState
+import org.nunocky.myfirebasenoteapp.data.UIState
 import org.nunocky.myfirebasenoteapp.ui.composables.EditorScreen
 
 @Composable
@@ -26,9 +24,9 @@ fun EditItemRoute(
     onSaveSuccess: () -> Unit = {},
     onEditCancelled: () -> Unit = {},
 ) {
-    val itemLoadUiState: ItemLoadUIState by viewModel.itemLoadUiState.collectAsState()
-    val itemSaveUiState: ItemSaveUIState by viewModel.itemSaveUiState.collectAsState()
-    val itemDeleteUiState: ItemDeleteUIState by viewModel.itemDeleteUiState.collectAsState()
+    val itemLoadUiState: UIState by viewModel.itemLoadUiState.collectAsState()
+    val itemSaveUiState: UIState by viewModel.itemSaveUiState.collectAsState()
+    val itemDeleteUiState: UIState by viewModel.itemDeleteUiState.collectAsState()
 
     var title by remember { mutableStateOf("") }
     var content by remember { mutableStateOf("") }
@@ -44,51 +42,58 @@ fun EditItemRoute(
 
     LaunchedEffect(key1 = itemSaveUiState) {
         when (itemSaveUiState) {
-            is ItemSaveUIState.Initial -> {}
+            is UIState.Initial -> {}
 
-            ItemSaveUIState.Processing -> {}
+            UIState.Processing -> {}
 
-            is ItemSaveUIState.Success -> {
+            is UIState.Success<*> -> {
                 onSaveSuccess()
             }
 
-            is ItemSaveUIState.Error -> {
+            is UIState.Error -> {
                 // Handle error state if needed
             }
+
+            UIState.Cancelled -> {}
         }
     }
 
     LaunchedEffect(key1 = itemLoadUiState) {
         when (itemLoadUiState) {
-            ItemLoadUIState.Initial -> {}
+            UIState.Initial -> {}
 
-            ItemLoadUIState.Processing -> {}
+            UIState.Processing -> {}
 
-            is ItemLoadUIState.Success -> {
-                val data = (itemLoadUiState as ItemLoadUIState.Success).data
+            is UIState.Success<*> -> {
+                val data = (itemLoadUiState as UIState.Success<*>).data as Pair<String, String>?
+                    ?: throw RuntimeException("Unexpected data type")
                 title = data.first
                 content = data.second
             }
 
-            is ItemLoadUIState.Error -> {
+            is UIState.Error -> {
                 // エラー処理が必要ならここで行う
             }
+
+            UIState.Cancelled -> {}
         }
     }
 
     LaunchedEffect(key1 = itemDeleteUiState) {
         when (itemDeleteUiState) {
-            ItemDeleteUIState.Initial -> {}
+            UIState.Initial -> {}
 
-            ItemDeleteUIState.Processing -> {}
+            UIState.Processing -> {}
 
-            is ItemDeleteUIState.Success -> {
+            is UIState.Success<*> -> {
                 onEditCancelled()
             }
 
-            is ItemDeleteUIState.Error -> {
+            is UIState.Error -> {
                 // Handle error state if needed
             }
+
+            UIState.Cancelled -> {}
         }
     }
 

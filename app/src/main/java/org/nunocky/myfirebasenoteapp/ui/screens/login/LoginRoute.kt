@@ -20,10 +20,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import org.nunocky.myfirebasenoteapp.BuildConfig
-import org.nunocky.myfirebasenoteapp.uistate.SignInUIState
 import org.nunocky.myfirebasenoteapp.data.User
-import org.nunocky.myfirebasenoteapp.ui.theme.myfirebasenoteappTheme
 import org.nunocky.myfirebasenoteapp.ui.theme.Typography
+import org.nunocky.myfirebasenoteapp.ui.theme.myfirebasenoteappTheme
+import org.nunocky.myfirebasenoteapp.data.UIState
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -34,7 +34,7 @@ fun LoginRoute(
     onLoginSuccess: (user: User) -> Unit,
     onLoginCancelled: () -> Unit,
 ) {
-    val loginUIState: SignInUIState by viewModel.signInUIState.collectAsState()
+    val loginUIState: UIState by viewModel.signInUIState.collectAsState()
 
     // スワイプバックや戻るボタンで onLoginCancelled を実行
     BackHandler {
@@ -43,14 +43,16 @@ fun LoginRoute(
 
     LaunchedEffect(key1 = loginUIState) {
         when (loginUIState) {
-            is SignInUIState.Success -> {
-                (loginUIState as SignInUIState.Success).user.let {
-                    viewModel.registerUser(it)
-                    onLoginSuccess(it)
-                }
+            is UIState.Success<*> -> {
+                val user = (loginUIState as UIState.Success<*>).data as? User
+                    ?: throw RuntimeException("Expected User type")
+
+                // ログイン成功時の処理
+                viewModel.registerUser(user)
+                onLoginSuccess(user)
             }
 
-            is SignInUIState.Failed -> {
+            is UIState.Error -> {
                 // 必要に応じてエラー処理
             }
 
@@ -72,7 +74,7 @@ fun LoginRoute(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginScreen(
-    loginUIState: SignInUIState,
+    loginUIState: UIState,
     onLoginRequest: () -> Unit,
     onLoginCancelled: () -> Unit,
 ) {
@@ -92,7 +94,7 @@ fun LoginScreen(
             )
         },
     ) { innerPadding ->
-        val buttonEnabled = loginUIState !is SignInUIState.Processing
+        val buttonEnabled = loginUIState !is UIState.Processing
 
         Column(modifier = Modifier.padding(innerPadding)) {
             Button(
@@ -105,22 +107,23 @@ fun LoginScreen(
             }
 
             when (loginUIState) {
-                is SignInUIState.Initial -> {
+                is UIState.Initial -> {
                 }
 
-                is SignInUIState.Processing -> {
+                is UIState.Processing -> {
                     Text("Processing...")
                 }
 
-                is SignInUIState.Success -> {
-                    Text("Login successful: ${loginUIState.user.displayName}")
+                is UIState.Success<*> -> {
+                    val user = loginUIState.data as User
+                    Text("Login successful: ${user.displayName}")
                 }
 
-                is SignInUIState.Failed -> {
+                is UIState.Error -> {
                     Text("Login failed: $loginUIState")
                 }
 
-                is SignInUIState.Cancelled -> {}
+                is UIState.Cancelled -> {}
             }
         }
     }
@@ -131,7 +134,7 @@ fun LoginScreen(
 fun LoginScreenPreview() {
     myfirebasenoteappTheme {
         LoginScreen(
-            loginUIState = SignInUIState.Initial,
+            loginUIState = UIState.Initial,
             onLoginRequest = {},
             onLoginCancelled = {},
         )

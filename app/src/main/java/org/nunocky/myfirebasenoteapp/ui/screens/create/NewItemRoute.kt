@@ -10,8 +10,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.navigation.NavHostController
 import org.nunocky.myfirebasenoteapp.data.EditType
-import org.nunocky.myfirebasenoteapp.uistate.ItemSaveUIState
 import org.nunocky.myfirebasenoteapp.ui.composables.EditorScreen
+import org.nunocky.myfirebasenoteapp.data.UIState
 
 @Composable
 fun NewItemRoute(
@@ -20,7 +20,7 @@ fun NewItemRoute(
     onSaveSuccess: () -> Unit = {},
     onEditCancelled: () -> Unit = {},
 ) {
-    val uiState: ItemSaveUIState by viewModel.uiState.collectAsState()
+    val uiState: UIState by viewModel.uiState.collectAsState()
     var title by remember { mutableStateOf("") }
     var content by remember { mutableStateOf("") }
 
@@ -30,17 +30,19 @@ fun NewItemRoute(
 
     LaunchedEffect(key1 = uiState) {
         when (uiState) {
-            is ItemSaveUIState.Initial -> {}
+            is UIState.Initial -> {}
 
-            ItemSaveUIState.Processing -> {}
+            UIState.Processing -> {}
 
-            is ItemSaveUIState.Success -> {
+            is UIState.Success<*> -> {
                 onSaveSuccess()
             }
 
-            is ItemSaveUIState.Error -> {
+            is UIState.Error -> {
                 // Handle error state if needed
             }
+
+            UIState.Cancelled -> {}
         }
     }
 

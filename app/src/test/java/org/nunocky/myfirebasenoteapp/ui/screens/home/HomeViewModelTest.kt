@@ -16,9 +16,9 @@ import org.junit.Test
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
 import org.mockito.kotlin.whenever
+import org.nunocky.myfirebasenoteapp.data.UIState
 import org.nunocky.myfirebasenoteapp.domain.Authentication
 import org.nunocky.myfirebasenoteapp.domain.CloudStorageUseCase
-import org.nunocky.myfirebasenoteapp.uistate.GetNoteListUiState
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class HomeViewModelTest {
@@ -47,7 +47,7 @@ class HomeViewModelTest {
     @Test
     fun `initial state should be Initial`() = runTest {
         val initialState = viewModel.uiState.first()
-        assertEquals(GetNoteListUiState.Initial, initialState)
+        assertEquals(UIState.Initial, initialState)
     }
 
     @Test
@@ -57,15 +57,16 @@ class HomeViewModelTest {
             whenever(cloudStorageUseCase.getItemList()).thenReturn(mockItemList)
 
             viewModel.uiState.test {
-                assertEquals(GetNoteListUiState.Initial, awaitItem())
+                var uiState = awaitItem()
+                assertEquals(UIState.Initial, uiState)
 
                 viewModel.getNoteList()
+                uiState = awaitItem()
+                assertEquals(UIState.Processing, uiState)
 
-                assertEquals(GetNoteListUiState.Processing, awaitItem())
-
-                val uiState = awaitItem()
-                assertTrue(uiState is GetNoteListUiState.Success)
-                assertEquals(mockItemList, (uiState as GetNoteListUiState.Success).itemList)
+                uiState = awaitItem()
+                assertTrue(uiState is UIState.Success<*>)
+                assertEquals(mockItemList, (uiState as UIState.Success<*>).data)
             }
         }
 
@@ -76,13 +77,13 @@ class HomeViewModelTest {
             whenever(cloudStorageUseCase.getItemList()).thenThrow(exception)
 
             viewModel.uiState.test {
-                assertEquals(GetNoteListUiState.Initial, awaitItem())
+                assertEquals(UIState.Initial, awaitItem())
 
                 viewModel.getNoteList()
-                assertEquals(GetNoteListUiState.Processing, awaitItem())
+                assertEquals(UIState.Processing, awaitItem())
 
                 val uiState = awaitItem()
-                assertTrue(uiState is GetNoteListUiState.Error)
+                assertTrue(uiState is UIState.Error)
             }
         }
 
@@ -92,15 +93,17 @@ class HomeViewModelTest {
         whenever(cloudStorageUseCase.getItemList()).thenReturn(mockItemList)
 
         viewModel.uiState.test {
-            assertEquals(GetNoteListUiState.Initial, awaitItem())
+            var uiState = awaitItem()
+            assertEquals(UIState.Initial, uiState)
 
             viewModel.getNoteList()
 
-            assertEquals(GetNoteListUiState.Processing, awaitItem())
+            uiState = awaitItem()
+            assertEquals(UIState.Processing, uiState)
 
-            val uiState = awaitItem()
-            assertTrue(uiState is GetNoteListUiState.Success)
-            assertEquals(mockItemList, (uiState as GetNoteListUiState.Success).itemList)
+            uiState = awaitItem()
+            assertTrue(uiState is UIState.Success<*>)
+            assertEquals(mockItemList, (uiState as UIState.Success<*>).data)
         }
     }
 
@@ -110,15 +113,17 @@ class HomeViewModelTest {
         whenever(cloudStorageUseCase.getItemList()).thenThrow(exception)
 
         viewModel.uiState.test {
-            assertEquals(GetNoteListUiState.Initial, awaitItem())
+            var uiState = awaitItem()
+            assertEquals(UIState.Initial, uiState)
 
             viewModel.getNoteList()
 
-            assertEquals(GetNoteListUiState.Processing, awaitItem())
+            uiState = awaitItem()
+            assertEquals(UIState.Processing, uiState)
 
-            val uiState = awaitItem()
-            assertTrue(uiState is GetNoteListUiState.Error)
-            assertEquals(exception, (uiState as GetNoteListUiState.Error).e)
+            uiState = awaitItem()
+            assertTrue(uiState is UIState.Error)
+            assertEquals(exception, (uiState as UIState.Error).e)
         }
     }
 }

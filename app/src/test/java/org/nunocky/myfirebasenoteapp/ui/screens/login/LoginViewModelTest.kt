@@ -9,6 +9,7 @@ import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.junit.After
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
@@ -17,7 +18,7 @@ import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 import org.nunocky.myfirebasenoteapp.data.SignInResult
-import org.nunocky.myfirebasenoteapp.uistate.SignInUIState
+import org.nunocky.myfirebasenoteapp.data.UIState
 import org.nunocky.myfirebasenoteapp.data.User
 import org.nunocky.myfirebasenoteapp.domain.CloudStorageUseCase
 import org.nunocky.myfirebasenoteapp.domain.GoogleSignInUseCase
@@ -48,7 +49,7 @@ class LoginViewModelTest {
     @Test
     fun `login initial state should be Initial`() = runTest {
         viewModel.signInUIState.test {
-            assertEquals(SignInUIState.Initial, awaitItem())
+            assertEquals(UIState.Initial, awaitItem())
         }
     }
 
@@ -61,12 +62,17 @@ class LoginViewModelTest {
         )
 
         viewModel.signInUIState.test {
-            assertEquals(SignInUIState.Initial, awaitItem())
+            var uiState = awaitItem()
+            assertEquals(UIState.Initial, uiState)
 
             viewModel.signInWithGoogle("dummy_client_id")
-            assertEquals(SignInUIState.Processing, awaitItem())
 
-            assert(awaitItem() is SignInUIState.Success)
+            uiState = awaitItem()
+            assertEquals(UIState.Processing, uiState)
+
+            uiState = awaitItem()
+            assertTrue(uiState is UIState.Success<*>)
+            assertTrue((uiState as UIState.Success<*>).data is User)
         }
     }
 }

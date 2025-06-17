@@ -9,15 +9,14 @@ import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
 import org.mockito.kotlin.any
 import org.mockito.kotlin.whenever
-import org.nunocky.myfirebasenoteapp.uistate.ItemDeleteUIState
-import org.nunocky.myfirebasenoteapp.uistate.ItemLoadUIState
-import org.nunocky.myfirebasenoteapp.uistate.ItemSaveUIState
+import org.nunocky.myfirebasenoteapp.data.UIState
 import org.nunocky.myfirebasenoteapp.domain.CloudStorageUseCase
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -44,7 +43,8 @@ class EditItemViewModelTest {
     @Test
     fun `item save initial state should be Initial`() = runTest {
         viewModel.itemSaveUiState.test {
-            assertEquals(ItemSaveUIState.Initial, awaitItem())
+            var uiState = awaitItem()
+            assertEquals(UIState.Initial, uiState)
         }
     }
 
@@ -55,12 +55,15 @@ class EditItemViewModelTest {
             whenever(cloudStorageUseCase.updateItem(any(), any(), any())).thenAnswer { }
 
             viewModel.itemSaveUiState.test {
-                assertEquals(ItemSaveUIState.Initial, awaitItem())
+                var uiState = awaitItem()
+                assertEquals(UIState.Initial, uiState)
 
                 viewModel.updateItem(itemId, "test", "test content")
-                assertEquals(ItemSaveUIState.Processing, awaitItem())
+                uiState = awaitItem()
+                assertEquals(UIState.Processing, uiState)
 
-                assertEquals(ItemSaveUIState.Success(itemId), awaitItem())
+                uiState = awaitItem()
+                assertEquals(itemId, (uiState as UIState.Success<*>).data)
             }
         }
 
@@ -73,19 +76,23 @@ class EditItemViewModelTest {
             ).thenThrow(exception)
 
             viewModel.itemSaveUiState.test {
-                assertEquals(ItemSaveUIState.Initial, awaitItem())
+                var uiState = awaitItem()
+                assertEquals(UIState.Initial, uiState)
 
                 viewModel.updateItem("dummy_item_id", "test", "test content")
-                assertEquals(ItemSaveUIState.Processing, awaitItem())
+                uiState = awaitItem()
+                assertEquals(UIState.Processing, uiState)
 
-                assertEquals(ItemSaveUIState.Error(exception), awaitItem())
+                uiState = awaitItem()
+                assertEquals(exception, (uiState as UIState.Error).e)
             }
         }
 
     @Test
     fun `item load initial state should be Initial`() = runTest {
         viewModel.itemLoadUiState.test {
-            assertEquals(ItemLoadUIState.Initial, awaitItem())
+            var uiState = awaitItem()
+            assertEquals(UIState.Initial, uiState)
         }
     }
 
@@ -98,12 +105,15 @@ class EditItemViewModelTest {
             whenever(cloudStorageUseCase.getItem(itemId)).thenReturn(Pair(title, content))
 
             viewModel.itemLoadUiState.test {
-                assertEquals(ItemLoadUIState.Initial, awaitItem())
+                var uiState = awaitItem()
+                assertEquals(UIState.Initial, uiState)
 
                 viewModel.loadItem(itemId)
-                assertEquals(ItemLoadUIState.Processing, awaitItem())
+                uiState = awaitItem()
+                assertEquals(UIState.Processing, uiState)
 
-                assertEquals(ItemLoadUIState.Success(Pair(title, content)), awaitItem())
+                uiState = awaitItem()
+                assertEquals(Pair(title, content), (uiState as UIState.Success<*>).data)
             }
         }
 
@@ -115,19 +125,22 @@ class EditItemViewModelTest {
             whenever(cloudStorageUseCase.getItem(itemId)).thenThrow(exception)
 
             viewModel.itemLoadUiState.test {
-                assertEquals(ItemLoadUIState.Initial, awaitItem())
+                var uiState = awaitItem()
+                assertEquals(UIState.Initial, uiState)
 
                 viewModel.loadItem(itemId)
-                assertEquals(ItemLoadUIState.Processing, awaitItem())
+                uiState = awaitItem()
+                assertEquals(UIState.Processing, uiState)
 
-                assertEquals(ItemLoadUIState.Error(exception), awaitItem())
+                uiState = awaitItem()
+                assertEquals(exception, (uiState as UIState.Error).e)
             }
         }
 
     @Test
     fun `item delete initial state should be Initial`() = runTest {
         viewModel.itemDeleteUiState.test {
-            assertEquals(ItemDeleteUIState.Initial, awaitItem())
+            assertEquals(UIState.Initial, awaitItem())
         }
     }
 
@@ -138,12 +151,15 @@ class EditItemViewModelTest {
             whenever(cloudStorageUseCase.deleteItem(itemId)).thenAnswer { }
 
             viewModel.itemDeleteUiState.test {
-                assertEquals(ItemDeleteUIState.Initial, awaitItem())
+                var uiState = awaitItem()
+                assertEquals(UIState.Initial, uiState)
 
                 viewModel.deleteItem(itemId)
-                assertEquals(ItemDeleteUIState.Processing, awaitItem())
+                uiState = awaitItem()
+                assertEquals(UIState.Processing, uiState)
 
-                assertEquals(ItemDeleteUIState.Success, awaitItem())
+                uiState = awaitItem()
+                assertTrue(uiState is UIState.Success<*>)
             }
         }
 
@@ -155,12 +171,15 @@ class EditItemViewModelTest {
             whenever(cloudStorageUseCase.deleteItem(itemId)).thenThrow(exception)
 
             viewModel.itemDeleteUiState.test {
-                assertEquals(ItemDeleteUIState.Initial, awaitItem())
+                var uiState = awaitItem()
+                assertEquals(UIState.Initial, uiState)
 
                 viewModel.deleteItem(itemId)
-                assertEquals(ItemDeleteUIState.Processing, awaitItem())
+                uiState = awaitItem()
+                assertEquals(UIState.Processing, uiState)
 
-                assertEquals(ItemDeleteUIState.Error(exception), awaitItem())
+                uiState = awaitItem()
+                assertEquals(exception, (uiState as UIState.Error).e)
             }
         }
 }

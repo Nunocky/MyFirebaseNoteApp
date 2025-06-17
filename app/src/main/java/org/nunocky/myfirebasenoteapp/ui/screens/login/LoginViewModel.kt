@@ -13,9 +13,7 @@ import org.nunocky.myfirebasenoteapp.data.SignInResult
 import org.nunocky.myfirebasenoteapp.data.User
 import org.nunocky.myfirebasenoteapp.domain.CloudStorageUseCase
 import org.nunocky.myfirebasenoteapp.domain.GoogleSignInUseCase
-import org.nunocky.myfirebasenoteapp.uistate.SignInUIState
-import org.nunocky.myfirebasenoteapp.uistate.SignInUIState.Failed
-import org.nunocky.myfirebasenoteapp.uistate.SignInUIState.Success
+import org.nunocky.myfirebasenoteapp.data.UIState
 import javax.inject.Inject
 
 /**
@@ -28,22 +26,22 @@ class LoginViewModel @Inject constructor(
     private val cloudStorageUseCase: CloudStorageUseCase,
 ) : ViewModel() {
 
-    private val _signInUIState = MutableStateFlow<SignInUIState>(SignInUIState.Initial)
+    private val _signInUIState = MutableStateFlow<UIState>(UIState.Initial)
     val signInUIState = _signInUIState.asStateFlow()
 
     fun signInWithGoogle(googleClientId: String) {
         viewModelScope.launch {
-            _signInUIState.update { SignInUIState.Processing }
+            _signInUIState.update { UIState.Processing }
 
             withContext(Dispatchers.IO) {
                 val result = googleSignInUseCase.signIn(googleClientId)
                 when (result) {
                     is SignInResult.Success<*> -> {
-                        _signInUIState.update { Success(result.user as User) }
+                        _signInUIState.update { UIState.Success(result.user as User) }
                     }
 
                     is SignInResult.Failed -> {
-                        _signInUIState.update { Failed(result.exception) }
+                        _signInUIState.update { UIState.Error(result.exception) }
                     }
 
                     is SignInResult.Cancelled -> {}

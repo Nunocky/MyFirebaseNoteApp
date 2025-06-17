@@ -17,7 +17,7 @@ import org.mockito.Mock
 import org.mockito.MockitoAnnotations
 import org.mockito.kotlin.any
 import org.mockito.kotlin.whenever
-import org.nunocky.myfirebasenoteapp.uistate.ItemSaveUIState
+import org.nunocky.myfirebasenoteapp.data.UIState
 import org.nunocky.myfirebasenoteapp.domain.CloudStorageUseCase
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -43,7 +43,7 @@ class NewItemViewModelTest {
     @Test
     fun `initial state should be Initial`() = runTest {
         val initialState = viewModel.uiState.first()
-        assertEquals(ItemSaveUIState.Initial, initialState)
+        assertEquals(UIState.Initial, initialState)
     }
 
     @Test
@@ -52,12 +52,15 @@ class NewItemViewModelTest {
             whenever(cloudStorageUseCase.createNewItem(any(), any())).thenReturn("dummy_item_id")
 
             viewModel.uiState.test {
-                assertEquals(ItemSaveUIState.Initial, awaitItem())
+                var uiState = awaitItem()
+                assertEquals(UIState.Initial, uiState)
 
                 viewModel.createNewItem("test", "test content")
-                assertEquals(ItemSaveUIState.Processing, awaitItem())
+                uiState = awaitItem()
+                assertEquals(UIState.Processing, uiState)
 
-                assertEquals(ItemSaveUIState.Success("dummy_item_id"), awaitItem())
+                uiState = awaitItem()
+                assertEquals((uiState as UIState.Success<*>).data, "dummy_item_id")
             }
         }
 
@@ -71,13 +74,15 @@ class NewItemViewModelTest {
             ).thenThrow(exception)
 
             viewModel.uiState.test {
-                assertEquals(ItemSaveUIState.Initial, awaitItem())
+                var uiState = awaitItem()
+                assertEquals(UIState.Initial, uiState)
 
                 viewModel.createNewItem("test", "test content")
-                assertEquals(ItemSaveUIState.Processing, awaitItem())
+                uiState = awaitItem()
+                assertEquals(UIState.Processing, uiState)
 
-                val uiState = awaitItem()
-                assertTrue(uiState is ItemSaveUIState.Error)
+                uiState = awaitItem()
+                assertTrue(uiState is UIState.Error)
             }
         }
 }
