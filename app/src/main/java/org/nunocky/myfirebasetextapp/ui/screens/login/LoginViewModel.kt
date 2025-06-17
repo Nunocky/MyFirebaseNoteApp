@@ -11,6 +11,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.nunocky.myfirebasetextapp.data.SignInResult
 import org.nunocky.myfirebasetextapp.data.SignInUIState
+import org.nunocky.myfirebasetextapp.data.SignInUIState.Failed
+import org.nunocky.myfirebasetextapp.data.SignInUIState.Success
 import org.nunocky.myfirebasetextapp.data.User
 import org.nunocky.myfirebasetextapp.domain.CloudStorageUseCase
 import org.nunocky.myfirebasetextapp.domain.GoogleSignInUseCase
@@ -37,18 +39,21 @@ class LoginViewModel @Inject constructor(
             withContext(Dispatchers.IO) {
                 val result = googleSignInUseCase.signIn(googleClientId)
                 when (result) {
-                    is SignInResult.Success -> {
-                        _signInUIState.update { SignInUIState.Success(result.user) }
+                    is SignInResult.Success<*> -> {
+                        _signInUIState.update { Success(result.user as User) }
                     }
 
                     is SignInResult.Failed -> {
-                        _signInUIState.update { SignInUIState.Failed(result.exception) }
+                        _signInUIState.update { Failed(result.exception) }
                     }
+
+                    is SignInResult.Cancelled -> {}
                 }
             }
         }
     }
 
+    // TODO move this to cloud storage use case
     fun registerUser(user: User) {
         viewModelScope.launch(Dispatchers.IO) {
             cloudStorageUseCase.registerUser(user)

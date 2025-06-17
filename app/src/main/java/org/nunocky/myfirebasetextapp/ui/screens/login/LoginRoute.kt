@@ -119,6 +119,8 @@ fun LoginScreen(
                 is SignInUIState.Failed -> {
                     Text("Login failed: $loginUIState")
                 }
+
+                is SignInUIState.Cancelled -> {}
             }
         }
     }

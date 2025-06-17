@@ -34,7 +34,7 @@ class FirebaseGoogleSignInUseCaseImpl @Inject constructor(
             .build()
     }
 
-    override suspend fun signIn(googleClientId: String): SignInResult<User> {
+    override suspend fun signIn(googleClientId: String): SignInResult {
         return try {
             val auth: FirebaseAuth = FirebaseAuth.getInstance()
             val credentialManager = CredentialManager.create(application)
