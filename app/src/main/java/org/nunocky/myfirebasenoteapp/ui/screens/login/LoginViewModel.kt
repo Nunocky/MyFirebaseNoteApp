@@ -14,6 +14,7 @@ import org.nunocky.myfirebasenoteapp.data.UIState
 import org.nunocky.myfirebasenoteapp.data.User
 import org.nunocky.myfirebasenoteapp.domain.CloudStorageUseCase
 import org.nunocky.myfirebasenoteapp.domain.GoogleSignInUseCase
+import org.nunocky.myfirebasenoteapp.domain.firebase.FirebaseEmailSignInUseCase
 import javax.inject.Inject
 
 /**
@@ -52,9 +53,25 @@ class LoginViewModel @Inject constructor(
 
     fun signInWithEmail(email: String, password: String) {
         viewModelScope.launch {
+            _signInUIState.update { UIState.Processing }
 
             withContext(Dispatchers.IO) {
-                // TODO IMPLEMENT THIS
+                val usecase = FirebaseEmailSignInUseCase()
+                usecase.signIn(email, password).let { result ->
+                    when (result) {
+                        is SignInResult.Success<*> -> {
+                            _signInUIState.update { UIState.Success(result.user as User) }
+                        }
+
+                        is SignInResult.Failed -> {
+                            _signInUIState.update { UIState.Error(result.exception) }
+                        }
+
+                        is SignInResult.Cancelled -> {
+                            // Handle cancellation if needed
+                        }
+                    }
+                }
             }
         }
     }

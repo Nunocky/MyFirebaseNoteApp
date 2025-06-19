@@ -50,6 +50,7 @@ import org.nunocky.myfirebasenoteapp.BuildConfig
 import org.nunocky.myfirebasenoteapp.data.UIState
 import org.nunocky.myfirebasenoteapp.data.User
 import org.nunocky.myfirebasenoteapp.ui.theme.myfirebasenoteappTheme
+import org.nunocky.myfirebasenoteapp.validator.EmailValidator
 
 
 // TODO
@@ -129,8 +130,11 @@ fun LoginScreen(
     onLoginCancelled: () -> Unit
 ) {
     var email by rememberSaveable { mutableStateOf("") }
+    var isValueEmail by rememberSaveable { mutableStateOf(false) }
+
     var password by rememberSaveable { mutableStateOf("") }
     var passwordHidden by rememberSaveable { mutableStateOf(true) }
+    var isValuePassword = password.isNotEmpty() // ログインではバリデーションを行わない(コンソールで設定されている可能性がある)
 
     // TODO 現状 Google ログインにしか対応していない。email ログインにも対応する。
     val buttonEnabled = loginUIState !is UIState.Processing
@@ -174,7 +178,10 @@ fun LoginScreen(
                 TextField(
                     modifier = Modifier.fillMaxWidth(),
                     value = email,
-                    onValueChange = {},
+                    onValueChange = {
+                        email = it
+                        isValueEmail = EmailValidator.isValidEmail(it)
+                    },
                     label = { Text("Email") },
                     singleLine = true,
                 )
@@ -201,7 +208,7 @@ fun LoginScreen(
                 )
 
                 Button(
-                    enabled = email.isNotBlank() && password.isNotBlank(),
+                    enabled = isValueEmail && isValuePassword,
                     modifier = Modifier.fillMaxWidth(),
                     onClick = {
                         onEmailLoginRequest(email, password)
@@ -302,3 +309,4 @@ fun LoginScreenPreview() {
         )
     }
 }
+
