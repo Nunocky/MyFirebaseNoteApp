@@ -10,10 +10,10 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.nunocky.myfirebasenoteapp.data.SignInResult
+import org.nunocky.myfirebasenoteapp.data.UIState
 import org.nunocky.myfirebasenoteapp.data.User
 import org.nunocky.myfirebasenoteapp.domain.CloudStorageUseCase
 import org.nunocky.myfirebasenoteapp.domain.GoogleSignInUseCase
-import org.nunocky.myfirebasenoteapp.data.UIState
 import javax.inject.Inject
 
 /**
@@ -46,6 +46,15 @@ class LoginViewModel @Inject constructor(
 
                     is SignInResult.Cancelled -> {}
                 }
+            }
+        }
+    }
+
+    fun signInWithEmail(email: String, password: String) {
+        viewModelScope.launch {
+
+            withContext(Dispatchers.IO) {
+                // TODO IMPLEMENT THIS
             }
         }
     }
