@@ -21,12 +21,16 @@ import org.nunocky.myfirebasenoteapp.data.SignInResult
 import org.nunocky.myfirebasenoteapp.data.UIState
 import org.nunocky.myfirebasenoteapp.data.User
 import org.nunocky.myfirebasenoteapp.domain.CloudStorageUseCase
+import org.nunocky.myfirebasenoteapp.domain.EmailSignInUseCase
 import org.nunocky.myfirebasenoteapp.domain.GoogleSignInUseCase
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class LoginViewModelTest {
     @Mock
     private lateinit var googleSignInUseCase: GoogleSignInUseCase
+
+    @Mock
+    private lateinit var emailSignInUseCase: EmailSignInUseCase
 
     @Mock
     private lateinit var cloudStorageUseCase: CloudStorageUseCase
@@ -38,7 +42,7 @@ class LoginViewModelTest {
     fun setUp() {
         MockitoAnnotations.openMocks(this)
         Dispatchers.setMain(testDispatcher)
-        viewModel = LoginViewModel(googleSignInUseCase, cloudStorageUseCase)
+        viewModel = LoginViewModel(googleSignInUseCase, emailSignInUseCase, cloudStorageUseCase)
     }
 
     @After
