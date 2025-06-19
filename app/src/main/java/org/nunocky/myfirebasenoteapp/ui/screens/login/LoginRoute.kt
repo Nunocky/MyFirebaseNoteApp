@@ -1,6 +1,5 @@
 package org.nunocky.myfirebasenoteapp.ui.screens.login
 
-import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Column
@@ -54,8 +53,6 @@ import org.nunocky.myfirebasenoteapp.validator.EmailValidator
 
 
 // TODO
-// - email. password テキストバリデータ
-// - email. password ログインの実装
 // - パスワードリセット画面
 // - アカウント作成画面
 
@@ -66,6 +63,8 @@ fun LoginRoute(
     viewModel: LoginViewModel,
     onLoginSuccess: (user: User) -> Unit,
     onLoginCancelled: () -> Unit,
+    onRequestResetPassword: () -> Unit,
+    onRequestCreateAccount: () -> Unit,
 ) {
     val loginUIState: UIState by viewModel.signInUIState.collectAsState()
 
@@ -107,12 +106,11 @@ fun LoginRoute(
         },
 
         onResetPasswordRequest = {
-            Log.d("LoginScreen", "Forgot password clicked")
+            onRequestResetPassword()
         },
 
         onCreateAccountRequest = {
-            Log.d("LoginScreen", "Create account clicked")
-            // TODO IMPLEMENT THIS
+            onRequestCreateAccount()
         },
 
         onLoginCancelled = onLoginCancelled,
@@ -136,7 +134,6 @@ fun LoginScreen(
     var passwordHidden by rememberSaveable { mutableStateOf(true) }
     var isValuePassword = password.isNotEmpty() // ログインではバリデーションを行わない(コンソールで設定されている可能性がある)
 
-    // TODO 現状 Google ログインにしか対応していない。email ログインにも対応する。
     val buttonEnabled = loginUIState !is UIState.Processing
 
     Surface(

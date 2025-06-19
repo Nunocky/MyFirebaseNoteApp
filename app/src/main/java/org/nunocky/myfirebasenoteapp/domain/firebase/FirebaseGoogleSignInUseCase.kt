@@ -21,7 +21,7 @@ import javax.inject.Inject
  * This implementation uses the new Credentials API to sign in with Google.
  * It requires the Google Identity Services library.
  */
-class FirebaseGoogleSignInUseCaseImpl @Inject constructor(
+class FirebaseGoogleSignInUseCase @Inject constructor(
     private val application: Application
 ) : GoogleSignInUseCase {
 

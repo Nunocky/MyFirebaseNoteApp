@@ -6,7 +6,7 @@ import org.nunocky.myfirebasenoteapp.data.User
 import org.nunocky.myfirebasenoteapp.domain.Authentication
 import javax.inject.Inject
 
-class FirebaseAuthenticationImpl @Inject constructor() : Authentication {
+class FirebaseAuthentication @Inject constructor() : Authentication {
     override fun currentUser() = if (Firebase.auth.currentUser == null) null else User(
         uid = Firebase.auth.currentUser?.uid ?: "",
         displayName = Firebase.auth.currentUser?.displayName,

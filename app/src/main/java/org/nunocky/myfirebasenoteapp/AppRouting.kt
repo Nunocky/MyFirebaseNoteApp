@@ -11,18 +11,28 @@ import androidx.navigation.toRoute
 import kotlinx.serialization.Serializable
 import org.nunocky.myfirebasenoteapp.ui.screens.create.NewItemRoute
 import org.nunocky.myfirebasenoteapp.ui.screens.create.NewItemViewModel
+import org.nunocky.myfirebasenoteapp.ui.screens.createaccount.CreateAccountRoute
+import org.nunocky.myfirebasenoteapp.ui.screens.createaccount.CreateAccountViewModel
 import org.nunocky.myfirebasenoteapp.ui.screens.edit.EditItemRoute
 import org.nunocky.myfirebasenoteapp.ui.screens.edit.EditItemViewModel
 import org.nunocky.myfirebasenoteapp.ui.screens.home.HomeRoute
 import org.nunocky.myfirebasenoteapp.ui.screens.home.HomeViewModel
 import org.nunocky.myfirebasenoteapp.ui.screens.login.LoginRoute
 import org.nunocky.myfirebasenoteapp.ui.screens.login.LoginViewModel
+import org.nunocky.myfirebasenoteapp.ui.screens.resetpassword.ResetPasswordRoute
+import org.nunocky.myfirebasenoteapp.ui.screens.resetpassword.ResetPasswordViewModel
 
 @Serializable
 object Home
 
 @Serializable
 object Login
+
+@Serializable
+object ResetPassword
+
+@Serializable
+object CreateAccount
 
 @Serializable
 object NewItem
@@ -63,6 +73,12 @@ fun AppRouting() {
                     // アプリケーション終了
                     (context as? Activity)?.finish()
                 },
+                onRequestResetPassword = {
+                    navHostController.navigate(ResetPassword)
+                },
+                onRequestCreateAccount = {
+                    navHostController.navigate(CreateAccount)
+                },
             )
         }
         composable<NewItem> { _ ->
@@ -81,6 +97,33 @@ fun AppRouting() {
                 itemId = args.itemId,
                 onSaveSuccess = { navHostController.popBackStack() },
                 onEditCancelled = { navHostController.popBackStack() },
+            )
+        }
+        composable<ResetPassword> {
+            val viewModel = hiltViewModel<ResetPasswordViewModel>()
+            ResetPasswordRoute(
+                navHostController = navHostController,
+                viewModel = viewModel,
+                onResetPasswordSuccess = {
+                    navHostController.popBackStack(Home, inclusive = false)
+                },
+                onResetPasswordCancelled = {
+                    navHostController.popBackStack(Home, inclusive = false)
+                }
+            )
+        }
+
+        composable<CreateAccount> {
+            val viewModel = hiltViewModel<CreateAccountViewModel>()
+            CreateAccountRoute(
+                navHostController = navHostController,
+                viewModel = viewModel,
+                onCreateAccountSuccess = {
+                    navHostController.popBackStack(Home, inclusive = false)
+                },
+                onCreateAccountCancelled = {
+                    navHostController.popBackStack(Home, inclusive = false)
+                }
             )
         }
     }
