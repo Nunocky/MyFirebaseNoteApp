@@ -28,7 +28,7 @@ class FakeAuthentication : Authentication {
     override fun currentUser(): User? = user
 
     override fun signOut() {
-        TODO("Not yet implemented")
+        // No-op implementation for testing purposes
     }
 }
 
