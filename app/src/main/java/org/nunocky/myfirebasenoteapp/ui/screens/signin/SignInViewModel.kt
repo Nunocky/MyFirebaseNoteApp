@@ -12,15 +12,13 @@ import kotlinx.coroutines.withContext
 import org.nunocky.myfirebasenoteapp.data.SignInResult
 import org.nunocky.myfirebasenoteapp.data.UIState
 import org.nunocky.myfirebasenoteapp.data.User
+import org.nunocky.myfirebasenoteapp.domain.Authentication
 import org.nunocky.myfirebasenoteapp.domain.CloudStorageUseCase
-import org.nunocky.myfirebasenoteapp.domain.EmailSignInUseCase
-import org.nunocky.myfirebasenoteapp.domain.GoogleSignInUseCase
 import javax.inject.Inject
 
 @HiltViewModel
 class SignInViewModel @Inject constructor(
-    private val googleSignInUseCase: GoogleSignInUseCase,
-    private val emailSignInUseCase: EmailSignInUseCase,
+    private val authentication: Authentication,
     private val cloudStorageUseCase: CloudStorageUseCase,
 ) : ViewModel() {
 
@@ -32,7 +30,7 @@ class SignInViewModel @Inject constructor(
             _signInUIState.update { UIState.Processing }
 
             withContext(Dispatchers.IO) {
-                val result = googleSignInUseCase.signIn(googleClientId)
+                val result = authentication.googleSignIn(googleClientId)
                 when (result) {
                     is SignInResult.Success<*> -> {
                         _signInUIState.update { UIState.Success(result.user as User) }
@@ -53,7 +51,7 @@ class SignInViewModel @Inject constructor(
             _signInUIState.update { UIState.Processing }
 
             withContext(Dispatchers.IO) {
-                emailSignInUseCase.signIn(email, password).let { result ->
+                authentication.emailSignIn(email, password).let { result ->
                     when (result) {
                         is SignInResult.Success<*> -> {
                             _signInUIState.update { UIState.Success(result.user as User) }

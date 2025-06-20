@@ -20,17 +20,13 @@ import org.mockito.kotlin.whenever
 import org.nunocky.myfirebasenoteapp.data.SignInResult
 import org.nunocky.myfirebasenoteapp.data.UIState
 import org.nunocky.myfirebasenoteapp.data.User
+import org.nunocky.myfirebasenoteapp.domain.Authentication
 import org.nunocky.myfirebasenoteapp.domain.CloudStorageUseCase
-import org.nunocky.myfirebasenoteapp.domain.EmailSignInUseCase
-import org.nunocky.myfirebasenoteapp.domain.GoogleSignInUseCase
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class LoginViewModelTest {
     @Mock
-    private lateinit var googleSignInUseCase: GoogleSignInUseCase
-
-    @Mock
-    private lateinit var emailSignInUseCase: EmailSignInUseCase
+    private lateinit var authentication: Authentication
 
     @Mock
     private lateinit var cloudStorageUseCase: CloudStorageUseCase
@@ -42,7 +38,7 @@ class LoginViewModelTest {
     fun setUp() {
         MockitoAnnotations.openMocks(this)
         Dispatchers.setMain(testDispatcher)
-        viewModel = SignInViewModel(googleSignInUseCase, emailSignInUseCase, cloudStorageUseCase)
+        viewModel = SignInViewModel(authentication, cloudStorageUseCase)
     }
 
     @After
@@ -61,7 +57,7 @@ class LoginViewModelTest {
     fun `sign in with Google should emit Processing state before sign in`() = runTest {
         val user = mock<User>()
 
-        whenever(googleSignInUseCase.signIn(any())).thenReturn(
+        whenever(authentication.googleSignIn(any())).thenReturn(
             SignInResult.Success(user)
         )
 

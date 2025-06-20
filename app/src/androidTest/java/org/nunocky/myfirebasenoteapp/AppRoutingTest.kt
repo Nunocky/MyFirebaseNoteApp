@@ -14,6 +14,9 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.nunocky.myfirebasenoteapp.data.ResetPasswordResult
+import org.nunocky.myfirebasenoteapp.data.SignInResult
+import org.nunocky.myfirebasenoteapp.data.SignUpResult
 import org.nunocky.myfirebasenoteapp.data.User
 import org.nunocky.myfirebasenoteapp.di.AuthenticationModule
 import org.nunocky.myfirebasenoteapp.domain.Authentication
@@ -29,6 +32,28 @@ class FakeAuthentication : Authentication {
 
     override fun signOut() {
         // No-op implementation for testing purposes
+    }
+
+    override suspend fun googleSignIn(googleClientId: String): SignInResult {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun emailSignIn(
+        email: String,
+        password: String
+    ): SignInResult {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun emailSignUp(
+        email: String,
+        password: String
+    ): SignUpResult {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun resetPassword(email: String): ResetPasswordResult {
+        TODO("Not yet implemented")
     }
 }
 
