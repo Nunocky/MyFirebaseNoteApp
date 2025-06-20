@@ -30,4 +30,5 @@
     <string name="sign_in_with_google">Sign in with Google</string>
     <string name="sign_up">Sign Up</string>
     <string name="title">Title</string>
+    <string name="please_click_the_link_in_the_email_to_complete_verification">Please click the link in the email to complete verification.</string>
 </resources>
