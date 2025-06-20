@@ -22,6 +22,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -40,8 +41,10 @@ fun HomeRoute(
     onLoginNeeded: (message: String) -> Unit = { _ -> },
     onCreateNewItem: () -> Unit = {},
     onRequestEditItem: (itemId: String) -> Unit = { _ -> },
-    snackbarMessage: String? = null
+//    snackbarMessage: String? = null,
+//    onSnackbarShown: () -> Unit = {}
 ) {
+    val context = LocalContext.current
     val uiState: UIState by viewModel.uiState.collectAsState()
 
     @Suppress("UNCHECKED_CAST")
@@ -51,7 +54,7 @@ fun HomeRoute(
     LaunchedEffect(key1 = Unit) {
         if (viewModel.authentication.currentUser()?.emailVerified == false) {
             viewModel.authentication.signOut()
-            onLoginNeeded("メールに記載されたリンクをクリックして認証を完了してください。")
+            onLoginNeeded(context.getString(R.string.please_click_the_link_in_the_email_to_complete_verification))
             return@LaunchedEffect
         }
 
@@ -75,7 +78,7 @@ fun HomeRoute(
         onItemClicked = { itemId ->
             onRequestEditItem(itemId)
         },
-        snackbarMessage = snackbarMessage // 追加
+//        snackbarMessage = snackbarMessage,
     )
 }
 
@@ -86,12 +89,12 @@ fun HomeScreen(
     itemList: List<Pair<String, String>> = emptyList(),
     onNewItemButtonClicked: () -> Unit = {},
     onItemClicked: (itemId: String) -> Unit = { _ -> },
-    snackbarMessage: String? = null // 追加
+    snackbarMessage: String? = null,
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
 
     LaunchedEffect(key1 = snackbarMessage) {
-        if (snackbarMessage != null) {
+        if (snackbarMessage != null && snackbarMessage.isNotEmpty()) {
             snackbarHostState.showSnackbar(snackbarMessage)
         }
     }
