@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.nunocky.myfirebasenoteapp.data.SignUpResult
 import org.nunocky.myfirebasenoteapp.data.UIState
-import org.nunocky.myfirebasenoteapp.domain.Authentication
+import org.nunocky.myfirebasenoteapp.usecase.Authentication
 import javax.inject.Inject
 
 @HiltViewModel

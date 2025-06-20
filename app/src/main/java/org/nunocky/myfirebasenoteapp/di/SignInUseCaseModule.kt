@@ -4,10 +4,10 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import org.nunocky.myfirebasenoteapp.domain.EmailSignInUseCase
-import org.nunocky.myfirebasenoteapp.domain.GoogleSignInUseCase
-import org.nunocky.myfirebasenoteapp.domain.firebase.FirebaseEmailSignInUseCase
-import org.nunocky.myfirebasenoteapp.domain.firebase.FirebaseGoogleSignInUseCase
+import org.nunocky.myfirebasenoteapp.network.firebase.FirebaseEmailSignInUseCase
+import org.nunocky.myfirebasenoteapp.network.firebase.FirebaseGoogleSignInUseCase
+import org.nunocky.myfirebasenoteapp.usecase.EmailSignInUseCase
+import org.nunocky.myfirebasenoteapp.usecase.GoogleSignInUseCase
 
 @Module
 @InstallIn(SingletonComponent::class)

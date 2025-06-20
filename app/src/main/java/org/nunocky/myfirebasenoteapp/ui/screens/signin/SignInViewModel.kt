@@ -12,8 +12,8 @@ import kotlinx.coroutines.withContext
 import org.nunocky.myfirebasenoteapp.data.SignInResult
 import org.nunocky.myfirebasenoteapp.data.UIState
 import org.nunocky.myfirebasenoteapp.data.User
-import org.nunocky.myfirebasenoteapp.domain.Authentication
-import org.nunocky.myfirebasenoteapp.domain.CloudStorageUseCase
+import org.nunocky.myfirebasenoteapp.usecase.Authentication
+import org.nunocky.myfirebasenoteapp.usecase.CloudStorageUseCase
 import javax.inject.Inject
 
 @HiltViewModel

@@ -1,4 +1,4 @@
-package org.nunocky.myfirebasenoteapp.domain
+package org.nunocky.myfirebasenoteapp.usecase
 
 import org.nunocky.myfirebasenoteapp.data.SignInResult
 

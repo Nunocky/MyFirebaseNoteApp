@@ -19,7 +19,7 @@ import org.nunocky.myfirebasenoteapp.data.SignInResult
 import org.nunocky.myfirebasenoteapp.data.SignUpResult
 import org.nunocky.myfirebasenoteapp.data.User
 import org.nunocky.myfirebasenoteapp.di.AuthenticationModule
-import org.nunocky.myfirebasenoteapp.domain.Authentication
+import org.nunocky.myfirebasenoteapp.usecase.Authentication
 
 class FakeAuthentication : Authentication {
     private var user: User? = null
