@@ -1,4 +1,4 @@
-package org.nunocky.myfirebasenoteapp.ui.screens.login
+package org.nunocky.myfirebasenoteapp.ui.screens.signin
 
 import app.cash.turbine.test
 import junit.framework.TestCase.assertEquals
@@ -21,6 +21,7 @@ import org.nunocky.myfirebasenoteapp.data.SignInResult
 import org.nunocky.myfirebasenoteapp.data.UIState
 import org.nunocky.myfirebasenoteapp.data.User
 import org.nunocky.myfirebasenoteapp.domain.CloudStorageUseCase
+import org.nunocky.myfirebasenoteapp.domain.EmailSignInUseCase
 import org.nunocky.myfirebasenoteapp.domain.GoogleSignInUseCase
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -29,16 +30,19 @@ class LoginViewModelTest {
     private lateinit var googleSignInUseCase: GoogleSignInUseCase
 
     @Mock
+    private lateinit var emailSignInUseCase: EmailSignInUseCase
+
+    @Mock
     private lateinit var cloudStorageUseCase: CloudStorageUseCase
 
-    private lateinit var viewModel: LoginViewModel
+    private lateinit var viewModel: SignInViewModel
     private val testDispatcher = StandardTestDispatcher()
 
     @Before
     fun setUp() {
         MockitoAnnotations.openMocks(this)
         Dispatchers.setMain(testDispatcher)
-        viewModel = LoginViewModel(googleSignInUseCase, cloudStorageUseCase)
+        viewModel = SignInViewModel(googleSignInUseCase, emailSignInUseCase, cloudStorageUseCase)
     }
 
     @After

@@ -15,14 +15,15 @@ import org.nunocky.myfirebasenoteapp.ui.screens.edit.EditItemRoute
 import org.nunocky.myfirebasenoteapp.ui.screens.edit.EditItemViewModel
 import org.nunocky.myfirebasenoteapp.ui.screens.home.HomeRoute
 import org.nunocky.myfirebasenoteapp.ui.screens.home.HomeViewModel
-import org.nunocky.myfirebasenoteapp.ui.screens.login.LoginRoute
-import org.nunocky.myfirebasenoteapp.ui.screens.login.LoginViewModel
+import org.nunocky.myfirebasenoteapp.ui.screens.resetpassword.ResetPasswordRoute
+import org.nunocky.myfirebasenoteapp.ui.screens.resetpassword.ResetPasswordViewModel
+import org.nunocky.myfirebasenoteapp.ui.screens.signin.SignInRoute
+import org.nunocky.myfirebasenoteapp.ui.screens.signin.SignInViewModel
+import org.nunocky.myfirebasenoteapp.ui.screens.signup.SignUpRoute
+import org.nunocky.myfirebasenoteapp.ui.screens.signup.SignUpViewModel
 
 @Serializable
 object Home
-
-@Serializable
-object Login
 
 @Serializable
 object NewItem
@@ -31,6 +32,17 @@ object NewItem
 data class EditItem(
     var itemId: String
 )
+
+@Serializable
+data class SignIn(
+    var snackbarMessage: String
+)
+
+@Serializable
+object SignUp
+
+@Serializable
+object ResetPassword
 
 @Composable
 fun AppRouting() {
@@ -41,21 +53,27 @@ fun AppRouting() {
         navController = navHostController,
         startDestination = Home
     ) {
-        composable<Home> { _ ->
+        composable<Home> { backStackEntry ->
+            val snackbarMessage = backStackEntry.savedStateHandle.get<String>("snackbarMessage")
             HomeRoute(
                 navHostController,
                 viewModel = hiltViewModel<HomeViewModel>(),
-                onLoginNeeded = { navHostController.navigate(Login) },
+                onLoginNeeded = { message ->
+                    navHostController.navigate(SignIn(message))
+                },
                 onCreateNewItem = { navHostController.navigate(NewItem) },
                 onRequestEditItem = { itemId ->
-                    navHostController.navigate(EditItem(itemId = itemId))
-                }
+                    navHostController.navigate(EditItem(itemId))
+                },
+                snackbarMessage = snackbarMessage,
             )
         }
-        composable<Login> { _ ->
-            LoginRoute(
+
+        composable<SignIn> { backStackEntry ->
+            val args: SignIn = backStackEntry.toRoute()
+            SignInRoute(
                 navHostController,
-                viewModel = hiltViewModel<LoginViewModel>(),
+                viewModel = hiltViewModel<SignInViewModel>(),
                 onLoginSuccess = { _ ->
                     navHostController.popBackStack()
                 },
@@ -63,8 +81,16 @@ fun AppRouting() {
                     // アプリケーション終了
                     (context as? Activity)?.finish()
                 },
+                onRequestResetPassword = {
+                    navHostController.navigate(ResetPassword)
+                },
+                onRequestCreateAccount = {
+                    navHostController.navigate(SignUp)
+                },
+                snackbarMessage = args.snackbarMessage
             )
         }
+
         composable<NewItem> { _ ->
             NewItemRoute(
                 navHostController = navHostController,
@@ -73,6 +99,7 @@ fun AppRouting() {
                 onEditCancelled = { navHostController.popBackStack() },
             )
         }
+
         composable<EditItem> { backStackEntry ->
             val args: EditItem = backStackEntry.toRoute()
             EditItemRoute(
@@ -81,6 +108,39 @@ fun AppRouting() {
                 itemId = args.itemId,
                 onSaveSuccess = { navHostController.popBackStack() },
                 onEditCancelled = { navHostController.popBackStack() },
+            )
+        }
+
+        composable<ResetPassword> {
+            val viewModel = hiltViewModel<ResetPasswordViewModel>()
+            ResetPasswordRoute(
+                navHostController = navHostController,
+                viewModel = viewModel,
+                onResetPasswordSuccess = {
+                    navHostController.popBackStack(Home, inclusive = false)
+                },
+                onResetPasswordCancelled = {
+                    navHostController.popBackStack(Home, inclusive = false)
+                }
+            )
+        }
+
+        composable<SignUp> {
+            val viewModel = hiltViewModel<SignUpViewModel>()
+            SignUpRoute(
+                navHostController = navHostController,
+                viewModel = viewModel,
+                onSignUpSuccess = {
+                    // Home画面のsavedStateHandleにメッセージをセット
+                    navHostController.currentBackStackEntry?.savedStateHandle?.set(
+                        "snackbarMessage",
+                        "アカウント作成に成功しました"
+                    )
+                    navHostController.popBackStack(Home, inclusive = false)
+                },
+                onSignUpCancelled = {
+                    navHostController.popBackStack(Home, inclusive = false)
+                }
             )
         }
     }

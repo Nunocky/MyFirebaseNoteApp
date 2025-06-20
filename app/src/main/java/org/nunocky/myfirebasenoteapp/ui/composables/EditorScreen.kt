@@ -22,6 +22,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.nunocky.myfirebasenoteapp.data.EditType
 import org.nunocky.myfirebasenoteapp.ui.theme.Typography
+import org.nunocky.myfirebasenoteapp.ui.theme.myfirebasenoteappTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -105,8 +106,10 @@ fun EditorScreen(
     }
 }
 
-@Preview(showBackground = true, widthDp = 1080, heightDp = 1920)
+@Preview(showBackground = true, widthDp = 412, heightDp = 915)
 @Composable
 fun EditorScreenPreview() {
-    EditorScreen()
+    myfirebasenoteappTheme {
+        EditorScreen()
+    }
 }

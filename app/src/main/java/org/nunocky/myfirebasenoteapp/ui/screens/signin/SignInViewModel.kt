@@ -1,4 +1,4 @@
-package org.nunocky.myfirebasenoteapp.ui.screens.login
+package org.nunocky.myfirebasenoteapp.ui.screens.signin
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -10,19 +10,17 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.nunocky.myfirebasenoteapp.data.SignInResult
+import org.nunocky.myfirebasenoteapp.data.UIState
 import org.nunocky.myfirebasenoteapp.data.User
 import org.nunocky.myfirebasenoteapp.domain.CloudStorageUseCase
+import org.nunocky.myfirebasenoteapp.domain.EmailSignInUseCase
 import org.nunocky.myfirebasenoteapp.domain.GoogleSignInUseCase
-import org.nunocky.myfirebasenoteapp.data.UIState
 import javax.inject.Inject
 
-/**
- * Google Sign In
- * very thanks to https://qiita.com/kisayama/items/5dc7618b76f6d86a6d55
- */
 @HiltViewModel
-class LoginViewModel @Inject constructor(
+class SignInViewModel @Inject constructor(
     private val googleSignInUseCase: GoogleSignInUseCase,
+    private val emailSignInUseCase: EmailSignInUseCase,
     private val cloudStorageUseCase: CloudStorageUseCase,
 ) : ViewModel() {
 
@@ -45,6 +43,30 @@ class LoginViewModel @Inject constructor(
                     }
 
                     is SignInResult.Cancelled -> {}
+                }
+            }
+        }
+    }
+
+    fun signInWithEmail(email: String, password: String) {
+        viewModelScope.launch {
+            _signInUIState.update { UIState.Processing }
+
+            withContext(Dispatchers.IO) {
+                emailSignInUseCase.signIn(email, password).let { result ->
+                    when (result) {
+                        is SignInResult.Success<*> -> {
+                            _signInUIState.update { UIState.Success(result.user as User) }
+                        }
+
+                        is SignInResult.Failed -> {
+                            _signInUIState.update { UIState.Error(result.exception) }
+                        }
+
+                        is SignInResult.Cancelled -> {
+                            // Handle cancellation if needed
+                        }
+                    }
                 }
             }
         }
