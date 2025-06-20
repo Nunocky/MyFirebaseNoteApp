@@ -34,10 +34,8 @@ class ResetPasswordViewModel @Inject constructor(
                 }
 
                 is ResetPasswordResult.Failed -> {
-                    _resetUIState.update {
-                        authentication.signOut()
-                        UIState.Error(Exception("Reset password failed"))
-                    }
+                    authentication.signOut()
+                    _resetUIState.update { UIState.Error(Exception("Reset password failed")) }
                 }
             }
         }
