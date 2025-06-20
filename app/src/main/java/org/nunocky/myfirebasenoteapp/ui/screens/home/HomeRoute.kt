@@ -41,7 +41,8 @@ fun HomeRoute(
     onLoginNeeded: (message: String) -> Unit = { _ -> },
     onCreateNewItem: () -> Unit = {},
     onRequestEditItem: (itemId: String) -> Unit = { _ -> },
-    snackbarMessage: String? = null
+//    snackbarMessage: String? = null,
+//    onSnackbarShown: () -> Unit = {}
 ) {
     val context = LocalContext.current
     val uiState: UIState by viewModel.uiState.collectAsState()
@@ -77,7 +78,7 @@ fun HomeRoute(
         onItemClicked = { itemId ->
             onRequestEditItem(itemId)
         },
-        snackbarMessage = snackbarMessage // 追加
+//        snackbarMessage = snackbarMessage,
     )
 }
 
@@ -88,12 +89,12 @@ fun HomeScreen(
     itemList: List<Pair<String, String>> = emptyList(),
     onNewItemButtonClicked: () -> Unit = {},
     onItemClicked: (itemId: String) -> Unit = { _ -> },
-    snackbarMessage: String? = null // 追加
+    snackbarMessage: String? = null,
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
 
     LaunchedEffect(key1 = snackbarMessage) {
-        if (snackbarMessage != null) {
+        if (snackbarMessage != null && snackbarMessage.isNotEmpty()) {
             snackbarHostState.showSnackbar(snackbarMessage)
         }
     }
