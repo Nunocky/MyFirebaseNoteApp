@@ -63,7 +63,8 @@ class FirebaseGoogleSignInUseCase @Inject constructor(
                             uid = firebaseUser.uid,
                             displayName = firebaseUser.displayName,
                             email = firebaseUser.email,
-                            photoUrl = firebaseUser.photoUrl?.toString()
+                            photoUrl = firebaseUser.photoUrl?.toString(),
+                            emailVerified = firebaseUser.isEmailVerified
                         )
                     )
                 } else {

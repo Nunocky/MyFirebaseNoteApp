@@ -12,12 +12,15 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.Preview
@@ -32,9 +35,10 @@ import org.nunocky.myfirebasenoteapp.ui.theme.myfirebasenoteappTheme
 fun HomeRoute(
     navHostController: NavHostController,
     viewModel: HomeViewModel,
-    onLoginNeeded: () -> Unit = {},
+    onLoginNeeded: (message: String) -> Unit = { _ -> },
     onCreateNewItem: () -> Unit = {},
-    onRequestEditItem: (itemId: String) -> Unit = { _ -> } // 編集画面に遷移するためのコールバック
+    onRequestEditItem: (itemId: String) -> Unit = { _ -> },
+    snackbarMessage: String? = null
 ) {
     val uiState: UIState by viewModel.uiState.collectAsState()
 
@@ -43,9 +47,15 @@ fun HomeRoute(
         (uiState as? UIState.Success<*>)?.data as? List<Pair<String, String>> ?: emptyList()
 
     LaunchedEffect(key1 = Unit) {
+        if (viewModel.authentication.currentUser()?.emailVerified == false) {
+            viewModel.authentication.signOut()
+            onLoginNeeded("メールに記載されたリンクをクリックして認証を完了してください。")
+            return@LaunchedEffect
+        }
+
         // 未ログインならログイン画面に遷移する
         if (viewModel.authentication.currentUser() == null) {
-            onLoginNeeded()
+            onLoginNeeded("")
             return@LaunchedEffect
         }
 
@@ -62,7 +72,8 @@ fun HomeRoute(
         },
         onItemClicked = { itemId ->
             onRequestEditItem(itemId)
-        }
+        },
+        snackbarMessage = snackbarMessage // 追加
     )
 }
 
@@ -73,7 +84,16 @@ fun HomeScreen(
     itemList: List<Pair<String, String>> = emptyList(),
     onNewItemButtonClicked: () -> Unit = {},
     onItemClicked: (itemId: String) -> Unit = { _ -> },
+    snackbarMessage: String? = null // 追加
 ) {
+    val snackbarHostState = remember { SnackbarHostState() }
+
+    LaunchedEffect(key1 = snackbarMessage) {
+        if (snackbarMessage != null) {
+            snackbarHostState.showSnackbar(snackbarMessage)
+        }
+    }
+
     if (user != null) {
         Scaffold(
             topBar = {
@@ -94,7 +114,8 @@ fun HomeScreen(
                         contentDescription = "Add new item"
                     )
                 }
-            }
+            },
+            snackbarHost = { SnackbarHost(snackbarHostState) } // 追加
         ) { innerPadding ->
             LazyColumn(modifier = Modifier.padding(innerPadding)) {
                 if (itemList.isEmpty()) {

@@ -63,12 +63,20 @@ fun SignInRoute(
     onLoginCancelled: () -> Unit,
     onRequestResetPassword: () -> Unit,
     onRequestCreateAccount: () -> Unit,
+    snackbarMessage: String = "",
 ) {
+    val snackbarHostState = remember { androidx.compose.material3.SnackbarHostState() }
     val loginUIState: UIState by viewModel.signInUIState.collectAsState()
 
     // スワイプバックや戻るボタンで onLoginCancelled を実行
     BackHandler {
         onLoginCancelled()
+    }
+
+    if (snackbarMessage.isNotEmpty()) {
+        LaunchedEffect(snackbarMessage) {
+            snackbarHostState.showSnackbar(snackbarMessage)
+        }
     }
 
     LaunchedEffect(key1 = loginUIState) {
@@ -113,6 +121,8 @@ fun SignInRoute(
 
         onLoginCancelled = onLoginCancelled,
     )
+    // snackbarの表示
+    androidx.compose.material3.SnackbarHost(hostState = snackbarHostState)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -342,7 +352,8 @@ fun SignInScreenPreview_Success() {
                     uid = "12345",
                     displayName = "Test User",
                     email = "user@example.com",
-                    photoUrl = "https://example.com/photo.jpg"
+                    photoUrl = "https://example.com/photo.jpg",
+                    emailVerified = true,
                 )
             ),
             onGoogleLoginRequest = {},

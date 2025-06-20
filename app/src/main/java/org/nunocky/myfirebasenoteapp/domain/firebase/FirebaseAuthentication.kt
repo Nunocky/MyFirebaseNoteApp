@@ -11,6 +11,11 @@ class FirebaseAuthentication @Inject constructor() : Authentication {
         uid = Firebase.auth.currentUser?.uid ?: "",
         displayName = Firebase.auth.currentUser?.displayName,
         email = Firebase.auth.currentUser?.email,
-        photoUrl = Firebase.auth.currentUser?.photoUrl?.toString()
+        photoUrl = Firebase.auth.currentUser?.photoUrl?.toString(),
+        emailVerified = Firebase.auth.currentUser?.isEmailVerified ?: false
     )
+
+    override fun signOut() {
+        Firebase.auth.signOut()
+    }
 }

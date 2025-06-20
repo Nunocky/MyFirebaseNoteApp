@@ -6,6 +6,6 @@ import org.nunocky.myfirebasenoteapp.data.SignUpResult
 
 interface EmailSignInUseCase {
     suspend fun signIn(email: String, password: String): SignInResult
-    suspend fun createAccount(email: String, password: String): SignUpResult
+    suspend fun signUp(email: String, password: String): SignUpResult
     suspend fun resetPassword(email: String): ResetPasswordResult
 }

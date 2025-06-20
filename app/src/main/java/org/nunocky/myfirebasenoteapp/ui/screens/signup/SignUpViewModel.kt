@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import org.nunocky.myfirebasenoteapp.data.SignUpResult
 import org.nunocky.myfirebasenoteapp.data.UIState
 import org.nunocky.myfirebasenoteapp.domain.Authentication
 import org.nunocky.myfirebasenoteapp.domain.EmailSignInUseCase
@@ -25,8 +26,16 @@ class SignUpViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             _signupUIState.update { UIState.Processing }
             try {
-                emailSignInUseCase.createAccount(email, password)
-                _signupUIState.update { UIState.Success(Unit) }
+                val result = emailSignInUseCase.signUp(email, password)
+                when (result) {
+                    is SignUpResult.Success -> {
+                        _signupUIState.update { UIState.Success(result.user) }
+                    }
+
+                    is SignUpResult.Failed -> {
+                        _signupUIState.update { UIState.Error(result.exception) }
+                    }
+                }
             } catch (e: Exception) {
                 _signupUIState.update { UIState.Error(e) }
             }
