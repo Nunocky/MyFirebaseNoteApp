@@ -54,7 +54,6 @@ android {
                 "WEB_CLIENT_ID",
                 project.properties["WEB_CLIENT_ID"] as String
             )
-
         }
         create("dev") {
             dimension = "env"
