@@ -1,23 +1,21 @@
 package org.nunocky.myfirebasenoteapp.network.firebase
 
-import android.content.Context
 import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
-import dagger.hilt.android.qualifiers.ApplicationContext
-import org.nunocky.myfirebasenoteapp.usecase.EmailSignInUseCase
 import org.nunocky.myfirebasenoteapp.data.ResetPasswordResult
 import org.nunocky.myfirebasenoteapp.data.SignInResult
 import org.nunocky.myfirebasenoteapp.data.SignUpResult
 import org.nunocky.myfirebasenoteapp.data.User
+import org.nunocky.myfirebasenoteapp.usecase.EmailAuthUseCase
 import javax.inject.Inject
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
 private const val TAG = "FirebaseEmailSignInUseCase"
 
-class FirebaseEmailSignInUseCase @Inject constructor(
-    @ApplicationContext private val context: Context
-) : EmailSignInUseCase {
+class FirebaseEmailAuthUseCase @Inject constructor(
+//    @ApplicationContext private val context: Context
+) : EmailAuthUseCase {
     override suspend fun signIn(email: String, password: String): SignInResult {
         return suspendCoroutine { continuation ->
             FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)

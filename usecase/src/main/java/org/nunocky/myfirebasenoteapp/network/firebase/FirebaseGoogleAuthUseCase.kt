@@ -9,21 +9,18 @@ import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import kotlinx.coroutines.tasks.await
-import org.nunocky.myfirebasenoteapp.usecase.GoogleSignInUseCase
 import org.nunocky.myfirebasenoteapp.data.SignInResult
 import org.nunocky.myfirebasenoteapp.data.User
+import org.nunocky.myfirebasenoteapp.usecase.GoogleAuthUseCase
 import javax.inject.Inject
 
 /**
  * Google Sign In
  * very thanks to https://qiita.com/kisayama/items/5dc7618b76f6d86a6d55
- *
- * This implementation uses the new Credentials API to sign in with Google.
- * It requires the Google Identity Services library.
  */
-class FirebaseGoogleSignInUseCase @Inject constructor(
+class FirebaseGoogleAuthUseCase @Inject constructor(
     private val application: Application
-) : GoogleSignInUseCase {
+) : GoogleAuthUseCase {
 
     private fun getSignInRequest(googleClientId: String): GetCredentialRequest {
         val googleIdOption: GetSignInWithGoogleOption = GetSignInWithGoogleOption.Builder(

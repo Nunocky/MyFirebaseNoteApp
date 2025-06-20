@@ -2,6 +2,6 @@ package org.nunocky.myfirebasenoteapp.usecase
 
 import org.nunocky.myfirebasenoteapp.data.SignInResult
 
-interface GoogleSignInUseCase {
+interface GoogleAuthUseCase {
     suspend fun signIn(googleClientId: String): SignInResult
 }
