@@ -36,7 +36,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.buildAnnotatedString
@@ -49,6 +51,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import org.nunocky.myfirebasenoteapp.BuildConfig
+import org.nunocky.myfirebasenoteapp.R
 import org.nunocky.myfirebasenoteapp.data.UIState
 import org.nunocky.myfirebasenoteapp.data.User
 import org.nunocky.myfirebasenoteapp.ui.theme.myfirebasenoteappTheme
@@ -65,6 +68,7 @@ fun SignInRoute(
     onRequestCreateAccount: () -> Unit,
     snackbarMessage: String = "",
 ) {
+    val context = LocalContext.current
     val snackbarHostState = remember { androidx.compose.material3.SnackbarHostState() }
     val loginUIState: UIState by viewModel.signInUIState.collectAsState()
 
@@ -83,7 +87,7 @@ fun SignInRoute(
         when (loginUIState) {
             is UIState.Success<*> -> {
                 val user = (loginUIState as UIState.Success<*>).data as? User
-                    ?: throw RuntimeException("Expected User type")
+                    ?: throw RuntimeException("unexpected data type")
 
                 // ログイン成功時の処理
                 viewModel.registerUser(user)
@@ -171,7 +175,7 @@ fun SignInScreen(
                     },
                     enabled = buttonEnabled
                 ) {
-                    Text("Sign in with Google")
+                    Text(stringResource(R.string.sign_in_with_google))
                 }
 
                 Text(
@@ -194,7 +198,7 @@ fun SignInScreen(
                             email = it
                             isValueEmail = EmailValidator.isValidEmail(it)
                         },
-                        label = { Text("Email") },
+                        label = { Text(stringResource(R.string.email)) },
                         singleLine = true,
                         enabled = textEditable,
                     )
@@ -204,7 +208,7 @@ fun SignInScreen(
                         value = password,
                         onValueChange = { password = it },
                         singleLine = true,
-                        label = { Text("Enter password") },
+                        label = { Text(stringResource(R.string.enter_password)) },
                         visualTransformation = if (passwordHidden) PasswordVisualTransformation() else VisualTransformation.None,
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                         trailingIcon = {
@@ -213,7 +217,9 @@ fun SignInScreen(
                                     if (passwordHidden) Icons.Filled.Visibility else Icons.Filled.VisibilityOff
                                 // Please provide localized description for accessibility services
                                 val description =
-                                    if (passwordHidden) "Show password" else "Hide password"
+                                    if (passwordHidden) stringResource(R.string.show_password) else stringResource(
+                                        R.string.hide_password
+                                    )
                                 Icon(imageVector = visibilityIcon, contentDescription = description)
                             }
                         },
@@ -232,16 +238,16 @@ fun SignInScreen(
                     TextButton(onClick = {
                         onResetPasswordRequest()
                     }) {
-                        Text("Reset password")
+                        Text(stringResource(R.string.reset_password))
                     }
 
                     val LINK_TAG = "linkTag"
 
                     val annotatedText = buildAnnotatedString {
-                        append("パスワードを持っていませんか? ")
+                        append(stringResource(R.string.don_t_have_a_password))
 
                         val start = length
-                        val linkText = "アカウントを作成してください"
+                        val linkText = stringResource(R.string.create_an_account)
                         append(linkText)
                         val end = length
 
@@ -287,18 +293,18 @@ fun SignInScreen(
                         }
 
                         is UIState.Processing -> {
-                            Text("Processing...")
+                            Text(stringResource(R.string.processing))
                         }
 
                         is UIState.Success<*> -> {
 //                        val user = loginUIState.data as User
 //                        Text("Login successful: ${user.displayName}")
-                            Text("Login successful")
+                            Text(stringResource(R.string.sign_in_successful))
                         }
 
                         is UIState.Error -> {
 //                        Text("Login failed: $loginUIState")
-                            Text("Login failed")
+                            Text(stringResource(R.string.sign_in_failed))
                         }
 
                         is UIState.Cancelled -> {

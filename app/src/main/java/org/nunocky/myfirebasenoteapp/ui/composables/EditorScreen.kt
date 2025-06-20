@@ -18,8 +18,10 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import org.nunocky.myfirebasenoteapp.R
 import org.nunocky.myfirebasenoteapp.data.EditType
 import org.nunocky.myfirebasenoteapp.ui.theme.Typography
 import org.nunocky.myfirebasenoteapp.ui.theme.myfirebasenoteappTheme
@@ -46,8 +48,8 @@ fun EditorScreen(
             TopAppBar(
                 title = {
                     val screenTitle = when (editType) {
-                        EditType.CREATE -> "Create New Item"
-                        EditType.EDIT -> "Edit Item"
+                        EditType.CREATE -> stringResource(R.string.create_new_item)
+                        EditType.EDIT -> stringResource(R.string.edit_item)
                     }
                     Text(screenTitle, style = Typography.titleLarge)
                 },
@@ -56,7 +58,7 @@ fun EditorScreen(
                     IconButton(onClick = { onBackRequested() }) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back"
+                            contentDescription = stringResource(R.string.back)
                         )
                     }
                 },
@@ -65,14 +67,20 @@ fun EditorScreen(
                         IconButton(onClick = {
                             onDeleteItemRequested()
                         }) {
-                            Icon(imageVector = Icons.Filled.Delete, contentDescription = "削除")
+                            Icon(
+                                imageVector = Icons.Filled.Delete,
+                                contentDescription = stringResource(R.string.delete)
+                            )
                         }
                     }
 
                     IconButton(onClick = {
                         onSaveRequested(title, content)
                     }) {
-                        Icon(imageVector = Icons.Filled.Done, contentDescription = "保存")
+                        Icon(
+                            imageVector = Icons.Filled.Done,
+                            contentDescription = stringResource(R.string.save)
+                        )
                     }
                 })
         },
@@ -86,7 +94,7 @@ fun EditorScreen(
             OutlinedTextField(
                 value = title,
                 onValueChange = { onTitleChange(it) },
-                label = { Text("Title") },
+                label = { Text(stringResource(R.string.title)) },
                 modifier = Modifier.Companion
                     .padding(16.dp)
                     .fillMaxSize(fraction = 1f)
@@ -94,7 +102,7 @@ fun EditorScreen(
             OutlinedTextField(
                 value = content,
                 onValueChange = { onContentChange(it) },
-                label = { Text("Content") },
+                label = { Text(stringResource(R.string.content)) },
                 modifier = Modifier.Companion
                     .padding(16.dp)
                     .fillMaxSize(fraction = 1f),

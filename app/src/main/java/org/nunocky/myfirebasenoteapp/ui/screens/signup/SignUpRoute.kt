@@ -31,7 +31,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -39,6 +41,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import org.nunocky.myfirebasenoteapp.R
 import org.nunocky.myfirebasenoteapp.data.UIState
 import org.nunocky.myfirebasenoteapp.data.User
 import org.nunocky.myfirebasenoteapp.ui.theme.myfirebasenoteappTheme
@@ -77,6 +80,7 @@ fun SignUpScreen(
     onCreateAccountSuccess: (user: User) -> Unit = {},
     onCreateAccountCancelled: () -> Unit = {},
 ) {
+    val context = LocalContext.current
     var email by rememberSaveable { mutableStateOf("") }
     val isValidEmail = EmailValidator.isValidEmail(email)
 
@@ -95,8 +99,8 @@ fun SignUpScreen(
     val passwordError = remember(password, password2) {
         when {
             password.isEmpty() || password2.isEmpty() -> null
-            password != password2 -> "パスワードが一致しません"
-            !PasswordValidator.isValidPassword(password) -> "パスワードが不正です"
+            password != password2 -> context.getString(R.string.passwords_do_not_match)
+            !PasswordValidator.isValidPassword(password) -> context.getString(R.string.password_must_be_at_least_8_characters_and_contain_at_least_one_uppercase_letter_and_one_number)
             else -> null
         }
     }
@@ -115,7 +119,6 @@ fun SignUpScreen(
             UIState.Cancelled -> {}
             is UIState.Error -> {
                 Log.d(TAG, "SignUpScreen: Error: ${signupUIState.e.message}")
-
             }
         }
     }
@@ -141,7 +144,7 @@ fun SignUpScreen(
                     modifier = Modifier.padding(top = 16.dp)
                 )
                 Text(
-                    "MyFirebaseNoteAppへようこそ",
+                    stringResource(R.string.welcome_myfirebasenoteapp),
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(bottom = 16.dp),
@@ -156,7 +159,7 @@ fun SignUpScreen(
                     onValueChange = {
                         email = it
                     },
-                    label = { Text("Email") },
+                    label = { Text(stringResource(R.string.email)) },
                     singleLine = true,
                 )
 
@@ -166,7 +169,7 @@ fun SignUpScreen(
                     value = password,
                     onValueChange = { password = it },
                     singleLine = true,
-                    label = { Text("Password") },
+                    label = { Text(stringResource(R.string.password)) },
                     visualTransformation =
                         if (passwordHidden) PasswordVisualTransformation() else VisualTransformation.None,
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
@@ -175,8 +178,9 @@ fun SignUpScreen(
                             val visibilityIcon =
                                 if (passwordHidden) Icons.Filled.Visibility else Icons.Filled.VisibilityOff
                             // Please provide localized description for accessibility services
-                            val description =
-                                if (passwordHidden) "Show password" else "Hide password"
+                            val description = if (passwordHidden)
+                                stringResource(R.string.show_password)
+                            else stringResource(R.string.hide_password)
                             Icon(imageVector = visibilityIcon, contentDescription = description)
                         }
                     }
@@ -188,7 +192,7 @@ fun SignUpScreen(
                     value = password2,
                     onValueChange = { password2 = it },
                     singleLine = true,
-                    label = { Text("Password (again)") },
+                    label = { Text(stringResource(R.string.password_again)) },
                     visualTransformation =
                         if (password2Hidden) PasswordVisualTransformation() else VisualTransformation.None,
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
@@ -197,8 +201,10 @@ fun SignUpScreen(
                             val visibilityIcon =
                                 if (password2Hidden) Icons.Filled.Visibility else Icons.Filled.VisibilityOff
                             // Please provide localized description for accessibility services
-                            val description =
-                                if (password2Hidden) "Show password" else "Hide password"
+                            val description = if (password2Hidden)
+                                stringResource(R.string.show_password)
+                            else
+                                stringResource(R.string.hide_password)
                             Icon(imageVector = visibilityIcon, contentDescription = description)
                         }
                     }
@@ -224,7 +230,7 @@ fun SignUpScreen(
                     onClick = {
                         onSignupButtonClicked(email, password)
                     }) {
-                    Text("サインアップ")
+                    Text(stringResource(R.string.sign_up))
                 }
                 Spacer(
                     modifier = Modifier.padding(top = 16.dp)

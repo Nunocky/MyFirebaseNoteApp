@@ -23,9 +23,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import org.nunocky.myfirebasenoteapp.R
 import org.nunocky.myfirebasenoteapp.data.UIState
 import org.nunocky.myfirebasenoteapp.data.User
 import org.nunocky.myfirebasenoteapp.ui.theme.Typography
@@ -99,7 +101,7 @@ fun HomeScreen(
             topBar = {
                 TopAppBar(
                     title = {
-                        Text("Notes", style = Typography.titleLarge)
+                        Text(stringResource(R.string.notes), style = Typography.titleLarge)
                     },
                 )
             },
@@ -111,7 +113,7 @@ fun HomeScreen(
                     }) {
                     Icon(
                         imageVector = Icons.Default.Add,
-                        contentDescription = "Add new item"
+                        contentDescription = stringResource(R.string.add_new_item)
                     )
                 }
             },
@@ -121,7 +123,7 @@ fun HomeScreen(
                 if (itemList.isEmpty()) {
                     item {
                         Text(
-                            text = "No Items",
+                            text = stringResource(R.string.no_items),
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(16.dp)

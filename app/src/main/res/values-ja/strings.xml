@@ -1,0 +1,32 @@
+<resources>
+    <string name="welcome_myfirebasenoteapp">MyFirebaseNoteAppへようこそ</string>
+    <string name="add_new_item">新しいアイテムを追加</string>
+    <string name="are_you_sure_you_want_to_delete_this_item">このアイテムを削除してもよろしいですか？</string>
+    <string name="back">戻る</string>
+    <string name="confirm_deletion">削除の確認</string>
+    <string name="content">内容</string>
+    <string name="create_an_account">アカウントを作成</string>
+    <string name="create_new_item">新しいアイテムを作成</string>
+    <string name="delete">削除</string>
+    <string name="don_t_have_a_password">パスワードをお持ちでないですか？</string>
+    <string name="edit_item">アイテムを編集</string>
+    <string name="email">メールアドレス</string>
+    <string name="enter_password">パスワードを入力</string>
+    <string name="hide_password">パスワードを非表示</string>
+    <string name="sign_in_failed">サインインに失敗しました</string>
+    <string name="sign_in_successful">サインインに成功しました</string>
+    <string name="no_items">アイテムがありません</string>
+    <string name="notes">ノート</string>
+    <string name="password">パスワード</string>
+    <string name="password_again">パスワード（再入力）</string>
+    <string name="password_must_be_at_least_8_characters_and_contain_at_least_one_uppercase_letter_and_one_number">パスワードは8文字以上で、1つ以上の大文字と数字を含めてください</string>
+    <string name="passwords_do_not_match">パスワードが一致しません</string>
+    <string name="processing">処理中…</string>
+    <string name="reset_password">パスワードをリセット</string>
+    <string name="save">保存</string>
+    <string name="show_password">パスワードを表示</string>
+    <string name="sign_in_with_google">Googleでサインイン</string>
+    <string name="sign_up">サインアップ</string>
+    <string name="title">タイトル</string>
+</resources>
+
