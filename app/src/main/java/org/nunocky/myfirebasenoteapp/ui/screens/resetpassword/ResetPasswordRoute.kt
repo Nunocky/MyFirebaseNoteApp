@@ -21,7 +21,7 @@ fun ResetPasswordRoute(
 fun ResetPasswordScreen() {
 }
 
-@Preview(showBackground = true, widthDp = 1080, heightDp = 1920)
+@Preview(showBackground = true, widthDp = 412, heightDp = 915)
 @Composable
 fun ResetPasswordScreenPreview() {
     myfirebasenoteappTheme {

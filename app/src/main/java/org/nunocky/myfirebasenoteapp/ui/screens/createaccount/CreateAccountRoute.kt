@@ -1,12 +1,14 @@
 package org.nunocky.myfirebasenoteapp.ui.screens.createaccount
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -99,13 +101,17 @@ fun CreateAccountScreen(
     ) {
         Card(
             modifier = Modifier
-                .padding(16.dp)
-                .wrapContentHeight(Alignment.CenterVertically),
+                .wrapContentHeight(Alignment.CenterVertically)
+                .fillMaxWidth(),
+            colors = CardDefaults.cardColors(containerColor = Color.White)
         ) {
             Column(
-                modifier = Modifier
-                    .padding(all = 16.dp)
+                modifier = Modifier.padding(horizontal = 16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
+                Spacer(
+                    modifier = Modifier.padding(top = 16.dp)
+                )
                 Text(
                     "MyFirebaseNoteAppへようこそ",
                     modifier = Modifier
@@ -115,23 +121,19 @@ fun CreateAccountScreen(
                     style = MaterialTheme.typography.headlineLarge
                 )
 
-                Column(
-                    modifier = Modifier.padding(horizontal = 16.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    // email
-                    TextField(
-                        modifier = Modifier.fillMaxWidth(),
-                        value = email,
-                        onValueChange = {
-                            email = it
-                            isValueEmail = EmailValidator.isValidEmail(it)
-                        },
-                        label = { Text("Email") },
-                        singleLine = true,
-                    )
+                // email
+                TextField(
+                    modifier = Modifier.fillMaxWidth(),
+                    value = email,
+                    onValueChange = {
+                        email = it
+                        isValueEmail = EmailValidator.isValidEmail(it)
+                    },
+                    label = { Text("Email") },
+                    singleLine = true,
+                )
 
-                    // password
+                // password
 //                TextField(
 //                    modifier = Modifier.fillMaxWidth(),
 //                    value = password,
@@ -175,23 +177,25 @@ fun CreateAccountScreen(
 //                    }
 //                )
 
-                    Button(
-                        enabled = isValueEmail, // && isValuePassword,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = 16.dp),
-                        onClick = {
-                            onSignupButtonClicked(email, password)
-                        }) {
-                        Text("サインアップ")
-                    }
+                Button(
+                    enabled = isValueEmail, // && isValuePassword,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 16.dp),
+                    onClick = {
+                        onSignupButtonClicked(email, password)
+                    }) {
+                    Text("サインアップ")
                 }
+                Spacer(
+                    modifier = Modifier.padding(top = 16.dp)
+                )
             }
         }
     }
 }
 
-@Preview(showBackground = true, widthDp = 1080, heightDp = 1920)
+@Preview(showBackground = true, widthDp = 412, heightDp = 915)
 @Composable
 fun CreateAccountScreenPreview() {
     myfirebasenoteappTheme {

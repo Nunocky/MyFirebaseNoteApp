@@ -3,6 +3,7 @@ package org.nunocky.myfirebasenoteapp.ui.screens.login
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -13,6 +14,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -50,11 +53,6 @@ import org.nunocky.myfirebasenoteapp.data.UIState
 import org.nunocky.myfirebasenoteapp.data.User
 import org.nunocky.myfirebasenoteapp.ui.theme.myfirebasenoteappTheme
 import org.nunocky.myfirebasenoteapp.validator.EmailValidator
-
-
-// TODO
-// - パスワードリセット画面
-// - アカウント作成画面
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -134,7 +132,8 @@ fun LoginScreen(
     var passwordHidden by rememberSaveable { mutableStateOf(true) }
     var isValuePassword = password.isNotEmpty() // ログインではバリデーションを行わない(コンソールで設定されている可能性がある)
 
-    val buttonEnabled = loginUIState !is UIState.Processing
+    val buttonEnabled = loginUIState !is UIState.Processing && loginUIState !is UIState.Success<*>
+    val textEditable = buttonEnabled
 
     Surface(
         modifier = Modifier
@@ -142,159 +141,172 @@ fun LoginScreen(
             .testTag("background"),
         color = Color.Black.copy(alpha = 0.2f)
     ) {
-        Column(
+        Card(
             modifier = Modifier
-                .fillMaxWidth()
                 .wrapContentHeight(Alignment.CenterVertically)
+                .fillMaxWidth(),
+            colors = CardDefaults.cardColors(containerColor = Color.White)
         ) {
-            Button(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp),
-                onClick = {
-                    onGoogleLoginRequest()
-                },
-                enabled = buttonEnabled
-            ) {
-                Text("Sign in with Google")
-            }
-
-            Text(
-                "または",
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .wrapContentHeight(Alignment.CenterVertically)
-                    .padding(top = 8.dp, bottom = 8.dp),
-                textAlign = TextAlign.Center
-            )
-
-            Column(
-                modifier = Modifier.padding(horizontal = 16.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                TextField(
-                    modifier = Modifier.fillMaxWidth(),
-                    value = email,
-                    onValueChange = {
-                        email = it
-                        isValueEmail = EmailValidator.isValidEmail(it)
-                    },
-                    label = { Text("Email") },
-                    singleLine = true,
-                )
-
-                TextField(
-                    modifier = Modifier.fillMaxWidth(),
-                    value = password,
-                    onValueChange = { password = it },
-                    singleLine = true,
-                    label = { Text("Enter password") },
-                    visualTransformation =
-                        if (passwordHidden) PasswordVisualTransformation() else VisualTransformation.None,
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                    trailingIcon = {
-                        IconButton(onClick = { passwordHidden = !passwordHidden }) {
-                            val visibilityIcon =
-                                if (passwordHidden) Icons.Filled.Visibility else Icons.Filled.VisibilityOff
-                            // Please provide localized description for accessibility services
-                            val description =
-                                if (passwordHidden) "Show password" else "Hide password"
-                            Icon(imageVector = visibilityIcon, contentDescription = description)
-                        }
-                    }
+            Column {
+                Spacer(
+                    modifier = Modifier.padding(top = 16.dp)
                 )
 
                 Button(
-                    enabled = isValueEmail && isValuePassword,
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp),
                     onClick = {
-                        onEmailLoginRequest(email, password)
+                        onGoogleLoginRequest()
+                    },
+                    enabled = buttonEnabled
+                ) {
+                    Text("Sign in with Google")
+                }
+
+                Text(
+                    "または",
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .wrapContentHeight(Alignment.CenterVertically)
+                        .padding(top = 8.dp, bottom = 8.dp),
+                    textAlign = TextAlign.Center
+                )
+
+                Column(
+                    modifier = Modifier.padding(horizontal = 16.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    TextField(
+                        modifier = Modifier.fillMaxWidth(),
+                        value = email,
+                        onValueChange = {
+                            email = it
+                            isValueEmail = EmailValidator.isValidEmail(it)
+                        },
+                        label = { Text("Email") },
+                        singleLine = true,
+                        enabled = textEditable,
+                    )
+
+                    TextField(
+                        modifier = Modifier.fillMaxWidth(),
+                        value = password,
+                        onValueChange = { password = it },
+                        singleLine = true,
+                        label = { Text("Enter password") },
+                        visualTransformation = if (passwordHidden) PasswordVisualTransformation() else VisualTransformation.None,
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                        trailingIcon = {
+                            IconButton(onClick = { passwordHidden = !passwordHidden }) {
+                                val visibilityIcon =
+                                    if (passwordHidden) Icons.Filled.Visibility else Icons.Filled.VisibilityOff
+                                // Please provide localized description for accessibility services
+                                val description =
+                                    if (passwordHidden) "Show password" else "Hide password"
+                                Icon(imageVector = visibilityIcon, contentDescription = description)
+                            }
+                        },
+                        enabled = textEditable,
+                    )
+
+                    Button(
+                        enabled = isValueEmail && isValuePassword,
+                        modifier = Modifier.fillMaxWidth(),
+                        onClick = {
+                            onEmailLoginRequest(email, password)
+                        }) {
+                        Text("Login")
+                    }
+
+                    TextButton(onClick = {
+                        onResetPasswordRequest()
                     }) {
-                    Text("Login")
-                }
+                        Text("Reset password")
+                    }
 
-                TextButton(onClick = {
-                    onResetPasswordRequest()
-                }) {
-                    Text("Reset password")
-                }
+                    val LINK_TAG = "linkTag"
 
-                val LINK_TAG = "linkTag"
+                    val annotatedText = buildAnnotatedString {
+                        append("パスワードを持っていませんか? ")
 
-                val annotatedText = buildAnnotatedString {
-                    append("パスワードを持っていませんか? ")
+                        val start = length
+                        val linkText = "アカウントを作成してください"
+                        append(linkText)
+                        val end = length
 
-                    val start = length
-                    val linkText = "アカウントを作成してください"
-                    append(linkText)
-                    val end = length
+                        // LINK_TAG アノテーションを付加する
+                        addStringAnnotation(
+                            tag = LINK_TAG,
+                            annotation = linkText,
+                            start = start,
+                            end = end,
+                        )
+                        // リンク色とアンダーラインを追加
+                        addStyle(
+                            style = SpanStyle(
+                                color = MaterialTheme.colorScheme.primary,
+                                textDecoration = TextDecoration.Underline
+                            ), start = start, end = end
+                        )
+                    }
 
-                    // LINK_TAG アノテーションを付加する
-                    addStringAnnotation(
-                        tag = LINK_TAG,
-                        annotation = linkText,
-                        start = start,
-                        end = end,
-                    )
-                    // リンク色とアンダーラインを追加
-                    addStyle(
-                        style = SpanStyle(
-                            color = MaterialTheme.colorScheme.primary,
-                            textDecoration = TextDecoration.Underline
-                        ),
-                        start = start,
-                        end = end
-                    )
-                }
+                    var layoutResult by remember { mutableStateOf<TextLayoutResult?>(null) }
 
-                var layoutResult by remember { mutableStateOf<TextLayoutResult?>(null) }
+                    BasicText(
+                        text = annotatedText,
+                        onTextLayout = { layoutResult = it },
+                        modifier = Modifier.pointerInput(Unit) {
+                            detectTapGestures { offset ->
+                                layoutResult?.let { layout ->
+                                    val position = layout.getOffsetForPosition(offset)
+                                    val linkAnnotation = annotatedText.getStringAnnotations(
+                                        tag = LINK_TAG, start = position, end = position
+                                    ).firstOrNull()
 
-                BasicText(
-                    text = annotatedText,
-                    onTextLayout = { layoutResult = it },
-                    modifier = Modifier.pointerInput(Unit) {
-                        detectTapGestures { offset ->
-                            layoutResult?.let { layout ->
-                                val position = layout.getOffsetForPosition(offset)
-                                val linkAnnotation = annotatedText.getStringAnnotations(
-                                    tag = LINK_TAG, start = position, end = position
-                                ).firstOrNull()
-
-                                if (linkAnnotation != null) {
-                                    onCreateAccountRequest()
+                                    if (linkAnnotation != null) {
+                                        onCreateAccountRequest()
+                                    }
                                 }
                             }
+                        })
+
+                    when (loginUIState) {
+                        is UIState.Initial -> {
+                            Text("")
+                        }
+
+                        is UIState.Processing -> {
+                            Text("Processing...")
+                        }
+
+                        is UIState.Success<*> -> {
+//                        val user = loginUIState.data as User
+//                        Text("Login successful: ${user.displayName}")
+                            Text("Login successful")
+                        }
+
+                        is UIState.Error -> {
+//                        Text("Login failed: $loginUIState")
+                            Text("Login failed")
+                        }
+
+                        is UIState.Cancelled -> {
+                            Text("")
                         }
                     }
-                )
-            }
-
-            when (loginUIState) {
-                is UIState.Initial -> {
+                    Spacer(
+                        modifier = Modifier.padding(top = 16.dp)
+                    )
                 }
-
-                is UIState.Processing -> {
-                    Text("Processing...")
-                }
-
-                is UIState.Success<*> -> {
-                    val user = loginUIState.data as User
-                    Text("Login successful: ${user.displayName}")
-                }
-
-                is UIState.Error -> {
-                    Text("Login failed: $loginUIState")
-                }
-
-                is UIState.Cancelled -> {}
             }
         }
     }
 }
 
-@Preview
+@Preview(showBackground = true, widthDp = 412, heightDp = 915)
 @Composable
-fun LoginScreenPreview() {
+fun LoginScreenPreview_Initial() {
     myfirebasenoteappTheme {
         LoginScreen(
             loginUIState = UIState.Initial,
@@ -302,8 +314,57 @@ fun LoginScreenPreview() {
             onEmailLoginRequest = { _, _ -> },
             onResetPasswordRequest = {},
             onCreateAccountRequest = {},
-            onLoginCancelled = { }
-        )
+            onLoginCancelled = { })
     }
 }
 
+@Preview(showBackground = true, widthDp = 412, heightDp = 915)
+@Composable
+fun LoginScreenPreview_Processing() {
+    myfirebasenoteappTheme {
+        LoginScreen(
+            loginUIState = UIState.Processing,
+            onGoogleLoginRequest = {},
+            onEmailLoginRequest = { _, _ -> },
+            onResetPasswordRequest = {},
+            onCreateAccountRequest = {},
+            onLoginCancelled = { })
+    }
+}
+
+@Preview(showBackground = true, widthDp = 412, heightDp = 915)
+@Composable
+fun LoginScreenPreview_Success() {
+    myfirebasenoteappTheme {
+        LoginScreen(
+            loginUIState = UIState.Success(
+                User(
+                    uid = "12345",
+                    displayName = "Test User",
+                    email = "user@example.com",
+                    photoUrl = "https://example.com/photo.jpg"
+                )
+            ),
+            onGoogleLoginRequest = {},
+            onEmailLoginRequest = { _, _ -> },
+            onResetPasswordRequest = {},
+            onCreateAccountRequest = {},
+            onLoginCancelled = { })
+    }
+}
+
+@Preview(showBackground = true, widthDp = 412, heightDp = 915)
+@Composable
+fun LoginScreenPreview_Error() {
+    myfirebasenoteappTheme {
+        LoginScreen(
+            loginUIState = UIState.Error(
+                Exception("Login failed due to network error")
+            ),
+            onGoogleLoginRequest = {},
+            onEmailLoginRequest = { _, _ -> },
+            onResetPasswordRequest = {},
+            onCreateAccountRequest = {},
+            onLoginCancelled = { })
+    }
+}
