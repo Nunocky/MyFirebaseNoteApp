@@ -87,7 +87,7 @@ fun SignInRoute(
         when (loginUIState) {
             is UIState.Success<*> -> {
                 val user = (loginUIState as UIState.Success<*>).data as? User
-                    ?: throw RuntimeException("unexpected data type")
+                    ?: throw RuntimeException("unexpected data type: expected User, but got ${loginUIState.data?.javaClass?.name ?: "null"}")
 
                 // ログイン成功時の処理
                 viewModel.registerUser(user)
