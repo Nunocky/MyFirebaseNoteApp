@@ -11,7 +11,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
+import org.nunocky.myfirebasenoteapp.R
 import org.nunocky.myfirebasenoteapp.data.EditType
 import org.nunocky.myfirebasenoteapp.data.UIState
 import org.nunocky.myfirebasenoteapp.ui.composables.EditorScreen
@@ -127,8 +129,8 @@ fun EditItemRoute(
     if (shouldShowDeleteConfirmationDialog) {
         AlertDialog(
             onDismissRequest = { shouldShowDeleteConfirmationDialog = false },
-            title = { Text("Confirm Deletion") },
-            text = { Text("Are you sure you want to delete this item?") },
+            title = { Text(stringResource(R.string.confirm_deletion)) },
+            text = { Text(stringResource(R.string.are_you_sure_you_want_to_delete_this_item)) },
             confirmButton = {
                 TextButton(onClick = {
                     shouldShowDeleteConfirmationDialog = false
