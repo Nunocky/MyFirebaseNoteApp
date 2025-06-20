@@ -92,7 +92,8 @@ class AppRoutingTest {
         }
 
         // "Notes"というタイトルが表示されていることを確認
-        composeTestRule.onNodeWithText("Notes").assertIsDisplayed()
+        val noteString = composeTestRule.activity.getString(R.string.notes)
+        composeTestRule.onNodeWithText(noteString).assertIsDisplayed()
     }
 
     @Test
@@ -118,7 +119,9 @@ class AppRoutingTest {
 
         // FABをクリックしてNewItem画面に遷移することを確認する
         composeTestRule.onNodeWithTag("FAB").performClick()
-        composeTestRule.onNodeWithText("Create New Item").assertIsDisplayed()
+
+        val text = composeTestRule.activity.getString(R.string.create_new_item)
+        composeTestRule.onNodeWithText(text).assertIsDisplayed()
     }
 
 //    @Test
