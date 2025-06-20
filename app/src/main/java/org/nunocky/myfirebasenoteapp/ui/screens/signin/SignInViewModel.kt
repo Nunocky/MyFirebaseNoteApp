@@ -1,4 +1,4 @@
-package org.nunocky.myfirebasenoteapp.ui.screens.login
+package org.nunocky.myfirebasenoteapp.ui.screens.signin
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -17,12 +17,8 @@ import org.nunocky.myfirebasenoteapp.domain.EmailSignInUseCase
 import org.nunocky.myfirebasenoteapp.domain.GoogleSignInUseCase
 import javax.inject.Inject
 
-/**
- * Google Sign In
- * very thanks to https://qiita.com/kisayama/items/5dc7618b76f6d86a6d55
- */
 @HiltViewModel
-class LoginViewModel @Inject constructor(
+class SignInViewModel @Inject constructor(
     private val googleSignInUseCase: GoogleSignInUseCase,
     private val emailSignInUseCase: EmailSignInUseCase,
     private val cloudStorageUseCase: CloudStorageUseCase,

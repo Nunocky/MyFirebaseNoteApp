@@ -1,4 +1,4 @@
-package org.nunocky.myfirebasenoteapp.ui.screens.login
+package org.nunocky.myfirebasenoteapp.ui.screens.signin
 
 import app.cash.turbine.test
 import junit.framework.TestCase.assertEquals
@@ -35,14 +35,14 @@ class LoginViewModelTest {
     @Mock
     private lateinit var cloudStorageUseCase: CloudStorageUseCase
 
-    private lateinit var viewModel: LoginViewModel
+    private lateinit var viewModel: SignInViewModel
     private val testDispatcher = StandardTestDispatcher()
 
     @Before
     fun setUp() {
         MockitoAnnotations.openMocks(this)
         Dispatchers.setMain(testDispatcher)
-        viewModel = LoginViewModel(googleSignInUseCase, emailSignInUseCase, cloudStorageUseCase)
+        viewModel = SignInViewModel(googleSignInUseCase, emailSignInUseCase, cloudStorageUseCase)
     }
 
     @After

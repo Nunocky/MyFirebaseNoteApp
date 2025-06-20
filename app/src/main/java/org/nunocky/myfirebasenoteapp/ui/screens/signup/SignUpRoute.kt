@@ -1,4 +1,4 @@
-package org.nunocky.myfirebasenoteapp.ui.screens.createaccount
+package org.nunocky.myfirebasenoteapp.ui.screens.signup
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -35,15 +35,15 @@ import org.nunocky.myfirebasenoteapp.validator.PasswordValidator
 
 
 @Composable
-fun CreateAccountRoute(
+fun SignUpRoute(
     navHostController: NavHostController,
-    viewModel: CreateAccountViewModel,
+    viewModel: SignUpViewModel,
     onCreateAccountSuccess: () -> Unit,
     onCreateAccountCancelled: () -> Unit
 ) {
     val signupUIState by viewModel.signupUIState.collectAsState()
 
-    CreateAccountScreen(
+    SignUpScreen(
         signupUIState,
         onSignupButtonClicked = { email, password ->
             viewModel.createAccount(email, password)
@@ -58,7 +58,7 @@ fun CreateAccountRoute(
 }
 
 @Composable
-fun CreateAccountScreen(
+fun SignUpScreen(
     signupUIState: UIState,
     onSignupButtonClicked: (email: String, password: String) -> Unit = { _, _ -> }, // サインアップボタンがクリックされたときのコールバック
     onCreateAccountSuccess: () -> Unit = {},
@@ -197,9 +197,9 @@ fun CreateAccountScreen(
 
 @Preview(showBackground = true, widthDp = 412, heightDp = 915)
 @Composable
-fun CreateAccountScreenPreview() {
+fun SignUpScreenPreview() {
     myfirebasenoteappTheme {
-        CreateAccountScreen(
+        SignUpScreen(
             signupUIState = UIState.Initial,
             onSignupButtonClicked = { _, _ -> }
         )

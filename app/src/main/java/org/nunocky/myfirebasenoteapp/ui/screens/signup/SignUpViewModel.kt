@@ -1,4 +1,4 @@
-package org.nunocky.myfirebasenoteapp.ui.screens.createaccount
+package org.nunocky.myfirebasenoteapp.ui.screens.signup
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -14,7 +14,7 @@ import org.nunocky.myfirebasenoteapp.domain.EmailSignInUseCase
 import javax.inject.Inject
 
 @HiltViewModel
-class CreateAccountViewModel @Inject constructor(
+class SignUpViewModel @Inject constructor(
     val authentication: Authentication,
     val emailSignInUseCase: EmailSignInUseCase
 ) : ViewModel() {

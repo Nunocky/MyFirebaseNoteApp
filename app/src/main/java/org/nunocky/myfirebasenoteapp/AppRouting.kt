@@ -11,28 +11,19 @@ import androidx.navigation.toRoute
 import kotlinx.serialization.Serializable
 import org.nunocky.myfirebasenoteapp.ui.screens.create.NewItemRoute
 import org.nunocky.myfirebasenoteapp.ui.screens.create.NewItemViewModel
-import org.nunocky.myfirebasenoteapp.ui.screens.createaccount.CreateAccountRoute
-import org.nunocky.myfirebasenoteapp.ui.screens.createaccount.CreateAccountViewModel
 import org.nunocky.myfirebasenoteapp.ui.screens.edit.EditItemRoute
 import org.nunocky.myfirebasenoteapp.ui.screens.edit.EditItemViewModel
 import org.nunocky.myfirebasenoteapp.ui.screens.home.HomeRoute
 import org.nunocky.myfirebasenoteapp.ui.screens.home.HomeViewModel
-import org.nunocky.myfirebasenoteapp.ui.screens.login.LoginRoute
-import org.nunocky.myfirebasenoteapp.ui.screens.login.LoginViewModel
 import org.nunocky.myfirebasenoteapp.ui.screens.resetpassword.ResetPasswordRoute
 import org.nunocky.myfirebasenoteapp.ui.screens.resetpassword.ResetPasswordViewModel
+import org.nunocky.myfirebasenoteapp.ui.screens.signin.SignInRoute
+import org.nunocky.myfirebasenoteapp.ui.screens.signin.SignInViewModel
+import org.nunocky.myfirebasenoteapp.ui.screens.signup.SignUpRoute
+import org.nunocky.myfirebasenoteapp.ui.screens.signup.SignUpViewModel
 
 @Serializable
 object Home
-
-@Serializable
-object Login
-
-@Serializable
-object ResetPassword
-
-@Serializable
-object CreateAccount
 
 @Serializable
 object NewItem
@@ -41,6 +32,15 @@ object NewItem
 data class EditItem(
     var itemId: String
 )
+
+@Serializable
+object SignIn
+
+@Serializable
+object SignUp
+
+@Serializable
+object ResetPassword
 
 @Composable
 fun AppRouting() {
@@ -55,17 +55,17 @@ fun AppRouting() {
             HomeRoute(
                 navHostController,
                 viewModel = hiltViewModel<HomeViewModel>(),
-                onLoginNeeded = { navHostController.navigate(Login) },
+                onLoginNeeded = { navHostController.navigate(SignIn) },
                 onCreateNewItem = { navHostController.navigate(NewItem) },
                 onRequestEditItem = { itemId ->
                     navHostController.navigate(EditItem(itemId = itemId))
                 }
             )
         }
-        composable<Login> { _ ->
-            LoginRoute(
+        composable<SignIn> { _ ->
+            SignInRoute(
                 navHostController,
-                viewModel = hiltViewModel<LoginViewModel>(),
+                viewModel = hiltViewModel<SignInViewModel>(),
                 onLoginSuccess = { _ ->
                     navHostController.popBackStack()
                 },
@@ -77,7 +77,7 @@ fun AppRouting() {
                     navHostController.navigate(ResetPassword)
                 },
                 onRequestCreateAccount = {
-                    navHostController.navigate(CreateAccount)
+                    navHostController.navigate(SignUp)
                 },
             )
         }
@@ -113,9 +113,9 @@ fun AppRouting() {
             )
         }
 
-        composable<CreateAccount> {
-            val viewModel = hiltViewModel<CreateAccountViewModel>()
-            CreateAccountRoute(
+        composable<SignUp> {
+            val viewModel = hiltViewModel<SignUpViewModel>()
+            SignUpRoute(
                 navHostController = navHostController,
                 viewModel = viewModel,
                 onCreateAccountSuccess = {

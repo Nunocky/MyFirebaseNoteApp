@@ -1,4 +1,4 @@
-package org.nunocky.myfirebasenoteapp.ui.screens.login
+package org.nunocky.myfirebasenoteapp.ui.screens.signin
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.gestures.detectTapGestures
@@ -56,9 +56,9 @@ import org.nunocky.myfirebasenoteapp.validator.EmailValidator
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LoginRoute(
+fun SignInRoute(
     navHostController: NavHostController,
-    viewModel: LoginViewModel,
+    viewModel: SignInViewModel,
     onLoginSuccess: (user: User) -> Unit,
     onLoginCancelled: () -> Unit,
     onRequestResetPassword: () -> Unit,
@@ -91,7 +91,7 @@ fun LoginRoute(
         }
     }
 
-    LoginScreen(
+    SignInScreen(
         loginUIState = loginUIState,
 
         onGoogleLoginRequest = {
@@ -117,7 +117,7 @@ fun LoginRoute(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LoginScreen(
+fun SignInScreen(
     loginUIState: UIState,
     onGoogleLoginRequest: () -> Unit,
     onEmailLoginRequest: (email: String, password: String) -> Unit,
@@ -306,9 +306,9 @@ fun LoginScreen(
 
 @Preview(showBackground = true, widthDp = 412, heightDp = 915)
 @Composable
-fun LoginScreenPreview_Initial() {
+fun SignInScreenPreview_Initial() {
     myfirebasenoteappTheme {
-        LoginScreen(
+        SignInScreen(
             loginUIState = UIState.Initial,
             onGoogleLoginRequest = {},
             onEmailLoginRequest = { _, _ -> },
@@ -320,9 +320,9 @@ fun LoginScreenPreview_Initial() {
 
 @Preview(showBackground = true, widthDp = 412, heightDp = 915)
 @Composable
-fun LoginScreenPreview_Processing() {
+fun SignInScreenPreview_Processing() {
     myfirebasenoteappTheme {
-        LoginScreen(
+        SignInScreen(
             loginUIState = UIState.Processing,
             onGoogleLoginRequest = {},
             onEmailLoginRequest = { _, _ -> },
@@ -334,9 +334,9 @@ fun LoginScreenPreview_Processing() {
 
 @Preview(showBackground = true, widthDp = 412, heightDp = 915)
 @Composable
-fun LoginScreenPreview_Success() {
+fun SignInScreenPreview_Success() {
     myfirebasenoteappTheme {
-        LoginScreen(
+        SignInScreen(
             loginUIState = UIState.Success(
                 User(
                     uid = "12345",
@@ -355,9 +355,9 @@ fun LoginScreenPreview_Success() {
 
 @Preview(showBackground = true, widthDp = 412, heightDp = 915)
 @Composable
-fun LoginScreenPreview_Error() {
+fun SignInScreenPreview_Error() {
     myfirebasenoteappTheme {
-        LoginScreen(
+        SignInScreen(
             loginUIState = UIState.Error(
                 Exception("Login failed due to network error")
             ),
