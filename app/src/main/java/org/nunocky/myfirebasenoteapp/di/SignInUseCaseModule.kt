@@ -4,18 +4,19 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import org.nunocky.myfirebasenoteapp.domain.EmailSignInUseCase
-import org.nunocky.myfirebasenoteapp.domain.GoogleSignInUseCase
-import org.nunocky.myfirebasenoteapp.domain.firebase.FirebaseEmailSignInUseCase
-import org.nunocky.myfirebasenoteapp.domain.firebase.FirebaseGoogleSignInUseCase
+import org.nunocky.myfirebasenoteapp.network.firebase.FirebaseGoogleAuthUseCase
+import org.nunocky.myfirebasenoteapp.usecase.GoogleAuthUseCase
 
 @Module
 @InstallIn(SingletonComponent::class)
 abstract class SignInUseCaseModule {
     @Binds
-    abstract fun bindGoogleSignInUseCase(impl: FirebaseGoogleSignInUseCase): GoogleSignInUseCase
+    abstract fun bindAuthenticationUseCase(impl: FirebaseGoogleAuthUseCase): GoogleAuthUseCase
 
-    @Binds
-    abstract fun bindEmailSignInUseCase(impl: FirebaseEmailSignInUseCase): EmailSignInUseCase
+//    @Binds
+//    abstract fun bindGoogleSignInUseCase(impl: FirebaseGoogleAuthUseCase): GoogleAuthUseCase
+//
+//    @Binds
+//    abstract fun bindEmailSignInUseCase(impl: FirebaseEmailAuthUseCase): EmailAuthUseCase
 }
 

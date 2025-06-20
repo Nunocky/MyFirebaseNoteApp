@@ -4,8 +4,8 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import org.nunocky.myfirebasenoteapp.domain.CloudStorageUseCase
-import org.nunocky.myfirebasenoteapp.domain.firebase.FireStoreUseCase
+import org.nunocky.myfirebasenoteapp.network.firebase.FireStoreUseCase
+import org.nunocky.myfirebasenoteapp.usecase.CloudStorageUseCase
 
 @Module
 @InstallIn(SingletonComponent::class)

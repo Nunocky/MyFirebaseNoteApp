@@ -17,7 +17,7 @@ import org.mockito.MockitoAnnotations
 import org.mockito.kotlin.any
 import org.mockito.kotlin.whenever
 import org.nunocky.myfirebasenoteapp.data.UIState
-import org.nunocky.myfirebasenoteapp.domain.CloudStorageUseCase
+import org.nunocky.myfirebasenoteapp.usecase.CloudStorageUseCase
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class EditItemViewModelTest {

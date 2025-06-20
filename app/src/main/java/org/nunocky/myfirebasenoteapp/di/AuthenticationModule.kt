@@ -4,8 +4,8 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import org.nunocky.myfirebasenoteapp.domain.Authentication
-import org.nunocky.myfirebasenoteapp.domain.firebase.FirebaseAuthentication
+import org.nunocky.myfirebasenoteapp.network.firebase.FirebaseAuthentication
+import org.nunocky.myfirebasenoteapp.usecase.Authentication
 
 @Module
 @InstallIn(SingletonComponent::class)
