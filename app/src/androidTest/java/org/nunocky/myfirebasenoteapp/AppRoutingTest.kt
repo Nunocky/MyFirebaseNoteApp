@@ -26,13 +26,18 @@ class FakeAuthentication : Authentication {
     }
 
     override fun currentUser(): User? = user
+
+    override fun signOut() {
+        TODO("Not yet implemented")
+    }
 }
 
 private val testUser = User(
     uid = "testUserId",
     displayName = "Test User",
     email = "test@example.com",
-    photoUrl = "https://example.com/photo.jpg"
+    photoUrl = "https://example.com/photo.jpg",
+    emailVerified = true
 )
 
 @HiltAndroidTest
