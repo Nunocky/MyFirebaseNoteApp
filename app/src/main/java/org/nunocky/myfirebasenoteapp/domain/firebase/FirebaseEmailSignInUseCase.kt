@@ -51,7 +51,7 @@ class FirebaseEmailSignInUseCase @Inject constructor(
         return suspendCoroutine { continuation ->
             val auth = FirebaseAuth.getInstance()
 
-            Log.d(TAG, "signUp: email=$email, password=$password")
+            Log.d(TAG, "signUp: email=$email, password=[REDACTED]")
             auth.createUserWithEmailAndPassword(email, password)
                 .addOnSuccessListener {
                     Log.d(TAG, "signUp: success")
