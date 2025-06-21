@@ -4,16 +4,17 @@ plugins {
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt.android)
     alias(libs.plugins.serialization)
+    alias(libs.plugins.google.services)
 }
 
 android {
-    namespace = "org.nunocky.usecase"
+    namespace = "org.nunocky.myfirebasenoteapp.usecase"
     compileSdk = 36
 
     defaultConfig {
         minSdk = 28
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "org.nunocky.usecase.HiltTestRunner"
         consumerProguardFiles("consumer-rules.pro")
     }
 
@@ -39,6 +40,7 @@ dependencies {
     implementation(libs.dagger.hilt.android)
     implementation(libs.googleid)
     implementation(libs.androidx.ui.test.junit4.android)
+    implementation(libs.androidx.runner)
     ksp(libs.dagger.hilt.android.compiler)
     ksp(libs.androidx.hilt.compiler)
 //    implementation(libs.androidx.hilt.navigation.compose)
@@ -69,6 +71,7 @@ dependencies {
     kspAndroidTest(libs.dagger.hilt.android.compiler)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+    debugImplementation(libs.dagger.hilt.android.testing)
     testImplementation(libs.mockito.core)
     testImplementation(libs.mockito.kotlin)
     testImplementation(libs.kotlinx.coroutines.test)

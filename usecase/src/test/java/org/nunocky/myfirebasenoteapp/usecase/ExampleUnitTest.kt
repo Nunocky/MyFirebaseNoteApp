@@ -1,4 +1,4 @@
-package org.nunocky.usecase
+package org.nunocky.myfirebasenoteapp.usecase
 
 import org.junit.Test
 
