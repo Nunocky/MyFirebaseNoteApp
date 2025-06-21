@@ -1,6 +1,7 @@
 package org.nunocky.myfirebasenoteapp.network.firebase
 
 import android.app.Application
+import android.util.Log
 import androidx.credentials.CredentialManager
 import androidx.credentials.CustomCredential
 import androidx.credentials.GetCredentialRequest
@@ -71,6 +72,7 @@ class FirebaseGoogleAuthUseCase @Inject constructor(
                 SignInResult.Failed(Exception("account not found"))
             }
         } catch (e: Exception) {
+            Log.d("Firebase", "signIn failed", e)
             SignInResult.Failed(e)
         }
     }

@@ -19,12 +19,6 @@ android {
         versionCode = 1
         versionName = "1.0"
 
-        buildConfigField(
-            "String",
-            "WEB_CLIENT_ID",
-            project.properties["WEB_CLIENT_ID"] as String
-        )
-
         testInstrumentationRunner = "org.nunocky.myfirebasenoteapp.CustomTestRunner"
     }
 
@@ -47,6 +41,30 @@ android {
     buildFeatures {
         compose = true
         buildConfig = true
+    }
+
+    flavorDimensions += "env"
+    productFlavors {
+        create("prod") {
+            dimension = "env"
+            applicationIdSuffix = ""
+
+            buildConfigField(
+                "String",
+                "WEB_CLIENT_ID",
+                project.properties["WEB_CLIENT_ID"] as String
+            )
+        }
+        create("dev") {
+            dimension = "env"
+            applicationIdSuffix = ".dev"
+
+            buildConfigField(
+                "String",
+                "WEB_CLIENT_ID",
+                project.properties["WEB_CLIENT_ID_DEV"] as String
+            )
+        }
     }
 }
 
