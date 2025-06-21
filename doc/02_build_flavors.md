@@ -14,6 +14,11 @@ Firebaseプロジェクトを「開発環境」と「本番環境」に分け、
 MyFirebaseNoteAppDevに対して Androidアプリを登録する際は、本番環境の applicationId に `.dev`
 を追加して登録する (後述の applicationIdSuffixによる)。
 
+### google-services.jsonのコピー
+
+- 本番環境の `google-services.json` を `app/src/prod` にコピーする。
+- 開発環境の `google-services.json` を `app/src/dev` にコピーする。
+
 ### app/build.gradle.kts
 
 Androidアプリの Build Flavorsを設定する。
