@@ -36,19 +36,12 @@ android {
 }
 
 dependencies {
+    implementation(libs.androidx.core.ktx)
     implementation(libs.dagger.hilt.android)
     implementation(libs.googleid)
-    implementation(libs.androidx.ui.test.junit4.android)
-    implementation(libs.androidx.runner)
-    ksp(libs.dagger.hilt.android.compiler)
-    ksp(libs.androidx.hilt.compiler)
-//    implementation(libs.androidx.hilt.navigation.compose)
-//    implementation(libs.androidx.navigation.compose)
     implementation(libs.kotlinx.serialization.json)
-
-    implementation(libs.androidx.core.ktx)
-//    implementation(libs.androidx.appcompat)
-//    implementation(libs.material)
+    ksp(libs.androidx.hilt.compiler)
+    ksp(libs.dagger.hilt.android.compiler)
 
     // firebase
     implementation(platform(libs.firebase.bom))
@@ -61,22 +54,15 @@ dependencies {
 
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.junit)
-//    androidTestImplementation(libs.firebase.auth)
-    androidTestImplementation(libs.firebase.auth.ktx)
-    androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.ui.test.junit4)
     androidTestImplementation(libs.dagger.hilt.android.testing)
+    // androidTestImplementation(libs.firebase.auth)
+    androidTestImplementation(libs.firebase.auth.ktx)
     androidTestImplementation(libs.mockito.android)
     androidTestImplementation(libs.mockito.kotlin)
-    androidTestImplementation(platform(libs.androidx.compose.bom))
-    debugImplementation(libs.androidx.ui.test.manifest)
-    debugImplementation(libs.androidx.ui.tooling)
-    debugImplementation(libs.dagger.hilt.android.testing)
     kspAndroidTest(libs.dagger.hilt.android.compiler)
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)
-    testImplementation(libs.mockito.core)
+    // testImplementation(libs.mockito.core)
     testImplementation(libs.mockito.kotlin)
     testImplementation(libs.turbine)
 }
