@@ -4,7 +4,6 @@ plugins {
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt.android)
     alias(libs.plugins.serialization)
-    alias(libs.plugins.google.services)
 }
 
 android {
@@ -60,21 +59,24 @@ dependencies {
     implementation(libs.androidx.credentials.play.services.auth)
     implementation(libs.firebase.firestore.ktx)
 
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(platform(libs.androidx.compose.bom))
+    androidTestImplementation(libs.androidx.junit)
+//    androidTestImplementation(libs.firebase.auth)
+    androidTestImplementation(libs.firebase.auth.ktx)
+    androidTestImplementation(libs.androidx.espresso.core)
+    androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.ui.test.junit4)
     androidTestImplementation(libs.dagger.hilt.android.testing)
     androidTestImplementation(libs.mockito.android)
     androidTestImplementation(libs.mockito.kotlin)
-    kspAndroidTest(libs.dagger.hilt.android.compiler)
-    debugImplementation(libs.androidx.ui.tooling)
+    androidTestImplementation(platform(libs.androidx.compose.bom))
     debugImplementation(libs.androidx.ui.test.manifest)
+    debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.dagger.hilt.android.testing)
+    kspAndroidTest(libs.dagger.hilt.android.compiler)
+    testImplementation(libs.junit)
+    testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.mockito.core)
     testImplementation(libs.mockito.kotlin)
-    testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.turbine)
-
 }
