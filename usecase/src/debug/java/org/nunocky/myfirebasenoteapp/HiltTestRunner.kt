@@ -1,7 +1,8 @@
-package org.nunocky.usecase
+package org.nunocky.myfirebasenoteapp
 
 import android.app.Application
 import android.content.Context
+import android.os.Bundle
 import androidx.test.runner.AndroidJUnitRunner
 import com.google.firebase.FirebaseApp
 import com.google.firebase.FirebaseOptions
@@ -19,7 +20,7 @@ class HiltTestRunner : AndroidJUnitRunner() {
         return super.newApplication(cl, HiltTestApplication::class.java.name, context)
     }
 
-    override fun onCreate(arguments: android.os.Bundle?) {
+    override fun onCreate(arguments: Bundle?) {
         super.onCreate(arguments)
 
         // Initialize Firebase for testing with emulator

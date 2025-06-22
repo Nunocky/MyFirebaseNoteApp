@@ -1,4 +1,4 @@
-package org.nunocky.myfirebasenoteapp.usecase
+package org.nunocky.myfirebasenoteapp
 
 import androidx.activity.ComponentActivity
 import dagger.hilt.android.AndroidEntryPoint

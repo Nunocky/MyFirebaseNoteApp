@@ -7,13 +7,13 @@ plugins {
 }
 
 android {
-    namespace = "org.nunocky.myfirebasenoteapp.usecase"
+    namespace = "org.nunocky.myfirebasenoteapp"
     compileSdk = 36
 
     defaultConfig {
         minSdk = 28
 
-        testInstrumentationRunner = "org.nunocky.usecase.HiltTestRunner"
+        testInstrumentationRunner = "org.nunocky.myfirebasenoteapp.HiltTestRunner"
         consumerProguardFiles("consumer-rules.pro")
     }
 
